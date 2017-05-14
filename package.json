@@ -2,13 +2,21 @@
   "name": "CarpTrader-DataParser",
   "author": "Per Eriksson",
   "version": "0.1.0",
-  "main": "src/main.js",
+  "main": "lib/main.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node ./lib/main.js",
+    "build": "babel src -d lib",
+    "exec": "npm run build && npm start"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sporelax/CarpTrader-DataParser.git"
   },
   "devDependencies": {
-    "avanza": "^0.2.0"
+    "avanza": "^0.2.0",
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "dotenv": "^4.0.0"
   }
 }

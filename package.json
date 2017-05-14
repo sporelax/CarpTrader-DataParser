@@ -1,0 +1,14 @@
+{
+  "name": "CarpTrader-DataParser",
+  "author": "Per Eriksson",
+  "version": "0.1.0",
+  "main": "src/main.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sporelax/CarpTrader-DataParser.git"
+  },
+  "devDependencies": {
+    "avanza": "^0.2.0"
+  }
+}

@@ -14,16 +14,16 @@ console.log('User: ' +user+ ', pass: '+psw+ ', acc: '+acc+ ', order: '+order);
 
 if(user=='perik911') {
     avanza.socket.once('connect', () => {
-        avanza.socket.subscribe('5479', ['quotes']); // Telia
-        console.log('subscribed to telia quote');
+        avanza.socket.subscribe('5479', ['orderdepths','trades']); // Telia
+        console.log('subscribed to telia.');
     });
 
-    avanza.socket.on('quotes', data => {
-        console.log('Received quote: ', data);
+    avanza.socket.on('orderdepths', data => {
+        console.log('Received orderdepths: ', JSON.stringify(data));
     });
 
-    avanza.socket.on('error', data => {
-        console.log('Received error: ', data);
+    avanza.socket.on('trades', data => {
+        console.log('Received trades: ', data);
     });
 
     avanza.authenticate({
@@ -33,15 +33,6 @@ if(user=='perik911') {
 
         avanza.socket.initialize();
         /* We are authenticated and ready to process data */
-
-        avanza.getPositions().then(positions => {
-            console.log('current positions: '+positions);
-        });
-
-        avanza.getStock('5479').then(stock => {
-            console.log('Telia stock: '+JSON.stringify(stock));
-        });
-
     })
 
     console.log('Press \'q\' to exit.');
@@ -58,3 +49,43 @@ if(user=='perik911') {
     console.log('wrong user!');
     process.exit(0);
 }
+
+//Run once
+function initDbTables(db) {
+     db.run("CREATE TABLE orderdepths (instrumentId TEXT, orderTime NUMERIC, levels TEXT, total TEXT)");
+     db.run("CREATE TABLE trades (seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
+}
+
+/* 
+    For future
+
+Trade:
+{ 
+    buyer: { ticker: 'SHB', name: 'Svenska Handelsbanken AB' },
+    seller: { ticker: 'NON', name: 'NORDNET BANK AB' },
+    cancelled: false,
+    dealTime: 1495105636000,
+    matchedOnMarket: true,
+    instrumentId: '5479',
+    price: 38.08,
+    volume: 1000,
+    volumeWeightedAveragePrice: undefined 
+}
+
+Quote:
+{ 
+    change: -0.47,
+    changePercent: -1.22,
+    closingPrice: 38.55,
+    highestPrice: 38.59,
+    lastPrice: 38.08,
+    lastUpdated: 1495105636000,
+    lowestPrice: 38.04,
+    instrumentId: '5479',
+    totalValueTraded: 230743532.47,
+    totalVolumeTraded: 6017413,
+    updated: 1495105636000 
+}
+
+
+*/

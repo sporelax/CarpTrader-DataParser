@@ -52,8 +52,8 @@ if(user=='perik911') {
 
 //Run once
 function initDbTables(db) {
-     db.run("CREATE TABLE orderdepths (instrumentId TEXT, orderTime NUMERIC, levels TEXT, total TEXT)");
-     db.run("CREATE TABLE trades (seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
+     db.run("CREATE TABLE IF NOT EXISTS orderdepths (instrumentId TEXT, orderTime NUMERIC, levels TEXT, total TEXT)");
+     db.run("CREATE TABLE IF NOT EXISTS trades (seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
 }
 
 /* 

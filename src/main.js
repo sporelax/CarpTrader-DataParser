@@ -4,7 +4,9 @@ dotenv.config()
 const avanza = new Avanza()
 const readline = require('readline');
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./stock_market_data.db');
+const db_intraday = new sqlite3.Database('./omxs_intraday.db');
+const db_overview = new sqlite3.Database('./omxs_overview.db');
+const date = new Date();
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -33,6 +35,15 @@ if(user=='perik911') {
 
         avanza.socket.initialize();
         /* We are authenticated and ready to process data */
+
+        avanza.getStock('5479').then(data => {
+        console.log('Telia stock: ',data);
+        //console.log(data.id);
+        //console.log(data.currency);
+        //console.log(date);
+        var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
+        db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+   });
     })
 
     console.log('Press \'q\' to exit.');
@@ -51,9 +62,14 @@ if(user=='perik911') {
 }
 
 //Run once
-function initDbTables(db) {
+function initOverviewTables(db) {
+     db.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC)");
+}
+
+//Run once
+function initIntradayTables(db) {
      db.run("CREATE TABLE IF NOT EXISTS orderdepths (instrumentId TEXT, orderTime NUMERIC, levels TEXT, total TEXT)");
-     db.run("CREATE TABLE IF NOT EXISTS trades (seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
+     db.run("CREATE TABLE IF NOT EXISTS trades (buyer TEXT, seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
 }
 
 /* 
@@ -86,6 +102,35 @@ Quote:
     totalVolumeTraded: 6017413,
     updated: 1495105636000 
 }
-
+getStock:
+{ 
+    id: '5479',
+    marketPlace: 'Stockholmsbörsen',
+    marketList: 'Large Cap Stockholm',
+    currency: 'SEK',
+    name: 'Telia Company',
+    country: 'Sverige',
+    lastPrice: 38.46,
+    totalValueTraded: 419759924.65,
+    numberOfOwners: 33498,
+    shortSellable: true,
+    tradable: true,
+    lastPriceUpdated: 1495207775000,
+    changePercent: 0.5,
+    change: 0.19,
+    ticker: 'TELIA',
+    totalVolumeTraded: 10937679,
+    company:
+    { marketCapital: 165712344568,
+        chairman: 'Marie Ehrling',
+        description: 'Telia Company är ett telekombolag som erbjuder nätanslutning och telekommunikationstjänster. Telia Company finns i de nordiska och baltiska länderna, Spanien,
+    Azerbajdzjan, Georgien, Kazastan, Moldavien, Nepal, Ryssland, Tadzjistan, Turkiet och Uzbekistan. Tjänsterna marknadsförs under varumärken som Telia, Sonera, Halebop och NetCom
+    . Den svenska marknaden svarar för 36% av omsättningen, och övriga Europa för 39%.',
+        name: 'Telia Company',
+        ceo: 'Johan Dennelind' },
+    volatility: 14.9,
+    pe: 23.39,
+    yield: 5.61 
+}
 
 */

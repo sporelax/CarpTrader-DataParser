@@ -7,58 +7,100 @@ const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./omxs_intraday.db');
 const db_overview = new sqlite3.Database('./omxs_overview.db');
 const date = new Date();
+const lineReader = require('readline').createInterface({
+  input: require('fs').createReadStream('nasdaq_stockholm.txt')
+});
+var stockList = [];
+
+lineReader.on('line', function (line) {
+    stockList.push(line);
+    if(line == "XANO B"){
+        console.log("Reached END: " + stockList.length);
+    }
+});
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
 const acc = process.env.ACCOUNT;
 const order = process.env.ORDER;
-console.log('User: ' +user+ ', pass: '+psw+ ', acc: '+acc+ ', order: '+order);
 
-if(user=='perik911') {
-    avanza.socket.once('connect', () => {
-        avanza.socket.subscribe('5479', ['orderdepths','trades']); // Telia
-        console.log('subscribed to telia.');
-    });
+/*
+avanza.socket.once('connect', () => {
+    avanza.socket.subscribe('5479', ['orderdepths','trades']); // Telia
+    console.log('subscribed to telia.');
+});
 
-    avanza.socket.on('orderdepths', data => {
-        console.log('Received orderdepths: ', JSON.stringify(data));
-    });
+avanza.socket.on('orderdepths', data => {
+    console.log('Received orderdepths: ', JSON.stringify(data));
+});
 
-    avanza.socket.on('trades', data => {
-        console.log('Received trades: ', data);
-    });
+avanza.socket.on('trades', data => {
+    console.log('Received trades: ', data);
+});
+*/
 
-    avanza.authenticate({
-        username: process.env.USER,
-        password: process.env.PASSWORD
-    }).then(() => {
+avanza.authenticate({
+    username: process.env.USER,
+    password: process.env.PASSWORD
+}).then(() => {
+    //Authentication takes some time, waaay more than parsing. So we start search here:
+    searchStocks(0,stockList);
 
-        avanza.socket.initialize();
-        /* We are authenticated and ready to process data */
+    //avanza.socket.initialize();
+    /* We are authenticated and ready to process data */
 
-        avanza.getStock('5479').then(data => {
-        console.log('Telia stock: ',data);
-        //console.log(data.id);
-        //console.log(data.currency);
-        //console.log(date);
-        var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
-        db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-   });
-    })
+    //avanza.search();
 
-    console.log('Press \'q\' to exit.');
-    readline.emitKeypressEvents(process.stdin);
-    process.stdin.setRawMode(true);
-    process.stdin.on('keypress', (str, key) => {
-        console.log(str);
-        if(str == 'q'){
-            process.exit(0);
-        }
-    })
+    /*avanza.getStock('5479').then(data => {
+    console.log('Telia stock: ',data);
+
+    var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
+    db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+});
+   */
+})
+   
+
+console.log('Press \'q\' to exit.');
+readline.emitKeypressEvents(process.stdin);
+process.stdin.setRawMode(true);
+process.stdin.on('keypress', (str, key) => {
+    console.log(str);
+    if(str == 'q'){
+         process.exit(0);
+    }
+})
+
+function searchStocks(i,stockList){
+    if(i<stockList.length){
+        var stockName = stockList[i];
+        avanza.search(stockName).then(answer => {
+            var id = parseSearchString(stockName,answer);
+            console.log("Found answer: "+id+" for stock "+stockName);
+            searchStocks(i+1,stockList);
+        });
+    } else {
+        console.log("Reached End!");
+    }
+}
+
+function parseSearchString(name,answer){
     
-}else{
-    console.log('wrong user!');
-    process.exit(0);
+    if(answer.totalNumberOfHits==1){
+        return answer.hits[0].topHits[0].id;
+    }else{
+        for (var i=0; i<answer.totalNumberOfHits; i++){
+            if (answer.hits[i].instrumentType == "STOCK"){
+                for (var j=0; j<answer.hits[i].numberOfHits; j++){  
+                    var tmp_answer = answer.hits[i].topHits[j];
+                    if(tmp_answer.tickerSymbol == name){
+                        //pot. issue: ABB has ticker ABB for both US and SWE stock. Only take currency = SEK?
+                        return tmp_answer.id;
+                    }
+                }
+            }
+        }
+    }
 }
 
 //Run once

@@ -3,26 +3,28 @@ import dotenv from 'dotenv';
 dotenv.config()
 const avanza = new Avanza()
 const readline = require('readline');
+const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
-const stockLists = ['./stocklists/nasdaq_stockholm.txt', 
+const fullStockList = ['./stocklists/nasdaq_stockholm.txt', 
                     './stocklists/nasdaq_firstnorth.txt',
                     './stocklists/ngm.txt',
                     './stocklists/aktietorget.txt']
+const stockList = fullStockList;
+const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const date = new Date();
 
+var numOfRequests = 0;
 var tickerList = [];
-var fs = require('fs');
-
-stockLists.forEach((value) => {
+stockList.forEach((value) => {
     console.log(value);
     var contents = fs.readFileSync(value,'utf8');
     contents.split('\r\n').forEach((tick) => {
         tickerList.push(tick);
     });
 })
-console.log(tickerList.length);
+console.log(tickerList.length); //should be 830 for full list
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -44,13 +46,13 @@ avanza.socket.on('trades', data => {
 });
 */
 
-/*
+
 avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
 }).then(() => {
-    //Authentication takes some time, waaay more than parsing. So we start search here:
-    searchStocks(0,stockList);
+    var avaIds = {};
+    searchStocks(0,tickerList,avaIds);
 
     //avanza.socket.initialize();
     /* We are authenticated and ready to process data */
@@ -62,10 +64,9 @@ avanza.authenticate({
 
     var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
     db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+    });
+   */
 });
-   
-})
-*/
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -77,35 +78,47 @@ process.stdin.on('keypress', (str, key) => {
     }
 })
 
-function searchStocks(i,stockList){
-    if(i<stockList.length){
-        var stockName = stockList[i];
+function searchStocks(i,list,jsonObj){
+    if(i<list.length){
+        var stockName = list[i];
         avanza.search(stockName).then(answer => {
             var id = parseSearchString(stockName,answer);
-            console.log("Found answer: "+id+" for stock "+stockName);
-            searchStocks(i+1,stockList);
+            console.log("Found answer("+i+"): "+id+" for stock "+stockName);
+            jsonObj[stockName] = id;
+            searchStocks(i+1,list,jsonObj);
+        }).catch( (error) => {
+            console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
         });
     } else {
-        console.log("Reached End!");
+        console.log("Reached end of parse! Writing data to file: ");
+        fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
+        console.log("Write completed");
     }
 }
 
 function parseSearchString(name,answer){
-    
-    if(answer.totalNumberOfHits==1){
-        return answer.hits[0].topHits[0].id;
-    }else{
-        for (var i=0; i<answer.totalNumberOfHits; i++){
-            if (answer.hits[i].instrumentType == "STOCK"){
-                for (var j=0; j<answer.hits[i].numberOfHits; j++){  
-                    var tmp_answer = answer.hits[i].topHits[j];
-                    if(tmp_answer.tickerSymbol == name){
-                        //pot. issue: ABB has ticker ABB for both US and SWE stock. Only take currency = SEK?
-                        return tmp_answer.id;
+    try {
+        if(answer.totalNumberOfHits==1){
+            return answer.hits[0].topHits[0].id;
+        }else{
+            for (var j=0; j<answer.totalNumberOfHits; j++){
+                if (answer.hits[j].instrumentType && answer.hits[j].instrumentType == "STOCK"){
+                    for (var k=0; k<answer.hits[j].numberOfHits; k++){  
+                        var tmp_answer = answer.hits[j].topHits[k];
+                        if(tmp_answer.tickerSymbol == name){
+                            //pot. issue: for example ABB has ticker ABB for both US and SWE stock. Only take currency = SEK?
+                            return tmp_answer.id;
+                        }
                     }
+                } else {
+                    console.log("instrument type undefined, trying default.. ")
+                    return answer.hits[0].topHits[0].id;
                 }
             }
         }
+    } catch (err) {
+        console.log("Name: "+name+", Answer: "+JSON.stringify(answer));
+        console.log("Error received: ",err);
     }
 }
 

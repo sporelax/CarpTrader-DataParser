@@ -4,20 +4,25 @@ dotenv.config()
 const avanza = new Avanza()
 const readline = require('readline');
 const sqlite3 = require('sqlite3').verbose();
-const db_intraday = new sqlite3.Database('./omxs_intraday.db');
-const db_overview = new sqlite3.Database('./omxs_overview.db');
+const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
+const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
+const stockLists = ['./stocklists/nasdaq_stockholm.txt', 
+                    './stocklists/nasdaq_firstnorth.txt',
+                    './stocklists/ngm.txt',
+                    './stocklists/aktietorget.txt']
 const date = new Date();
-const lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('nasdaq_stockholm.txt')
-});
-var stockList = [];
 
-lineReader.on('line', function (line) {
-    stockList.push(line);
-    if(line == "XANO B"){
-        console.log("Reached END: " + stockList.length);
-    }
-});
+var tickerList = [];
+var fs = require('fs');
+
+stockLists.forEach((value) => {
+    console.log(value);
+    var contents = fs.readFileSync(value,'utf8');
+    contents.split('\r\n').forEach((tick) => {
+        tickerList.push(tick);
+    });
+})
+console.log(tickerList.length);
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -39,6 +44,7 @@ avanza.socket.on('trades', data => {
 });
 */
 
+/*
 avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
@@ -57,9 +63,9 @@ avanza.authenticate({
     var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
     db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
 });
-   */
-})
    
+})
+*/
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);

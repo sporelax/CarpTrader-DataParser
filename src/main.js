@@ -7,24 +7,8 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
-const fullStockList = ['./stocklists/nasdaq_stockholm.txt', 
-                    './stocklists/nasdaq_firstnorth.txt',
-                    './stocklists/ngm.txt',
-                    './stocklists/aktietorget.txt']
-const stockList = fullStockList;
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const date = new Date();
-
-var numOfRequests = 0;
-var tickerList = [];
-stockList.forEach((value) => {
-    console.log(value);
-    var contents = fs.readFileSync(value,'utf8');
-    contents.split('\r\n').forEach((tick) => {
-        tickerList.push(tick);
-    });
-})
-console.log(tickerList.length); //should be 830 for full list
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -51,9 +35,6 @@ avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
 }).then(() => {
-    var avaIds = {};
-    searchStocks(0,tickerList,avaIds);
-
     //avanza.socket.initialize();
     /* We are authenticated and ready to process data */
 
@@ -78,6 +59,37 @@ process.stdin.on('keypress', (str, key) => {
     }
 })
 
+/*
+*   Generate list of avanza stock Id numbers
+*   Store list in @avaIdFile (overwritten every time this function completes a run)
+*   Modify @stockList in order to change included stocks
+*/
+function generateAvanzaStockIdList(){
+    var stockList = ['./stocklists/nasdaq_stockholm.txt', 
+                        './stocklists/nasdaq_firstnorth.txt',
+                        './stocklists/ngm.txt',
+                        './stocklists/aktietorget.txt'];
+    var numOfRequests = 0;
+    var tickerList = [];
+    stockList.forEach((value) => {
+        console.log(value);
+        var contents = fs.readFileSync(value,'utf8');
+        contents.split('\r\n').forEach((tick) => {
+            tickerList.push(tick);
+        });
+    })
+    console.log(tickerList.length); //should be 830 for full list
+
+    avanza.authenticate({
+        username: process.env.USER,
+        password: process.env.PASSWORD
+    }).then(() => {  
+        var avaIds = {};
+        searchStocks(0,tickerList,avaIds);
+    }); 
+}
+
+//Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
 function searchStocks(i,list,jsonObj){
     if(i<list.length){
         var stockName = list[i];
@@ -90,10 +102,10 @@ function searchStocks(i,list,jsonObj){
             console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
         });
     } else {
-        console.log("Reached end of parse! Writing data to file: ");
+        console.log("Reached end of stock list! Writing data to file: ");
         fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
         console.log("Write completed");
-    }
+    }  
 }
 
 function parseSearchString(name,answer){
@@ -134,7 +146,7 @@ function initIntradayTables(db) {
 }
 
 /* 
-    For future
+    For reference
 
 Trade:
 { 

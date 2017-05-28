@@ -12,8 +12,6 @@ const date = new Date();
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
-const acc = process.env.ACCOUNT;
-const order = process.env.ORDER;
 
 /*
 avanza.socket.once('connect', () => {
@@ -30,24 +28,24 @@ avanza.socket.on('trades', data => {
 });
 */
 
-
+/*
 avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
 }).then(() => {
-    //avanza.socket.initialize();
-    /* We are authenticated and ready to process data */
+    avanza.socket.initialize();
+    // We are authenticated and ready to process data 
 
-    //avanza.search();
-
-    /*avanza.getStock('5479').then(data => {
+    avanza.getStock('5479').then(data => {
     console.log('Telia stock: ',data);
 
+    var date_str = date.toJSON().slice(0,-5); //FIX
     var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
     db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
     });
-   */
 });
+*/
+storeAvaIdsInDb();
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -58,6 +56,25 @@ process.stdin.on('keypress', (str, key) => {
          process.exit(0);
     }
 })
+
+function storeAvaIdsInDb(){
+    var jsonObj = fs.readFileSync(avaIdFile,'utf8');
+    db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
+    console.log("read ava id file and insert into db");
+    var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
+    var count = 0;
+    var noKey = 0;
+    JSON.parse(jsonObj, (key,value) => {
+        if(key){
+            count++;
+            stmt.run(key, value);
+        }else{
+            noKey++;
+        }
+    });
+    stmt.finalize();
+    console.log("end, count: "+count+", no key: "+noKey);
+}
 
 /*
 *   Generate list of avanza stock Id numbers
@@ -137,6 +154,7 @@ function parseSearchString(name,answer){
 //Run once
 function initOverviewTables(db) {
      db.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC)");
+     db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
 }
 
 //Run once

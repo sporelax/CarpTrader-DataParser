@@ -7,7 +7,6 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
-const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const date = new Date();
 
 const psw = process.env.PASSWORD;
@@ -33,19 +32,11 @@ avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
 }).then(() => {
-    avanza.socket.initialize();
+    //avanza.socket.initialize();
     // We are authenticated and ready to process data 
-
-    avanza.getStock('5479').then(data => {
-    console.log('Telia stock: ',data);
-
-    var date_str = date.toJSON().slice(0,-5); //FIX
-    var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
-    db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-    });
+    dailyStockParse();
 });
 */
-storeAvaIdsInDb();
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -56,6 +47,29 @@ process.stdin.on('keypress', (str, key) => {
          process.exit(0);
     }
 })
+
+function dailyStockParse(){
+    db_overview.all("SELECT ticker, id FROM stockIds", (err,rows) => {
+        dailyStockParseSerializeCalls(0,rows)
+    });
+}
+
+function dailyStockParseSerializeCalls(index,rows){
+    if(index<rows.length){
+        avanza.getStock(rows[index].id).then(data => {
+                console.log("found Stock data for stock: "+data.ticker);
+                var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. Move to start?
+                //if data.ticker == ticker?
+                var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
+                //db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                dailyStockParseSerializeCalls(index++,rows);
+            }).catch( (error) => {
+                console.log("Promise rejected for stock "+row.ticker+", error: "+error);
+            });
+    } else {
+        console.log("Reached end of stock list! Parsed "+index+" stocks.");
+    }  
+}
 
 function storeAvaIdsInDb(){
     var jsonObj = fs.readFileSync(avaIdFile,'utf8');

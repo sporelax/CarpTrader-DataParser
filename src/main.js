@@ -7,6 +7,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
+const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const date = new Date();
 
 const psw = process.env.PASSWORD;
@@ -26,8 +27,8 @@ avanza.socket.on('trades', data => {
     console.log('Received trades: ', data);
 });
 */
+//storeAvaIdsInDb();
 
-/*
 avanza.authenticate({
     username: process.env.USER,
     password: process.env.PASSWORD
@@ -35,8 +36,10 @@ avanza.authenticate({
     //avanza.socket.initialize();
     // We are authenticated and ready to process data 
     dailyStockParse();
+}).catch((err) => {
+    console.log("or all the way up here?");
 });
-*/
+
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -49,21 +52,37 @@ process.stdin.on('keypress', (str, key) => {
 })
 
 function dailyStockParse(){
+    db_overview.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC, UNIQUE(date,id))");
     db_overview.all("SELECT ticker, id FROM stockIds", (err,rows) => {
         dailyStockParseSerializeCalls(0,rows)
-    });
+    }).catch(console.log("error here? really??"));
 }
 
 function dailyStockParseSerializeCalls(index,rows){
     if(index<rows.length){
-        avanza.getStock(rows[index].id).then(data => {
-                console.log("found Stock data for stock: "+data.ticker);
+        avanza.getStock(rows[index].id).then((data) => {
+                console.log("found data for stock ("+index+"/"+rows.length+"): "+data.ticker);
                 var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. Move to start?
                 //if data.ticker == ticker?
-                var insert_values = [date.toJSON(), data.id, data.marketPlace, data.marketList, data.currency, data.name, data.ticker, data.lastPrice, data.totalValueTraded, data.numberOfOwners, data.change, data.totalVolumeTraded, data.company.marketCapital, data.volatility, data.pe, data.yield];
-                //db_overview.run("INSERT INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-                dailyStockParseSerializeCalls(index++,rows);
-            }).catch( (error) => {
+                var insert_values = [date_str];
+                insert_values.push(data.id);
+                insert_values.push(data.marketPlace);
+                insert_values.push(data.marketList);
+                insert_values.push(data.currency);
+                insert_values.push(data.name);
+                insert_values.push(data.ticker);
+                insert_values.push(data.lastPrice);
+                insert_values.push(data.totalValueTraded);
+                insert_values.push(data.numberOfOwners);
+                insert_values.push(data.change);
+                insert_values.push(data.totalVolumeTraded || null);
+                insert_values.push(data.marketCapital || null);
+                insert_values.push(data.volatility || 0);
+                insert_values.push(data.pe || null);
+                insert_values.push(data.yield || 0);
+                db_overview.run("INSERT OR REPLACE INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                dailyStockParseSerializeCalls(index+1,rows);
+            }, (error) => {
                 console.log("Promise rejected for stock "+row.ticker+", error: "+error);
             });
     } else {
@@ -73,21 +92,26 @@ function dailyStockParseSerializeCalls(index,rows){
 
 function storeAvaIdsInDb(){
     var jsonObj = fs.readFileSync(avaIdFile,'utf8');
-    db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
-    console.log("read ava id file and insert into db");
-    var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
-    var count = 0;
-    var noKey = 0;
-    JSON.parse(jsonObj, (key,value) => {
-        if(key){
-            count++;
-            stmt.run(key, value);
-        }else{
-            noKey++;
-        }
+    db_overview.serialize(()=>{
+        db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
+        console.log("read ava id file and insert into db");
+        var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
+        var count = 0;
+        var noKey = 0;
+        JSON.parse(jsonObj, (key,value) => {
+            if(key){
+                count++;
+                stmt.run(key, value);
+            }else{
+                noKey++;
+            }
+        });
+        stmt.finalize();
+        db_overview.get("SELECT count(*) FROM StockIds", (err,row) =>{
+            console.log("db cnt: ",row);
+        });
+        console.log("end, count: "+count+", no key: "+noKey);
     });
-    stmt.finalize();
-    console.log("end, count: "+count+", no key: "+noKey);
 }
 
 /*
@@ -167,7 +191,7 @@ function parseSearchString(name,answer){
 
 //Run once
 function initOverviewTables(db) {
-     db.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC)");
+     db.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC, UNIQUE(date,id))");
      db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
 }
 

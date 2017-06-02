@@ -61,7 +61,7 @@ function dailyStockParse(){
 function dailyStockParseSerializeCalls(index,rows){
     if(index<rows.length){
         avanza.getStock(rows[index].id).then((data) => {
-                console.log("found data for stock ("+index+"/"+rows.length+"): "+data.ticker);
+                console.log("found data for stock ("+index+1+"/"+rows.length+"): "+data.ticker);
                 var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. Move to start?
                 //if data.ticker == ticker?
                 var insert_values = [date_str];

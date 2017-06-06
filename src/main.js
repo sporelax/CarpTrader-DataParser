@@ -7,7 +7,13 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
+const stockList = ['./stocklists/nasdaq_stockholm.txt', 
+                        './stocklists/nasdaq_firstnorth.txt',
+                        './stocklists/ngm.txt',
+                        './stocklists/aktietorget.txt'];
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
+var avaIdsJsonObj = fs.readFileSync(avaIdFile,'utf8');
+var diffBetweenDbAndList = 0;
 const date = new Date();
 
 const psw = process.env.PASSWORD;
@@ -27,7 +33,8 @@ avanza.socket.on('trades', data => {
     console.log('Received trades: ', data);
 });
 */
-//storeAvaIdsInDb();
+generateAvanzaStockIdList();
+storeAvaIdsInDb();
 
 avanza.authenticate({
     username: process.env.USER,
@@ -35,11 +42,17 @@ avanza.authenticate({
 }).then(() => {
     //avanza.socket.initialize();
     // We are authenticated and ready to process data 
-    dailyStockParse();
+    //avanza.getChartdata('5479').then((data) => {
+    //    console.log(JSON.stringify(data));
+    //});
+    try{
+        dailyStockParse();
+    } catch (err) {
+        console.log("Caught in try catch, ",err);
+    }
 }).catch((err) => {
-    console.log("or all the way up here?");
+    console.log("Error catched all the way up here?");
 });
-
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -55,15 +68,17 @@ function dailyStockParse(){
     db_overview.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC, UNIQUE(date,id))");
     db_overview.all("SELECT ticker, id FROM stockIds", (err,rows) => {
         dailyStockParseSerializeCalls(0,rows)
-    }).catch(console.log("error here? really??"));
+    });
 }
 
 function dailyStockParseSerializeCalls(index,rows){
     if(index<rows.length){
         avanza.getStock(rows[index].id).then((data) => {
-                console.log("found data for stock ("+index+1+"/"+rows.length+"): "+data.ticker);
+                console.log("found data for stock ("+(index+1)+"/"+rows.length+"): "+data.ticker);
                 var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. Move to start?
-                //if data.ticker == ticker?
+                // make date-formatting function
+                //If time before 9, set date to prev day? 
+                //If market = not open this day, dont store
                 var insert_values = [date_str];
                 insert_values.push(data.id);
                 insert_values.push(data.marketPlace);
@@ -75,14 +90,14 @@ function dailyStockParseSerializeCalls(index,rows){
                 insert_values.push(data.totalValueTraded);
                 insert_values.push(data.numberOfOwners);
                 insert_values.push(data.change);
-                insert_values.push(data.totalVolumeTraded || null);
-                insert_values.push(data.marketCapital || null);
+                insert_values.push(data.totalVolumeTraded || null); 
+                insert_values.push(data.marketCapital || null); //remove || to trigger error. Can we catch it?
                 insert_values.push(data.volatility || 0);
                 insert_values.push(data.pe || null);
                 insert_values.push(data.yield || 0);
                 db_overview.run("INSERT OR REPLACE INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
                 dailyStockParseSerializeCalls(index+1,rows);
-            }, (error) => {
+            }).catch((error) => {
                 console.log("Promise rejected for stock "+row.ticker+", error: "+error);
             });
     } else {
@@ -91,57 +106,69 @@ function dailyStockParseSerializeCalls(index,rows){
 }
 
 function storeAvaIdsInDb(){
-    var jsonObj = fs.readFileSync(avaIdFile,'utf8');
     db_overview.serialize(()=>{
         db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
-        console.log("read ava id file and insert into db");
-        var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
-        var count = 0;
-        var noKey = 0;
-        JSON.parse(jsonObj, (key,value) => {
-            if(key){
-                count++;
-                stmt.run(key, value);
-            }else{
-                noKey++;
-            }
-        });
-        stmt.finalize();
-        db_overview.get("SELECT count(*) FROM StockIds", (err,row) =>{
-            console.log("db cnt: ",row);
-        });
-        console.log("end, count: "+count+", no key: "+noKey);
+        if(diffBetweenDbAndList){
+            console.log("Updating stockId database");
+            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
+            JSON.parse(avaIdsJsonObj, (key,value) => {
+                if(key){
+                    stmt.run(key, value);
+                }
+            });
+            stmt.finalize();
+        }
     });
 }
 
 /*
-*   Generate list of avanza stock Id numbers
-*   Store list in @avaIdFile (overwritten every time this function completes a run)
-*   Modify @stockList in order to change included stocks
+*   Generate list of avanza stock Id numbers from lists of Tickers. 
+*   Compare list of Id Numbers to existing list stored in @avaIdsJsonObj
+*   Overwrite it if change is detected.
+*   Modify @stockList in order to change included stocks.
 */
 function generateAvanzaStockIdList(){
-    var stockList = ['./stocklists/nasdaq_stockholm.txt', 
-                        './stocklists/nasdaq_firstnorth.txt',
-                        './stocklists/ngm.txt',
-                        './stocklists/aktietorget.txt'];
-    var numOfRequests = 0;
     var tickerList = [];
+    var numOfRequests = 0;
     stockList.forEach((value) => {
-        console.log(value);
+        console.log("Parsing stocklist: "+value);
         var contents = fs.readFileSync(value,'utf8');
         contents.split('\r\n').forEach((tick) => {
             tickerList.push(tick);
         });
     })
-    console.log(tickerList.length); //should be 830 for full list
+    console.log("Number of stocks in list: "+tickerList.length); //should be ~830 for full list
+    //Parse avanza if tickerList does not match avaIdFile
+    var tmpTickerList = tickerList.slice();
+    JSON.parse(avaIdsJsonObj, (key,value) => {
+        var idx = tmpTickerList.indexOf(key);
+        if (idx > -1){
+            tmpTickerList.splice(idx,1);
+        }else{
+            if(key){ //last item from JSON.parse is ""
+                console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
+                diffBetweenDbAndList = 1;
+            }        
+        }
+    });
 
-    avanza.authenticate({
+    if(tmpTickerList.length != 0){
+        diffBetweenDbAndList = 1;
+        console.log("Remaining tickers in list: "+tmpTickerList.toString());
+    }
+
+    if(diffBetweenDbAndList){
+        console.log("AvaIdJsonObj does not match Stocklist, rebuilding AvaIdJsonObj.");
+        avanza.authenticate({
         username: process.env.USER,
         password: process.env.PASSWORD
-    }).then(() => {  
-        var avaIds = {};
-        searchStocks(0,tickerList,avaIds);
-    }); 
+        }).then(() => {  
+            var avaIds = {};
+            searchStocks(0,tickerList,avaIds);
+        });
+    }else{
+        console.log("TickerList matched AvaJsonIdObj, DB update not required.");
+    }
 }
 
 //Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
@@ -160,6 +187,7 @@ function searchStocks(i,list,jsonObj){
         console.log("Reached end of stock list! Writing data to file: ");
         fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
         console.log("Write completed");
+        avaIdsJsonObj = jsonObj;
     }  
 }
 

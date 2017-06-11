@@ -14,45 +14,23 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 var avaIdsJsonObj = fs.readFileSync(avaIdFile,'utf8');
 var diffBetweenDbAndList = 0;
-const date = new Date();
+const date = new Date();    
+const cheerio = require('cheerio')
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
 
-/*
-avanza.socket.once('connect', () => {
-    avanza.socket.subscribe('5479', ['orderdepths','trades']); // Telia
-    console.log('subscribed to telia.');
-});
 
-avanza.socket.on('orderdepths', data => {
-    console.log('Received orderdepths: ', JSON.stringify(data));
-});
+    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+    db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
 
-avanza.socket.on('trades', data => {
-    console.log('Received trades: ', data);
-});
-*/
-generateAvanzaStockIdList();
-storeAvaIdsInDb();
-
-avanza.authenticate({
-    username: process.env.USER,
-    password: process.env.PASSWORD
-}).then(() => {
-    //avanza.socket.initialize();
-    // We are authenticated and ready to process data 
-    //avanza.getChartdata('5479').then((data) => {
-    //    console.log(JSON.stringify(data));
-    //});
-    try{
-        dailyStockParse();
-    } catch (err) {
-        console.log("Caught in try catch, ",err);
-    }
-}).catch((err) => {
-    console.log("Error catched all the way up here?");
-});
+//generateAvanzaStockIdList();
+//storeAvaIdsInDb();
+//scrapeAvanzaPhantom(577898);
+//scrapeAvanzaWebsite();
+//parseCheerioData();
+//dailyStockParse();
+dailyStockParseSerializeCalls([{'id':5468}]); //test 577898 too
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -65,44 +43,145 @@ process.stdin.on('keypress', (str, key) => {
 })
 
 function dailyStockParse(){
-    db_overview.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC, UNIQUE(date,id))");
+    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+    db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
     db_overview.all("SELECT ticker, id FROM stockIds", (err,rows) => {
-        dailyStockParseSerializeCalls(0,rows)
+        dailyStockParseSerializeCalls(rows)
     });
 }
 
-function dailyStockParseSerializeCalls(index,rows){
-    if(index<rows.length){
-        avanza.getStock(rows[index].id).then((data) => {
-                console.log("found data for stock ("+(index+1)+"/"+rows.length+"): "+data.ticker);
-                var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. Move to start?
-                // make date-formatting function
-                //If time before 9, set date to prev day? 
-                //If market = not open this day, dont store
-                var insert_values = [date_str];
-                insert_values.push(data.id);
-                insert_values.push(data.marketPlace);
-                insert_values.push(data.marketList);
-                insert_values.push(data.currency);
-                insert_values.push(data.name);
-                insert_values.push(data.ticker);
-                insert_values.push(data.lastPrice);
-                insert_values.push(data.totalValueTraded);
-                insert_values.push(data.numberOfOwners);
-                insert_values.push(data.change);
-                insert_values.push(data.totalVolumeTraded || null); 
-                insert_values.push(data.marketCapital || null); //remove || to trigger error. Can we catch it?
-                insert_values.push(data.volatility || 0);
-                insert_values.push(data.pe || null);
-                insert_values.push(data.yield || 0);
-                db_overview.run("INSERT OR REPLACE INTO stock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-                dailyStockParseSerializeCalls(index+1,rows);
-            }).catch((error) => {
-                console.log("Promise rejected for stock "+row.ticker+", error: "+error);
+function dailyStockParseSerializeCalls(stockList){
+    for(var idx = 0; idx<stockList.length; idx++){
+        var data = scrapeAvanzaPhantom(stockList[idx].id);
+        console.log("found data for stock",data);
+        console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
+        var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
+        //If time before 9, set date to prev day? 
+        //If market = not open this day, dont store?
+        
+        var insert_values = [date_str];
+        insert_values.push(data.id);
+        insert_values.push(data.marketPlace);
+        insert_values.push(data.currency);
+        insert_values.push(data.name);
+        insert_values.push(data.ticker);
+        insert_values.push(data.lastPrice);
+        insert_values.push(data.highestPrice);
+        insert_values.push(data.lowestPrice);
+        insert_values.push(data.numberOfOwners);
+        insert_values.push(data.change);
+        insert_values.push(data.totalVolumeTraded); 
+        insert_values.push(data.marketCapital);
+        insert_values.push(data.volatility);
+        insert_values.push(data.beta);
+        insert_values.push(data.pe);
+        insert_values.push(data.ps);
+        insert_values.push(data.yield);
+        insert_values.push(data.brokerStat);
+
+        console.log(data);      
+        //add beta, add ps, add lowestPrice, add highestPrice
+        //db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+
+        //updateDailyBroker(date_str, data.brokerStat);
+    } 
+}
+
+
+function scrapeAvanzaPhantom(AvanzaId){
+    var phantom = require('phantom');
+    var content;
+    var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+AvanzaId+'/';
+    console.log(strAvaPage);
+
+    (async function() {
+    const instance = await phantom.create();
+    const page = await instance.createPage();
+    const status = await page.open(strAvaPage);
+    content = await page.property('content');
+    
+    await instance.exit();
+}());
+
+    return parseCheerioData(content); //unless undefined
+}
+
+function parseCheerioData(content){
+    const $ = cheerio.load(content);
+    
+    var dbRow = {};
+    var brokerStat = {};
+    //Get broker statisticss
+    $('.tRight.tableV2.solidRows.solidThickEnding.colorOddRows.shortened.tablesorter.tablesorterIcons.avanzabank_tablesorter').find('tbody').each(function() {
+        var $tbody = $(this);
+        $tbody.find('tr').each(function(){
+            var brokerName = $(this).children('.tLeft').children('.tipTrigger').text();
+            var buyPrice = $(this).children().eq(1).text().replace(/\s+/g, '').replace(',','.');
+            var buyVolume = $(this).children().eq(2).text().replace(/\s+/g, '');
+            var sellVolume = $(this).children().eq(3).text().replace(/\s+/g, '');
+            var sellPrice = $(this).children().eq(4).text().replace(/\s+/g, '').replace(',','.');
+            var netVolume = $(this).children('.last').text().replace(/\s+/g, '');
+            var netPrice = 0;
+            if (sellVolume == 0) {
+                netPrice = buyPrice;
+            }else if(buyVolume == 0){
+                netPrice = sellPrice;
+            }else{
+                //multiply by 1 to convert from string
+                netPrice = (buyPrice*buyVolume+sellPrice*sellVolume)/(1*sellVolume+1*buyVolume);
+            }
+            brokerStat[brokerName] = {'buyVolume': buyVolume, 'buyPrice': buyPrice, 'sellVolume': sellVolume, 'sellPrice': sellPrice, 'netVolume': netVolume, 'netPrice': netPrice};
+        })
+    });
+    dbRow['brokerStat'] = brokerStat;
+
+     $('.component.quote.avanzabank_quote.avanzabank_rowpush').find('.content').each(function() {
+        var $ul = $(this).find('ul');
+        var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
+        dbRow['name'] = $ul.data('instrumentName');
+        dbRow['change'] = change.replace(/\s*(\+|[A-Za-z])/g, '');
+        dbRow['lastPrice'] = $ul.children('li').eq(5).children('span').eq(1).children('span').text().replace(/\s+/g, '');
+        dbRow['highestPrice'] = $ul.children('li').eq(6).children('span').eq(1).text().replace(/\s+/g, '');
+        dbRow['lowestPrice'] = $ul.children('li').eq(7).children('span').eq(1).text().replace(/\s+/g, '');
+        dbRow['totalVolumeTraded'] = $ul.children('li').eq(8).children('span').eq(1).text().replace(/\s+/g, '');
+    });
+
+    $('.stock_data').find('.content').find('.row').children().eq(0).find('dl').each(function() {
+        var $dl = $(this);
+        dbRow['ticker'] = $dl.children('dd').eq(0).children('span').text();
+        dbRow['marketPlace'] = $dl.children('dd').eq(2).children('span').text().replace(/\s+/g, '');
+        dbRow['currency'] = $dl.children('dd').eq(4).children('span').text();
+        dbRow['beta'] = $dl.children('dd').eq(5).children('span').text();
+        dbRow['volatility'] = $dl.children('dd').eq(6).children('span').text();
+    });
+  
+    $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function() {
+        var $dl = $(this);
+        dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '');
+        dbRow['yield'] = $dl.children('dd').eq(2).children('span').text();
+        dbRow['pe'] = $dl.children('dd').eq(3).children('span').text();
+        dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
+        dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
+    });
+     
+    return dbRow;
+}
+
+function updateDailyBroker(date, jsonBrokerStats){
+    db_overview.serialize(()=>{
+        for (var broker in jsonBrokerStats){
+            var currSell=0, currBuy=0,newSell=0,newBuy=0;
+            db_overview.run("SELECT sellValue,buyValue FROM dailyBroker WHERE date = ? AND broker = ?",[date,broker], function(err,row) {
+                currSell = row.sellValue;
+                currBuy = row.buyValue;
             });
-    } else {
-        console.log("Reached end of stock list! Parsed "+index+" stocks.");
-    }  
+            newBuy = currBuy + broker[buyVolume]*broker[buyPrice];
+            newSell = currSell + broker[sellVolume]*broker[sellPrice];
+            db_overview.run("INSERT OR REPLACE dailyBroker SET sellValue = ?,buyValue = ? WHERE date = ? AND broker = ?",[newSell,newBuy,date,broker]);
+        }
+    });
+    //brokerStat[brokerName] = {'buyVolume': buyVolume, 'buyPrice': buyPrice, 'sellVolume': sellVolume, 'sellPrice': sellPrice, 'netVolume': netVolume, 'netPrice': netPrice};
+    //date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC
 }
 
 function storeAvaIdsInDb(){

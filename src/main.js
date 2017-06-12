@@ -5,6 +5,8 @@ const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
+const phantom = require('phantom');
+const cheerio = require('cheerio')
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
 const stockList = ['./stocklists/nasdaq_stockholm.txt', 
@@ -15,22 +17,26 @@ const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 var avaIdsJsonObj = fs.readFileSync(avaIdFile,'utf8');
 var diffBetweenDbAndList = 0;
 const date = new Date();    
-const cheerio = require('cheerio')
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
 
+avanza.authenticate({
+    username: process.env.USER,
+    password: process.env.PASSWORD
+}).then(() => {
 
-    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
-    db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+    //generateAvanzaStockIdList();
+    //storeAvaIdsInDb();
+    //scrapeAvanzaPhantom(577898);
+    //parseCheerioData('test');
+    dailyStockParseSerializeCalls(0,[{'id':5468},{'id':577898}]);
 
-//generateAvanzaStockIdList();
-//storeAvaIdsInDb();
-//scrapeAvanzaPhantom(577898);
-//scrapeAvanzaWebsite();
-//parseCheerioData();
-//dailyStockParse();
-dailyStockParseSerializeCalls([{'id':5468}]); //test 577898 too
+    //dailyStockParse();
+
+}).catch((err) => {
+    console.log("Top level error:",err);
+});
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -50,69 +56,97 @@ function dailyStockParse(){
     });
 }
 
-function dailyStockParseSerializeCalls(stockList){
-    for(var idx = 0; idx<stockList.length; idx++){
-        var data = scrapeAvanzaPhantom(stockList[idx].id);
-        console.log("found data for stock",data);
-        console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
-        var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
-        //If time before 9, set date to prev day? 
-        //If market = not open this day, dont store?
-        
-        var insert_values = [date_str];
-        insert_values.push(data.id);
-        insert_values.push(data.marketPlace);
-        insert_values.push(data.currency);
-        insert_values.push(data.name);
-        insert_values.push(data.ticker);
-        insert_values.push(data.lastPrice);
-        insert_values.push(data.highestPrice);
-        insert_values.push(data.lowestPrice);
-        insert_values.push(data.numberOfOwners);
-        insert_values.push(data.change);
-        insert_values.push(data.totalVolumeTraded); 
-        insert_values.push(data.marketCapital);
-        insert_values.push(data.volatility);
-        insert_values.push(data.beta);
-        insert_values.push(data.pe);
-        insert_values.push(data.ps);
-        insert_values.push(data.yield);
-        insert_values.push(data.brokerStat);
+function dailyStockParseSerializeCalls(idx,stockList){
+    if(idx<stockList.length){
+            scrapeAvanzaPhantom(stockList[idx].id).then(data => {
+                console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
+                var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
+                //If time before 9, set date to prev day? 
+                //If market = not open this day, dont store?
+                
+                var insert_values = [date_str];
+                insert_values.push(data.id);
+                insert_values.push(data.marketPlace);
+                insert_values.push(data.currency);
+                insert_values.push(data.name);
+                insert_values.push(data.ticker);
+                insert_values.push(data.lastPrice);
+                insert_values.push(data.highestPrice);
+                insert_values.push(data.lowestPrice);
+                insert_values.push(data.numberOfOwners);
+                insert_values.push(data.change);
+                insert_values.push(data.totalVolumeTraded); 
+                insert_values.push(data.marketCapital);
+                insert_values.push(data.volatility);
+                insert_values.push(data.beta);
+                insert_values.push(data.pe);
+                insert_values.push(data.ps);
+                insert_values.push(data.yield);
+                insert_values.push(data.brokerStat);
+                
+                //db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
 
-        console.log(data);      
-        //add beta, add ps, add lowestPrice, add highestPrice
-        //db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-
-        //updateDailyBroker(date_str, data.brokerStat);
-    } 
+                //updateDailyBroker(date_str, data.brokerStat);
+                dailyStockParseSerializeCalls(idx+1,stockList);
+            }).catch((error) => {
+                console.log("Promise rejected for stock "+stockList.ticker+", error: "+error);
+            });
+    } else {
+        console.log("Reached end of stock list! Parsed "+idx+" stocks.");
+    }  
 }
 
 
 function scrapeAvanzaPhantom(AvanzaId){
-    var phantom = require('phantom');
-    var content;
-    var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+AvanzaId+'/';
-    console.log(strAvaPage);
+    return new Promise((resolve, reject) => {
+        var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+AvanzaId+'/fingerprint-cards-b'; //damn, we need this name as well!!!!
+        console.log(strAvaPage);
+        var phInstance = null;
 
-    (async function() {
-    const instance = await phantom.create();
-    const page = await instance.createPage();
-    const status = await page.open(strAvaPage);
-    content = await page.property('content');
-    
-    await instance.exit();
-}());
+        phantom.create([],{logLevel: 'error'}).then(instance => {
+            phInstance = instance;
+            return instance.createPage();
+        }).then(page => {
+            page.open(strAvaPage).then(status => {
+                //status = fail/success?
+                page.evaluate(function() {
+                    return document.getElementById('foo').innerHTML;
+                }).then(function(html){
+                    console.log(html);
+                });
 
-    return parseCheerioData(content); //unless undefined
+                page.evaluate(function() {
+                    return document.title;
+                }).then(function(title){
+                    console.log(title);
+                });
+
+                return page.property('content');
+            }).then(content => {
+                phInstance.exit();
+                resolve(parseCheerioData(content))
+            }).catch(error => {
+                phInstance.exit();
+                reject(error);
+            });
+        }).catch(error => {
+            phInstance.exit();
+            reject(error);
+        });
+    })
 }
+
 
 function parseCheerioData(content){
     const $ = cheerio.load(content);
-    
+    fs.writeFileSync('./testFile2',content,'utf-8');
+    console.log('1');
+
     var dbRow = {};
     var brokerStat = {};
     //Get broker statisticss
     $('.tRight.tableV2.solidRows.solidThickEnding.colorOddRows.shortened.tablesorter.tablesorterIcons.avanzabank_tablesorter').find('tbody').each(function() {
+        console.log('2');
         var $tbody = $(this);
         $tbody.find('tr').each(function(){
             var brokerName = $(this).children('.tLeft').children('.tipTrigger').text();
@@ -136,6 +170,7 @@ function parseCheerioData(content){
     dbRow['brokerStat'] = brokerStat;
 
      $('.component.quote.avanzabank_quote.avanzabank_rowpush').find('.content').each(function() {
+        console.log('3');
         var $ul = $(this).find('ul');
         var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
         dbRow['name'] = $ul.data('instrumentName');
@@ -147,6 +182,7 @@ function parseCheerioData(content){
     });
 
     $('.stock_data').find('.content').find('.row').children().eq(0).find('dl').each(function() {
+        console.log('4');
         var $dl = $(this);
         dbRow['ticker'] = $dl.children('dd').eq(0).children('span').text();
         dbRow['marketPlace'] = $dl.children('dd').eq(2).children('span').text().replace(/\s+/g, '');
@@ -156,6 +192,7 @@ function parseCheerioData(content){
     });
   
     $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function() {
+        console.log('5');
         var $dl = $(this);
         dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '');
         dbRow['yield'] = $dl.children('dd').eq(2).children('span').text();
@@ -163,7 +200,8 @@ function parseCheerioData(content){
         dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
-     
+    
+    console.log(dbRow);
     return dbRow;
 }
 

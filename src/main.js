@@ -139,7 +139,7 @@ function parseCheerioData(content){
     var dbRow = {};
     var brokerStat = {};
     //Get broker statisticss
-    $('.tRight.tableV2.solidRows.solidThickEnding.colorOddRows.shortened.tablesorter.tablesorterIcons.avanzabank_tablesorter').find('tbody').each(function() {
+    $('.tRight.tableV2.solidRows.solidThickEnding.colorOddRows.shortened.tablesorter.tablesorterIcons').find('tbody').each(function() {
         var $tbody = $(this);
         $tbody.find('tr').each(function(){
             var brokerName = $(this).children('.tLeft').children('.tipTrigger').text();
@@ -162,7 +162,7 @@ function parseCheerioData(content){
     });
     dbRow['brokerStat'] = brokerStat;
 
-     $('.component.quote.avanzabank_quote.avanzabank_rowpush').find('.content').each(function() {
+     $('.component.quote').find('.content').each(function() {
         var $ul = $(this).find('ul');
         var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
         dbRow['change'] = change.replace(/\s*(\+|[A-Za-z])/g, '');

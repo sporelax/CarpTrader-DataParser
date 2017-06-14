@@ -7,6 +7,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const phantom = require('phantom');
 const cheerio = require('cheerio')
+var request = require('request');
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
 const stockList = ['./stocklists/nasdaq_stockholm.txt', 
@@ -21,22 +22,16 @@ const date = new Date();
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
 
-avanza.authenticate({
-    username: process.env.USER,
-    password: process.env.PASSWORD
-}).then(() => {
+//****** DEBUG FUNCTION CALLS */
+//storeAvaIdsInDb();
+//scrapeAvanzaPhantom(577898);
+//parseCheerioData('test');
+//dailyStockParseSerializeCalls(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
+//****** END */
 
-    //generateAvanzaStockIdList();
-    //storeAvaIdsInDb();
-    //scrapeAvanzaPhantom(577898);
-    //parseCheerioData('test');
-    dailyStockParseSerializeCalls(0,[{'id':5468},{'id':577898}]);
-
-    //dailyStockParse();
-
-}).catch((err) => {
-    console.log("Top level error:",err);
-});
+//generateAvanzaStockIdList();  //rewrite to promise so we can serialize. also change name..
+//dailyStockParse();
+testRequest();
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -49,16 +44,16 @@ process.stdin.on('keypress', (str, key) => {
 })
 
 function dailyStockParse(){
-    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
     db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
-    db_overview.all("SELECT ticker, id FROM stockIds", (err,rows) => {
-        dailyStockParseSerializeCalls(rows)
+    db_overview.all("SELECT ticker, id, name FROM stockIds", (err,rows) => {
+        dailyStockParseSerializeCalls(0,rows)
     });
 }
 
-function dailyStockParseSerializeCalls(idx,stockList){
+function dailyStockParseSerializeCalls(idx,stockList){ 
     if(idx<stockList.length){
-            scrapeAvanzaPhantom(stockList[idx].id).then(data => {
+            scrapeAvanzaPhantom(stockList[idx].id,stockList[idx].name).then(data => {
                 console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
                 var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
                 //If time before 9, set date to prev day? 
@@ -68,7 +63,6 @@ function dailyStockParseSerializeCalls(idx,stockList){
                 insert_values.push(data.id);
                 insert_values.push(data.marketPlace);
                 insert_values.push(data.currency);
-                insert_values.push(data.name);
                 insert_values.push(data.ticker);
                 insert_values.push(data.lastPrice);
                 insert_values.push(data.highestPrice);
@@ -84,9 +78,9 @@ function dailyStockParseSerializeCalls(idx,stockList){
                 insert_values.push(data.yield);
                 insert_values.push(data.brokerStat);
                 
-                //db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
 
-                //updateDailyBroker(date_str, data.brokerStat);
+                updateDailyBroker(date_str, data.brokerStat);
                 dailyStockParseSerializeCalls(idx+1,stockList);
             }).catch((error) => {
                 console.log("Promise rejected for stock "+stockList.ticker+", error: "+error);
@@ -97,10 +91,9 @@ function dailyStockParseSerializeCalls(idx,stockList){
 }
 
 
-function scrapeAvanzaPhantom(AvanzaId){
+function scrapeAvanzaPhantom(id,name){
     return new Promise((resolve, reject) => {
-        var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+AvanzaId+'/fingerprint-cards-b'; //damn, we need this name as well!!!!
-        console.log(strAvaPage);
+        var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+id+'/'+name;
         var phInstance = null;
 
         phantom.create([],{logLevel: 'error'}).then(instance => {
@@ -109,44 +102,44 @@ function scrapeAvanzaPhantom(AvanzaId){
         }).then(page => {
             page.open(strAvaPage).then(status => {
                 //status = fail/success?
-                page.evaluate(function() {
-                    return document.getElementById('foo').innerHTML;
-                }).then(function(html){
-                    console.log(html);
-                });
-
-                page.evaluate(function() {
-                    return document.title;
-                }).then(function(title){
-                    console.log(title);
-                });
-
                 return page.property('content');
             }).then(content => {
-                phInstance.exit();
-                resolve(parseCheerioData(content))
+                phInstance.exit().then(() => {
+                    resolve(parseCheerioData(content))
+                })
             }).catch(error => {
-                phInstance.exit();
-                reject(error);
+                phInstance.exit().then(() => {
+                    reject(error)
+                })
             });
         }).catch(error => {
-            phInstance.exit();
-            reject(error);
+            phInstance.exit().then(() => {
+                reject(error)
+            })
         });
     })
 }
 
+function testRequest(){
+    var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/5468/fingerprint-cards-b';
+    request(strAvaPage, function(error, response, html){
+        var dbrow = parseCheerioData(html);
+        console.log(dbrow);
+    })
+}
 
+/**
+ * Parse avanza html content to find the data we need. Content fetched from phantom js scraper
+ * @param {*} content 
+ */
 function parseCheerioData(content){
     const $ = cheerio.load(content);
     fs.writeFileSync('./testFile2',content,'utf-8');
-    console.log('1');
 
     var dbRow = {};
     var brokerStat = {};
     //Get broker statisticss
     $('.tRight.tableV2.solidRows.solidThickEnding.colorOddRows.shortened.tablesorter.tablesorterIcons.avanzabank_tablesorter').find('tbody').each(function() {
-        console.log('2');
         var $tbody = $(this);
         $tbody.find('tr').each(function(){
             var brokerName = $(this).children('.tLeft').children('.tipTrigger').text();
@@ -170,10 +163,8 @@ function parseCheerioData(content){
     dbRow['brokerStat'] = brokerStat;
 
      $('.component.quote.avanzabank_quote.avanzabank_rowpush').find('.content').each(function() {
-        console.log('3');
         var $ul = $(this).find('ul');
         var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
-        dbRow['name'] = $ul.data('instrumentName');
         dbRow['change'] = change.replace(/\s*(\+|[A-Za-z])/g, '');
         dbRow['lastPrice'] = $ul.children('li').eq(5).children('span').eq(1).children('span').text().replace(/\s+/g, '');
         dbRow['highestPrice'] = $ul.children('li').eq(6).children('span').eq(1).text().replace(/\s+/g, '');
@@ -182,7 +173,6 @@ function parseCheerioData(content){
     });
 
     $('.stock_data').find('.content').find('.row').children().eq(0).find('dl').each(function() {
-        console.log('4');
         var $dl = $(this);
         dbRow['ticker'] = $dl.children('dd').eq(0).children('span').text();
         dbRow['marketPlace'] = $dl.children('dd').eq(2).children('span').text().replace(/\s+/g, '');
@@ -192,7 +182,6 @@ function parseCheerioData(content){
     });
   
     $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function() {
-        console.log('5');
         var $dl = $(this);
         dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '');
         dbRow['yield'] = $dl.children('dd').eq(2).children('span').text();
@@ -200,37 +189,59 @@ function parseCheerioData(content){
         dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
-    
-    console.log(dbRow);
     return dbRow;
 }
 
+/**
+ * Generate list of daily broker activites/trades/volumes
+ * @param {*} date 
+ * @param {*} jsonBrokerStats 
+ */
 function updateDailyBroker(date, jsonBrokerStats){
-    db_overview.serialize(()=>{
-        for (var broker in jsonBrokerStats){
-            var currSell=0, currBuy=0,newSell=0,newBuy=0;
-            db_overview.run("SELECT sellValue,buyValue FROM dailyBroker WHERE date = ? AND broker = ?",[date,broker], function(err,row) {
-                currSell = row.sellValue;
-                currBuy = row.buyValue;
+    for (var broker in jsonBrokerStats){
+        //Wrap db statements is anon function to bind broker variable
+        (function(broker){
+            db_overview.get("SELECT sellValue,buyValue FROM dailyBroker WHERE date = ? AND broker = ?",[date,broker], function(err,row) {
+                var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
+                if(row){
+                    currSell = row.sellValue || 0; //is null if not existing
+                    currBuy = row.buyValue || 0;
+                }
+
+                if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
+                    addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
+                }
+                if (jsonBrokerStats[broker].sellPrice != '-'){
+                    addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
+                }
+                newBuy = currBuy + addBuy;
+                newSell = currSell + addSell;
+
+                db_overview.run("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)",[date,broker,newSell,newBuy]);
+                //console.log(broker,currBuy,currSell,newBuy,newSell);
             });
-            newBuy = currBuy + broker[buyVolume]*broker[buyPrice];
-            newSell = currSell + broker[sellVolume]*broker[sellPrice];
-            db_overview.run("INSERT OR REPLACE dailyBroker SET sellValue = ?,buyValue = ? WHERE date = ? AND broker = ?",[newSell,newBuy,date,broker]);
-        }
-    });
-    //brokerStat[brokerName] = {'buyVolume': buyVolume, 'buyPrice': buyPrice, 'sellVolume': sellVolume, 'sellPrice': sellPrice, 'netVolume': netVolume, 'netPrice': netPrice};
-    //date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC
+        })(broker);
+    }
 }
 
+/**
+ * Store avanza ids and name in table stockIds
+ */
 function storeAvaIdsInDb(){
+    //this probably fails sometimes because of no real serialization
     db_overview.serialize(()=>{
-        db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
+        db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
         if(diffBetweenDbAndList){
             console.log("Updating stockId database");
-            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?)");
+            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+            var id, name;
             JSON.parse(avaIdsJsonObj, (key,value) => {
-                if(key){
-                    stmt.run(key, value);
+                if(key=='id'){
+                    id = value;
+                }else if(key == 'name'){
+                    name = value;
+                }else if(key){
+                    stmt.run(key, id, name);
                 }
             });
             stmt.finalize();
@@ -247,25 +258,25 @@ function storeAvaIdsInDb(){
 function generateAvanzaStockIdList(){
     var tickerList = [];
     var numOfRequests = 0;
-    stockList.forEach((value) => {
-        console.log("Parsing stocklist: "+value);
-        var contents = fs.readFileSync(value,'utf8');
-        contents.split('\r\n').forEach((tick) => {
-            tickerList.push(tick);
+    stockList.forEach((list) => {
+        console.log("Parsing stocklist: "+list);
+        var contents = fs.readFileSync(list,'utf8');
+        contents.split('\r\n').forEach((ticker) => {
+            tickerList.push(ticker);
         });
     })
     console.log("Number of stocks in list: "+tickerList.length); //should be ~830 for full list
     //Parse avanza if tickerList does not match avaIdFile
     var tmpTickerList = tickerList.slice();
     JSON.parse(avaIdsJsonObj, (key,value) => {
-        var idx = tmpTickerList.indexOf(key);
-        if (idx > -1){
-            tmpTickerList.splice(idx,1);
-        }else{
-            if(key){ //last item from JSON.parse is ""
+        if(key && key !='id' && key != 'name'){
+            var idx = tmpTickerList.indexOf(key);
+            if (idx > -1){
+                tmpTickerList.splice(idx,1);
+            }else{
                 console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
-                diffBetweenDbAndList = 1;
-            }        
+                diffBetweenDbAndList = 1;    
+            } 
         }
     });
 
@@ -280,22 +291,32 @@ function generateAvanzaStockIdList(){
         username: process.env.USER,
         password: process.env.PASSWORD
         }).then(() => {  
-            var avaIds = {};
-            searchStocks(0,tickerList,avaIds);
+            searchStocks(0,tickerList,{});
         });
     }else{
         console.log("TickerList matched AvaJsonIdObj, DB update not required.");
     }
 }
 
-//Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
+/**
+ * 
+ *  Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
+ * 
+ */
 function searchStocks(i,list,jsonObj){
     if(i<list.length){
         var stockName = list[i];
         avanza.search(stockName).then(answer => {
-            var id = parseSearchString(stockName,answer);
-            console.log("Found answer("+i+"): "+id+" for stock "+stockName);
-            jsonObj[stockName] = id;
+            //console.log(JSON.stringify(answer));
+            if (answer.totalNumberOfHits != 0){
+                var arrIdName = parseSearchString(stockName,answer);
+                arrIdName[1] = arrIdName[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
+                console.log("Found answer("+i+"): "+arrIdName[0]+" and "+arrIdName[1]+" for stock "+stockName);
+                //space AND DOT needs to be replaced with dash, see bald pref
+                jsonObj[stockName] = {'id': arrIdName[0], 'name': arrIdName[1]};
+            }else{
+                console.log("Stock "+stockName+" potentially delisted? No matching stock found on Ava search.");
+            }
             searchStocks(i+1,list,jsonObj);
         }).catch( (error) => {
             console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
@@ -308,23 +329,35 @@ function searchStocks(i,list,jsonObj){
     }  
 }
 
+/**
+ * 
+ * Parse search response from avanza  
+ *  
+ */
 function parseSearchString(name,answer){
+    var id, name;
     try {
         if(answer.totalNumberOfHits==1){
-            return answer.hits[0].topHits[0].id;
+            id = answer.hits[0].topHits[0].id;
+            name = answer.hits[0].topHits[0].name;
+            return [id,name];
         }else{
             for (var j=0; j<answer.totalNumberOfHits; j++){
-                if (answer.hits[j].instrumentType && answer.hits[j].instrumentType == "STOCK"){
+                if ( typeof answer.hits[j].instrumentType !== 'undefined' && answer.hits[j].instrumentType == "STOCK"){
                     for (var k=0; k<answer.hits[j].numberOfHits; k++){  
                         var tmp_answer = answer.hits[j].topHits[k];
                         if(tmp_answer.tickerSymbol == name){
                             //pot. issue: for example ABB has ticker ABB for both US and SWE stock. Only take currency = SEK?
-                            return tmp_answer.id;
+                            id = tmp_answer.id;
+                            name = tmp_answer.name;
+                            return [id,name];
                         }
                     }
                 } else {
                     console.log("instrument type undefined, trying default.. ")
-                    return answer.hits[0].topHits[0].id;
+                    id = answer.hits[0].topHits[0].id;
+                    name = answer.hits[0].topHits[0].name;
+                    return [id,name];
                 }
             }
         }
@@ -334,22 +367,10 @@ function parseSearchString(name,answer){
     }
 }
 
-//Run once
-function initOverviewTables(db) {
-     db.run("CREATE TABLE IF NOT EXISTS stock (date TEXT, id TEXT, marketPlace TEXT, marketList TEXT, currency TEXT, name TEXT, ticker TEXT, lastPrice NUMERIC, totalValueTraded NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, pe NUMERIC, yield NUMERIC, UNIQUE(date,id))");
-     db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE)");
-}
-
-//Run once
-function initIntradayTables(db) {
-     db.run("CREATE TABLE IF NOT EXISTS orderdepths (instrumentId TEXT, orderTime NUMERIC, levels TEXT, total TEXT)");
-     db.run("CREATE TABLE IF NOT EXISTS trades (buyer TEXT, seller TEXT, dealTime NUMERIC, instrumentId TEXT, price NUMERIC, volume NUMERIC)");
-}
-
 /* 
-    For reference
+    Reference data
 
-Trade:
+Avanza getTrade:
 { 
     buyer: { ticker: 'SHB', name: 'Svenska Handelsbanken AB' },
     seller: { ticker: 'NON', name: 'NORDNET BANK AB' },
@@ -362,7 +383,7 @@ Trade:
     volumeWeightedAveragePrice: undefined 
 }
 
-Quote:
+Avanza getQuote:
 { 
     change: -0.47,
     changePercent: -1.22,
@@ -376,7 +397,7 @@ Quote:
     totalVolumeTraded: 6017413,
     updated: 1495105636000 
 }
-getStock:
+Avanza getStock:
 { 
     id: '5479',
     marketPlace: 'Stockholmsbörsen',

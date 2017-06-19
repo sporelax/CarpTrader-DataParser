@@ -7,7 +7,7 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const phantom = require('phantom');
 const cheerio = require('cheerio')
-var request = require('request');
+var rp = require('request-promise');
 const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
 const stockList = ['./stocklists/nasdaq_stockholm.txt', 
@@ -15,7 +15,7 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
                         './stocklists/ngm.txt',
                         './stocklists/aktietorget.txt'];
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
-var avaIdsJsonObj = fs.readFileSync(avaIdFile,'utf8');
+var globalAvanzaIds = fs.readFileSync(avaIdFile,'utf8');
 var diffBetweenDbAndList = 0;
 const date = new Date();    
 
@@ -24,14 +24,16 @@ const user = process.env.USER;
 
 //****** DEBUG FUNCTION CALLS */
 //storeAvaIdsInDb();
-//scrapeAvanzaPhantom(577898);
+//scrapeAvanza(577898,'footway-group-pref');
 //parseCheerioData('test');
 //dailyStockParseSerializeCalls(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-//generateAvanzaStockIdList();  //rewrite to promise so we can serialize. also change name..
-//dailyStockParse();
-testRequest();
+buildStockList().then(() => {
+    dailyStockParse();
+}); 
+
+//testRequest();
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -53,7 +55,7 @@ function dailyStockParse(){
 
 function dailyStockParseSerializeCalls(idx,stockList){ 
     if(idx<stockList.length){
-            scrapeAvanzaPhantom(stockList[idx].id,stockList[idx].name).then(data => {
+            scrapeAvanza(stockList[idx].id,stockList[idx].name).then(data => {
                 console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
                 var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
                 //If time before 9, set date to prev day? 
@@ -90,42 +92,16 @@ function dailyStockParseSerializeCalls(idx,stockList){
     }  
 }
 
-
-function scrapeAvanzaPhantom(id,name){
+function scrapeAvanza(id,name){
     return new Promise((resolve, reject) => {
         var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+id+'/'+name;
-        var phInstance = null;
-
-        phantom.create([],{logLevel: 'error'}).then(instance => {
-            phInstance = instance;
-            return instance.createPage();
-        }).then(page => {
-            page.open(strAvaPage).then(status => {
-                //status = fail/success?
-                return page.property('content');
-            }).then(content => {
-                phInstance.exit().then(() => {
-                    resolve(parseCheerioData(content))
-                })
-            }).catch(error => {
-                phInstance.exit().then(() => {
-                    reject(error)
-                })
-            });
-        }).catch(error => {
-            phInstance.exit().then(() => {
-                reject(error)
-            })
+        rp(strAvaPage).then(function(htmlString){
+            resolve(parseCheerioData(htmlString))
+        }).catch( function(err) {
+            console.log(err)
+            reject(err)
         });
-    })
-}
-
-function testRequest(){
-    var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/5468/fingerprint-cards-b';
-    request(strAvaPage, function(error, response, html){
-        var dbrow = parseCheerioData(html);
-        console.log(dbrow);
-    })
+    });
 }
 
 /**
@@ -134,7 +110,7 @@ function testRequest(){
  */
 function parseCheerioData(content){
     const $ = cheerio.load(content);
-    fs.writeFileSync('./testFile2',content,'utf-8');
+    //fs.writeFileSync('./testFile',content,'utf-8');
 
     var dbRow = {};
     var brokerStat = {};
@@ -189,6 +165,8 @@ function parseCheerioData(content){
         dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
+    
+    console.log(dbRow);
     return dbRow;
 }
 
@@ -235,7 +213,7 @@ function storeAvaIdsInDb(){
             console.log("Updating stockId database");
             var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
             var id, name;
-            JSON.parse(avaIdsJsonObj, (key,value) => {
+            JSON.parse(globalAvanzaIds, (key,value) => {
                 if(key=='id'){
                     id = value;
                 }else if(key == 'name'){
@@ -250,52 +228,55 @@ function storeAvaIdsInDb(){
 }
 
 /*
-*   Generate list of avanza stock Id numbers from lists of Tickers. 
-*   Compare list of Id Numbers to existing list stored in @avaIdsJsonObj
+*   build list of avanza stock Id numbers from lists of Tickers. 
+*   Compare list of Id Numbers to existing list stored in @globalAvanzaIds
 *   Overwrite it if change is detected.
 *   Modify @stockList in order to change included stocks.
 */
-function generateAvanzaStockIdList(){
-    var tickerList = [];
-    var numOfRequests = 0;
-    stockList.forEach((list) => {
-        console.log("Parsing stocklist: "+list);
-        var contents = fs.readFileSync(list,'utf8');
-        contents.split('\r\n').forEach((ticker) => {
-            tickerList.push(ticker);
+function buildStockList(){
+    return new Promise((resolve, reject) => {
+        var tickerList = [];
+        var numOfRequests = 0;
+        stockList.forEach((list) => {
+            console.log("Parsing stocklist: "+list);
+            var contents = fs.readFileSync(list,'utf8');
+            contents.split('\r\n').forEach((ticker) => {
+                tickerList.push(ticker);
+            });
+        })
+        console.log("Number of stocks in list: "+tickerList.length); //should be ~830 for full list
+        //Parse avanza if tickerList does not match avaIdFile
+        var tmpTickerList = tickerList.slice();
+        JSON.parse(globalAvanzaIds, (key,value) => {
+            if(key && key !='id' && key != 'name'){
+                var idx = tmpTickerList.indexOf(key);
+                if (idx > -1){
+                    tmpTickerList.splice(idx,1);
+                }else{
+                    console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
+                    diffBetweenDbAndList = 1;    
+                } 
+            }
         });
-    })
-    console.log("Number of stocks in list: "+tickerList.length); //should be ~830 for full list
-    //Parse avanza if tickerList does not match avaIdFile
-    var tmpTickerList = tickerList.slice();
-    JSON.parse(avaIdsJsonObj, (key,value) => {
-        if(key && key !='id' && key != 'name'){
-            var idx = tmpTickerList.indexOf(key);
-            if (idx > -1){
-                tmpTickerList.splice(idx,1);
-            }else{
-                console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
-                diffBetweenDbAndList = 1;    
-            } 
+
+        if(tmpTickerList.length != 0){
+            diffBetweenDbAndList = 1;
+            console.log("Remaining tickers in list: "+tmpTickerList.toString());
+        }
+
+        if(diffBetweenDbAndList){
+            console.log("globalAvanzaIds does not match Stocklist, rebuilding globalAvanzaIds.");
+            avanza.authenticate({
+            username: process.env.USER,
+            password: process.env.PASSWORD
+            }).then(() => {  
+                resolve(searchStocks(0,tickerList,{}));
+            });
+        }else{
+            console.log("TickerList matched AvaJsonIdObj, DB update not required.");
+            resolve();
         }
     });
-
-    if(tmpTickerList.length != 0){
-        diffBetweenDbAndList = 1;
-        console.log("Remaining tickers in list: "+tmpTickerList.toString());
-    }
-
-    if(diffBetweenDbAndList){
-        console.log("AvaIdJsonObj does not match Stocklist, rebuilding AvaIdJsonObj.");
-        avanza.authenticate({
-        username: process.env.USER,
-        password: process.env.PASSWORD
-        }).then(() => {  
-            searchStocks(0,tickerList,{});
-        });
-    }else{
-        console.log("TickerList matched AvaJsonIdObj, DB update not required.");
-    }
 }
 
 /**
@@ -304,29 +285,33 @@ function generateAvanzaStockIdList(){
  * 
  */
 function searchStocks(i,list,jsonObj){
-    if(i<list.length){
-        var stockName = list[i];
-        avanza.search(stockName).then(answer => {
-            //console.log(JSON.stringify(answer));
-            if (answer.totalNumberOfHits != 0){
-                var arrIdName = parseSearchString(stockName,answer);
-                arrIdName[1] = arrIdName[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
-                console.log("Found answer("+i+"): "+arrIdName[0]+" and "+arrIdName[1]+" for stock "+stockName);
-                //space AND DOT needs to be replaced with dash, see bald pref
-                jsonObj[stockName] = {'id': arrIdName[0], 'name': arrIdName[1]};
-            }else{
-                console.log("Stock "+stockName+" potentially delisted? No matching stock found on Ava search.");
-            }
-            searchStocks(i+1,list,jsonObj);
-        }).catch( (error) => {
-            console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
-        });
-    } else {
-        console.log("Reached end of stock list! Writing data to file: ");
-        fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
-        console.log("Write completed");
-        avaIdsJsonObj = jsonObj;
-    }  
+    return new Promise((resolve, reject) => {
+        if(i<list.length){
+            var stockName = list[i];
+            avanza.search(stockName).then(answer => {
+                //console.log(JSON.stringify(answer));
+                if (answer.totalNumberOfHits != 0){
+                    var arrIdName = parseSearchString(stockName,answer);
+                    arrIdName[1] = arrIdName[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
+                    console.log("Found answer("+i+"): "+arrIdName[0]+" and "+arrIdName[1]+" for stock "+stockName);
+                    //space AND DOT needs to be replaced with dash, see bald pref
+                    jsonObj[stockName] = {'id': arrIdName[0], 'name': arrIdName[1]};
+                }else{
+                    console.log("Stock "+stockName+" potentially delisted? No matching stock found on Ava search.");
+                }
+                resolve(searchStocks(i+1,list,jsonObj));
+            }).catch( (error) => {
+                console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
+                reject(error);
+            });
+        } else {
+            console.log("Reached end of stock list! Writing data to file: ");
+            fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
+            console.log("Write completed");
+            globalAvanzaIds = jsonObj;
+            resolve();
+        }  
+    });
 }
 
 /**

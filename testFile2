@@ -1,0 +1,8881 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    
+
+    <meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="viewport" content="width=1024"/>
+
+<meta property="og:title" content=""/>
+
+<meta property="og:description" content=""/>
+<meta property="og:image" content=""/>
+
+<meta name="keywords" content="Guide">
+
+<meta name="description" content="K&ouml;p aktier i ABB Ltd - enkelt och billigt hos Avanza Bank. Klicka h&auml;r f&ouml;r att se aktiekursen och k&ouml;pa till marknadens l&auml;gsta courtage.">
+
+
+
+
+
+<meta name="format-detection" content="telephone=no"/>
+
+
+    <meta name="apple-itunes-app" content="app-id=381311572"/>
+
+
+
+<meta name="msApplication-ID" content="AvanzaBankAB.AvanzaBank"/>
+<meta name="msApplication-PackageFamilyName" content="AvanzaBankAB.AvanzaBank_wbf7dr35h6hd4"/>
+
+
+<meta name="application-name" content="Avanza" />
+<meta name="msapplication-tooltip" content="Avanza" />
+<meta name="msapplication-starturl" content="/start" />
+<meta name="msapplication-navbutton-color" content="#009640" />
+
+
+<title>ABB Ltd (ABB) - Köp aktier | Avanza</title>
+
+
+
+
+
+
+
+
+	
+	
+		<script type="text/javascript" src="/jmvc/lib/modernizr-custom-min.232564.4.js"></script>
+	
+
+
+<script type="text/javascript">
+    if(!Modernizr.cssgradients){
+        document.documentElement.className += " modernizr-no-cssgradients";
+    }
+
+	if(!Modernizr.smil) {
+		document.documentElement.className += " modernizr-no-smil";
+	}
+</script>
+
+
+    
+    
+   		<link rel="stylesheet" href="/jmvc/avanzabank/production.232564.4.css" type="text/css"/>
+    
+
+
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="shortcut icon" href="/jmvc/avanzabank/images/favicon.ico"/>
+
+
+<script type="text/javascript" src="/jmvc/plugin/cookie.js"></script>
+
+<script type="text/javascript">
+	if(document.documentMode){
+		if(document.documentMode < 10){
+			window.location.replace("/browser-not-supported.html");	
+		} else if(document.documentMode < 11){
+			if(azaCookie.getCookie('browserhint') !== 'true'){
+				window.location.replace("/uppgradera-din-webblasare.html");
+			}
+		}
+	}
+</script>
+
+<!--[if lt IE 9]>
+    <link rel="stylesheet" type="text/css" href="/jmvc/avanzabank/ie8.css" />
+<![endif]-->
+
+
+
+
+    
+    
+  
+    	
+		<script>
+		    var require = {
+		    		baseUrl: '/jmvc/production/232564.4',
+		    		waitSeconds: 0
+			};
+		</script>
+    	
+        <script data-main="/jmvc/production/232564.4/core/core.js" src="/jmvc/production/require.js"></script>
+    	
+    
+
+
+</head>
+
+<body data-server_timezone_offset="120">
+	
+	    <script>
+		  	// variables for google tag manager
+		  	gtmDataLayer = [];
+            
+            
+	    </script>
+	    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-54P5"
+	    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	    })(window,document,'script','gtmDataLayer','GTM-54P5');</script>
+    
+    
+	
+	
+    
+
+    
+
+    
+        
+
+
+
+
+
+	<div class="cookieMessage hide">
+		<div class="cookieMessageText">
+			<p>På Avanza använder vi cookies för att ge dig bästa möjliga kundupplevelse. Genom att
+				fortsätta accepterar du att cookies används. <a href="/kundservice/sakerhet-villkor/cookies.html" target="_blank">Läs mer om cookies</a></p>
+			<a href="#" class="cookieMessageButton"></a>
+		</div>
+	</div>
+
+
+<header id="siteHeader" class="avanzabankHeader clearFix plcPrintHide navigation-v2">
+	<div class="avanzabankHeaderBackground">
+		<div class="avanzabankHeaderTopBar">
+			<div class="sWidth clearFix">
+				<div id="headerIndicies" class="fLeft"></div>
+				<div class="headerExtra fRight relative">
+					<div class="userMeta fLeft">
+						
+							
+							
+								
+                                	
+									
+                                    	
+
+
+
+
+	
+
+
+
+	<a href="/bli-kund-hos-avanza.html" class="register">Bli kund</a>
+
+
+<div id="loginWrapper" class="loginWrapper fLeft "
+	 data-logged_in="false"
+	data-usertoken="" 
+	data-push_serverurl="/_push/cometd"
+	data-push_subscriptionid=""
+	data-push_connected="false"
+	data-enable-websockets="true"
+	data-push_setting_active="off"
+	data-open_order_window="false"
+	data-report-js-error="false">
+
+	
+	
+		
+			<button class="toolTipToggler logInLink" data-autofocus_input="true">
+				Logga in
+			</button>
+			<div class="tooltip login rightNavTooltip">
+				<div class="tooltipHeader relative">
+					<h4 class="ubuntu normal">Logga in</h4>
+					<img src="/jmvc/avanzabank/images/tooltip_close_ico_gray.svg" class="closeTooltipIcon" alt="Stäng" title="Stäng">
+				</div>
+				<div class="section accordion-togglebar mobileLoginWrapper">
+					<a class="toggleBar whiteBG normalBlack ubuntu active" href="#" data-login-method="mobileId">
+						<img src="/jmvc/avanzabank/images/bankid_mobil_ic.svg" class="loginTypeIcon" alt="Mobilt BankID" title="Mobilt BankID">
+						Mobilt BankID <span class="arrow fRight"></span>
+					</a>
+					<div class="toggleBarContent noPaddingTop ">
+						<div class="messageWrapper"></div>
+						<form class="mobileLoginForm" action="/ab/noop" method="POST" autocomplete="off">
+							<div class="mobileLoginInputBox relative">
+								<input class="mobileIdLoginPid" type="text" name="pid" title="Skriv in ditt personnummer" placeholder="Personnummer">
+								<button class="mobileIdLogin focusBtn fRight marginBottom15px marginTop5px" type="submit">Logga in</button>
+							</div>
+							<div class="mobileLoginProgressBox hide">
+								<p class="noMargin">Starta BankID säkerhetsapp i din mobil eller surfplatta.</p>
+								<div class="loaderAnim"></div>
+								<a class="abortBankIdLogin secondaryLink underline bold" href="#">Avbryt</a>
+							</div>
+							<div class="clearFix mobileLoginInputBox">
+								<a href="https://support.bankid.com/mobil" target="_blank" class="marginTop4px plcLink">Skaffa Mobilt BankID</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="section accordion-togglebar">
+					<a class="toggleBar whiteBG normalBlack noTopBorder ubuntu " href="#" data-login-method="userCredentials">
+						<img src="/jmvc/avanzabank/images/inloggningsuppgifter_ic.svg" class="loginTypeIcon" alt="Inloggningsuppgifter" title="Inloggningsuppgifter">
+						Användarnamn &amp; lösenord <span class="arrow fRight"></span>
+					</a>
+					<div class="toggleBarContent noPaddingTop hide">
+						<div class="messageWrapper formLogin"></div>
+						<form autocomplete="off" class="loginForm clearFix" method="POST" action="/ab/noop">
+							<input placeholder="Användarnamn" type="text" name="j_username" autocapitalize="none">
+							<input placeholder="Lösenord" type="password" name="j_password">
+							<button class="focusBtn loginButton marginTop5px marginBottom15px errorToolTipPlacement fRight" type="submit" disabled="disabled">Logga in</button>
+
+							<a class="marginTop4px defaultSize plcLink" href="/glomt-uppgift.html">Glömt lösenord eller användarnamn?</a>
+						</form>
+					</div>
+				</div>
+				<div class="section accordion-togglebar bankIdLoginWrapper">
+					<a class="toggleBar whiteBG normalBlack noTopBorder ubuntu " href="#" data-login-method="bankId">
+						<img src="/jmvc/avanzabank/images/bankid_fil_ic.svg" class="loginTypeIcon" alt="BankID" title="BankID">
+						BankID <span class="arrow fRight"></span>
+					</a>
+					<div class="toggleBarContent noPaddingTop hide">
+						<div class="messageWrapper"></div>
+						<div class="progressBox hide">
+							<p class="noMargin">Söker efter BankID säkerhetsprogram.</p>
+							<div class="loaderAnim"></div>
+							<button class="launchBankIdApplication hide focusBtn marginRight5px marginTop10px">Starta program</button>
+							<a class="abortBankIdLogin secondaryLink underline bold" href="#">Avbryt</a>
+						</div>
+						<div class="bankIdLoginInputBox">
+							<button class="bankIdLogin focusBtn marginRight5px marginBottom15px" type="submit" data-client="Bankid">Logga in</button>
+							<a href="https://support.bankid.com/sv/bestalla-bankid/bestalla-bankid" target="_blank" class="marginTop8px plcLink">Skaffa BankID</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="dialog_eId" class="avanzabankInPlacera hide">
+				<h2>Välj inloggningskonto</h2>
+				
+				<p>
+					Du har flera inloggningskonton.<br/>Välj vilket konto du vill logga in på:
+				</p>
+
+				<select class="logins"></select>
+				
+				<div class="eIdMergeLoginOptionContainer marginTop10px hide">
+					<label class="eIdUseAsDefaultLoginEnabled hide">
+						<input class="eIdUseAsDefaultLoginCheck" type="checkbox" />
+						Samla alla mina konton under samma inloggning
+					</label>
+					<div class="systemMsg eIdUseAsDefaultLoginDisabled hide">
+						<ul class="cleanList">
+							<li class="systemMsgInfoItem">
+							     <p>
+							     	<span class="icon systemMsgInfoIco"></span>
+									Under den här inloggningen kan du tyvärr inte samla alla dina konton. Välj en annan av dina inloggningar.							     	
+							     </p>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="marginTop1">
+					<button type="button" class="focusBtn eIdLogins">Logga in</button>
+				</div>
+
+				<p class="marginTop1">
+					Vill du samla alla dina konton under samma inloggning? Kontakta Kundservice genom att skicka ett meddelande eller telefon 08-562 250 00.
+				</p>
+			</div>
+		
+		
+	
+	
+</div>
+
+                                	
+								
+							
+						
+
+					</div>
+					<!--<img src="/jmvc/avanzabank/images/sok-inaktiv_ic.svg" class="toolTipToggler globalSearchIcon">-->
+					<button class="toolTipToggler globalSearchIcon"  data-autofocus="true">
+						Sök
+					</button>
+					<div class="searchWrapper tooltip rightNavTooltip search">
+						<div id="globalSearchForm" class="clearFix">
+							<div class="tooltipHeader">
+								<h4 class="ubuntu">Sök</h4>
+								<img src="/jmvc/avanzabank/images/tooltip_close_ico_gray.svg" class="closeTooltipIcon" alt="Stäng" title="Stäng">
+								<input type="search" name="query" class="searchInput ubuntu fLeft" placeholder="Sök Värdepapper" autocomplete="off"
+									value="" />
+							</div>
+							<div id="ajaxSrch" class="ajaxSrch borderBox">
+								<div class="ajaxSrchContent"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+<nav id="mainNav" class="mainNavWrapper tCenter" role="nagivation">		
+	<div class="sWidth">
+           <div class="logo">
+            <a href="/start">
+                <img src="/jmvc/avanzabank/images/logo.svg" alt="Avanza" class="logoIco">
+             </a>
+           </div>
+	
+		<ul class="firstNav floatList cleanList clearFix">
+			
+				<li>
+					
+						
+						
+							<a href="/start.html" class=" ">
+								<span>
+									Hem
+								</span>
+							</a>
+						
+					
+					
+					
+				</li>
+			
+				<li>
+					
+						
+							<button class="expandNavItem ">
+								<span>
+									Mina sidor
+								</span>
+							</button>
+						
+						
+					
+					
+					
+						<div class="secondNavContainer">
+							<ul class="secondNav cleanList hide">
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/kontooversikt.html" class="">
+													Kontoöversikt
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/min-borsskarm.html" class="">
+													Börsskärm
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/bevakningslistor.html" class="">
+													Bevakningslistor
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/meddelanden.html" class="">
+													Meddelanden
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="4">
+													Insättningar & Uttag
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="4">
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/overforingar/insattningar.html" class="">
+																	Sätt in pengar
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/overforingar/interna-overforingar.html" class="">
+																	Intern överföring
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/overforingar/uttag.html" class="">
+																	Ta ut pengar
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/overforingar/Autogiro.html" class="">
+																	Autogiro
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/manadsspara.html" class="">
+													Månadssparande
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/erbjudanden.html" class="">
+													Nyintroduktioner & Emissioner
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="7">
+													Profil
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="7">
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/min-profil/mina-konton.html" class="">
+																	Mina konton
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Mina uppgifter
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/mina-sidor/min-profil/mina-uppgifter/mina-uppgifter.html" class="">
+																			Översikt
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/min-profil/mina-uppgifter/utskick.html" class="">
+																			Kommunikation från oss
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/min-profil/mina-uppgifter/sparprofil.html" class="">
+																			Sparprofil
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/min-profil/mina-uppgifter/kundkannedom.html" class="">
+																			Kundkännedom
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/min-profil/installningar.html" class="">
+																	Sajtinställningar
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/min-profil/avtal.html" class="">
+																	Avtal för utlandshandel
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="8">
+													Deklaration & Kontobesked
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="8">
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/deklaration/deklaration.html" class="">
+																	Deklaration
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/deklaration/avanza-k4.html" class="">
+																	Avanza K4
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Kontobesked
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/mina-sidor/deklaration/kontobesked/arsbesked.html" class="">
+																			Årsbesked
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/deklaration/kontobesked/manadsbesked.html" class="">
+																			Månadsbesked
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/deklaration/kontobesked/kontrolluppgifter.html" class="">
+																			Deklarationsunderlag ISK
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/mina-sidor/deklaration/kontobesked/vardebesked.html" class="">
+																			Värdebesked
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/deklaration/andra-inkopskostnad.html" class="">
+																	Ändra inköpskostnad
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/deklaration/skank-utdelning.html" class="">
+																	Ge bort din utdelning
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="9">
+													Anteckningar & Larm
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="9">
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/larm-anteckningar/anteckningar.html" class="">
+																	Anteckningar
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/larm-anteckningar/kurslarm.html" class="">
+																	Kurslarm
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/mina-sidor/larm-anteckningar/nyhetslarm.html" class="">
+																	Nyhetslarm
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/mina-sidor/flytta-vardepapper.html" class="">
+													Flytta värdepapper
+												</a>
+											
+										
+										
+										
+									</li>
+								
+							</ul>
+							
+							<div class="thirdNavContainer hiddenXs hiddenSm">
+								
+									
+								
+									
+								
+									
+								
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="4">
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/overforingar/insattningar.html" class="">
+																Sätt in pengar
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/overforingar/interna-overforingar.html" class="">
+																Intern överföring
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/overforingar/uttag.html" class="">
+																Ta ut pengar
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/overforingar/Autogiro.html" class="">
+																Autogiro
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+								
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="7">
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/min-profil/mina-konton.html" class="">
+																Mina konton
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Mina uppgifter
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/mina-sidor/min-profil/mina-uppgifter/mina-uppgifter.html" class="">
+																		Översikt
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/min-profil/mina-uppgifter/utskick.html" class="">
+																		Kommunikation från oss
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/min-profil/mina-uppgifter/sparprofil.html" class="">
+																		Sparprofil
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/min-profil/mina-uppgifter/kundkannedom.html" class="">
+																		Kundkännedom
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/min-profil/installningar.html" class="">
+																Sajtinställningar
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/min-profil/avtal.html" class="">
+																Avtal för utlandshandel
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="8">
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/deklaration/deklaration.html" class="">
+																Deklaration
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/deklaration/avanza-k4.html" class="">
+																Avanza K4
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Kontobesked
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/mina-sidor/deklaration/kontobesked/arsbesked.html" class="">
+																		Årsbesked
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/deklaration/kontobesked/manadsbesked.html" class="">
+																		Månadsbesked
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/deklaration/kontobesked/kontrolluppgifter.html" class="">
+																		Deklarationsunderlag ISK
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/mina-sidor/deklaration/kontobesked/vardebesked.html" class="">
+																		Värdebesked
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/deklaration/andra-inkopskostnad.html" class="">
+																Ändra inköpskostnad
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/deklaration/skank-utdelning.html" class="">
+																Ge bort din utdelning
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="9">
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/larm-anteckningar/anteckningar.html" class="">
+																Anteckningar
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/larm-anteckningar/kurslarm.html" class="">
+																Kurslarm
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/mina-sidor/larm-anteckningar/nyhetslarm.html" class="">
+																Nyhetslarm
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+								
+							</div>
+						</div>
+					
+				</li>
+			
+				<li>
+					
+						
+							<button class="expandNavItem is-active">
+								<span>
+									Investera
+								</span>
+							</button>
+						
+						
+					
+					
+					
+						<div class="secondNavContainer">
+							<ul class="secondNav cleanList hide">
+								
+									<li>
+										
+											
+											
+												<a href="/marknadsoversikt.html" class="">
+													Börsen idag
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="1">
+													Aktier
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="1">
+												
+													<li>
+														
+															
+															
+																<a href="/aktier/aktieinspiration.html" class="">
+																	Aktieinspiration
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/aktier/lista.html" class="">
+																	Aktiefiltreraren
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/aktier/aktiegeneratorn.html" class="">
+																	Aktiegeneratorn
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/aktier/ratter-teckningsoptioner.html" class="">
+																	Rätter & Teckningsoptioner
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/aktier/oppettider-handelskalender.html" class="">
+																	Öppettider & handelskalender
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="2">
+													Fonder
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="2">
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/fondinspiration.html" class="">
+																	Fondinspiration
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/portfoljgeneratorn.html" class="">
+																	Portföljgeneratorn
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/lista.html" class="">
+																	Fondfiltreraren
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/fonder-torg.html" class="">
+																	Fondtorget
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/vinnare-forlorare.html" class="">
+																	Vinnare & Förlorare
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/fonder/fond-i-fond.html" class="">
+																	Våra egna fonder
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="3">
+													Börshandlade produkter
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="3">
+												
+													<li>
+														
+															
+															
+																<a href="/borshandlade-produkter/oversikt.html" class="">
+																	Översikt
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Avanza Markets
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/borshandlade-produkter/avanza-markets/om-avanza-markets.html" class="">
+																			Om Avanza Markets
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/avanza-markets/utbildning.html" class="">
+																			Lär dig mer
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/avanza-markets/handla-certifikat.html" class="">
+																			Handla Certifikat & Trackers
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/avanza-markets/handla-mini-futures.html" class="">
+																			Handla Mini futures & Turbos
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Certifikat
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/borshandlade-produkter/certifikat-torg/certifikat-torg.html" class="">
+																			Certifikattorget
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/certifikat-torg/lista.html" class="">
+																			Certifikatlistan
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Warranter
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/borshandlade-produkter/warranter-torg/warranter-torg.html" class="">
+																			Warranttorget
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/warranter-torg/lista.html" class="">
+																			Warrantlistan
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	ETF:er
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/borshandlade-produkter/etf-torg/etf-torg.html" class="">
+																			ETF-torget
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/etf-torg/lista.html" class="">
+																			ETF-lista
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/borshandlade-produkter/rantebevis.html" class="">
+																	Räntebevis
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/borshandlade-produkter/obligationer-only-menu-button.html" class="">
+																	Obligationer
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/borshandlade-produkter/kapitalandelsbevis.html" class="">
+																	Kapitalandelsbevis
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Partners
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/borshandlade-produkter/partners/partners.html" class="">
+																			Översikt
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/partners/vontobel/vontobel.html" class="">
+																			Vontobel
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/partners/Nordea/blanka.html" class="">
+																			Nordea
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/borshandlade-produkter/partners/SEB/bull-och-bear1.html" class="">
+																			SEB
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/optioner-lista.html" class="">
+													Optioner & Terminer
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="5">
+													Orderläggning
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="5">
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/aktier-only-menu-button.html" class="">
+																	Aktier
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/fonder-only-menu-button.html" class="">
+																	Fonder
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/etf-only-menu-button.html" class="">
+																	ETF
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/certifikat-only-menu-button.html" class="">
+																	Certifikat
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/warranter-only-menu-button.html" class="">
+																	Warranter
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/obligationer-only-menu-button.html" class="">
+																	Obligationer
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/valutavaxling-only-menu-button.html" class="">
+																	Valutaväxling
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/orderlaggning/optioner-only-menu-button.html" class="">
+																	Optioner
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+							</ul>
+							
+							<div class="thirdNavContainer hiddenXs hiddenSm">
+								
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="1">
+											
+												<li>
+													
+														
+														
+															<a href="/aktier/aktieinspiration.html" class="">
+																Aktieinspiration
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/aktier/lista.html" class="">
+																Aktiefiltreraren
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/aktier/aktiegeneratorn.html" class="">
+																Aktiegeneratorn
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/aktier/ratter-teckningsoptioner.html" class="">
+																Rätter & Teckningsoptioner
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/aktier/oppettider-handelskalender.html" class="">
+																Öppettider & handelskalender
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="2">
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/fondinspiration.html" class="">
+																Fondinspiration
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/portfoljgeneratorn.html" class="">
+																Portföljgeneratorn
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/lista.html" class="">
+																Fondfiltreraren
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/fonder-torg.html" class="">
+																Fondtorget
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/vinnare-forlorare.html" class="">
+																Vinnare & Förlorare
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/fonder/fond-i-fond.html" class="">
+																Våra egna fonder
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="3">
+											
+												<li>
+													
+														
+														
+															<a href="/borshandlade-produkter/oversikt.html" class="">
+																Översikt
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Avanza Markets
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/borshandlade-produkter/avanza-markets/om-avanza-markets.html" class="">
+																		Om Avanza Markets
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/avanza-markets/utbildning.html" class="">
+																		Lär dig mer
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/avanza-markets/handla-certifikat.html" class="">
+																		Handla Certifikat & Trackers
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/avanza-markets/handla-mini-futures.html" class="">
+																		Handla Mini futures & Turbos
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Certifikat
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/borshandlade-produkter/certifikat-torg/certifikat-torg.html" class="">
+																		Certifikattorget
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/certifikat-torg/lista.html" class="">
+																		Certifikatlistan
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Warranter
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/borshandlade-produkter/warranter-torg/warranter-torg.html" class="">
+																		Warranttorget
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/warranter-torg/lista.html" class="">
+																		Warrantlistan
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																ETF:er
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/borshandlade-produkter/etf-torg/etf-torg.html" class="">
+																		ETF-torget
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/etf-torg/lista.html" class="">
+																		ETF-lista
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/borshandlade-produkter/rantebevis.html" class="">
+																Räntebevis
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/borshandlade-produkter/obligationer-only-menu-button.html" class="">
+																Obligationer
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/borshandlade-produkter/kapitalandelsbevis.html" class="">
+																Kapitalandelsbevis
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Partners
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/borshandlade-produkter/partners/partners.html" class="">
+																		Översikt
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/partners/vontobel/vontobel.html" class="">
+																		Vontobel
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/partners/Nordea/blanka.html" class="">
+																		Nordea
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/borshandlade-produkter/partners/SEB/bull-och-bear1.html" class="">
+																		SEB
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="5">
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/aktier-only-menu-button.html" class="">
+																Aktier
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/fonder-only-menu-button.html" class="">
+																Fonder
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/etf-only-menu-button.html" class="">
+																ETF
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/certifikat-only-menu-button.html" class="">
+																Certifikat
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/warranter-only-menu-button.html" class="">
+																Warranter
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/obligationer-only-menu-button.html" class="">
+																Obligationer
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/valutavaxling-only-menu-button.html" class="">
+																Valutaväxling
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/orderlaggning/optioner-only-menu-button.html" class="">
+																Optioner
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+							</div>
+						</div>
+					
+				</li>
+			
+				<li>
+					
+						
+							<button class="expandNavItem ">
+								<span>
+									Vårt utbud
+								</span>
+							</button>
+						
+						
+					
+					
+					
+						<div class="secondNavContainer">
+							<ul class="secondNav cleanList hide">
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="0">
+													Handelsutbud
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="0">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/handelsutbud.html" class="">
+																	Handelsutbud översikt
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/aktiehandel.html" class="">
+																	Aktiehandel
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/aktiehandel-usa-kanada.html" class="">
+																	Aktiehandel USA & Kanada
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/aktiehandel-norden.html" class="">
+																	Aktiehandel Norden
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/aktiehandel-europa.html" class="">
+																	Aktiehandel Europa
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/aktiehandel-ovriga-varlden.html" class="">
+																	Aktiehandel övriga världen
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/fondhandel.html" class="">
+																	Fondhandel
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/avanza-zero.html" class="">
+																	Avanza Zero
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/handelsutbud/manadssparande.html" class="">
+																	Månadssparande
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="1">
+													Konton
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="1">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/konton/isk.html" class="">
+																	ISK
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/konton/aktie-och-fondkonto.html" class="">
+																	Aktie- och fondkonto
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/konton/kapitalforsakring.html" class="">
+																	Kapitalförsäkring
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/konton/barnspar.html" class="">
+																	Barnspar
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/konton/sparkonto.html" class="">
+																	Sparkonto
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Pensionskonton
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/tjanstepension.html" class="">
+																			Tjänstepension
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/IPS.html" class="">
+																			IPS
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/pensionsforsakring.html" class="">
+																			Pensionsförsäkring
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/saflo.html" class="">
+																			Avtalspension SAF-LO
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/pa03.html" class="">
+																			Avtalspension PA 03
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/konton/pensionskonton/kapkl.html" class="">
+																			Avtalspension KAP-KL
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="2">
+													Prislista
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="2">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/courtageklasser.html" class="">
+																	Courtageklasser
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/kontoavgifter.html" class="">
+																	Kontoavgifter
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/handel-sverige.html" class="">
+																	Handel Sverige
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/handel-utland.html" class="">
+																	Handel utland
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/rantor.html" class="">
+																	Räntor
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/administrativa-avgifter.html" class="">
+																	Administrativa avgifter
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/tillaggstjanster.html" class="">
+																	Tilläggstjänster
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/prislista/information-ersattning.html" class="">
+																	Information om ersättning
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="3">
+													Pension
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="3">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pension/borja-pensionsspara.html" class="">
+																	Börja pensionsspara
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pension/flytta-din-pension.html" class="">
+																	Flytta din pension
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pension/formedlare.html" class="">
+																	Förmedlare
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="4">
+													Private Banking
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="4">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pb/start.html" class="">
+																	Översikt
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pb/kontakta-oss.html" class="">
+																	Kontakta oss
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Prislista
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/handel-sverige.html" class="">
+																			Handel Sverige
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/handel-utland.html" class="">
+																			Handel utland
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/rantor.html" class="">
+																			Räntor
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/tillaggstjanster.html" class="">
+																			Tilläggstjänster
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/administrativa-avgifter.html" class="">
+																			Administrativa avgifter
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pb/prislista/information-ersattning.html" class="">
+																			Information om ersättning
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pb/superbolanet-pb.html" class="">
+																	Superbolånet PB
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="5">
+													Pro
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="5">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pro/start.html" class="">
+																	Översikt
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/pro/kontakta-oss.html" class="">
+																	Kontakta oss
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Traderprogram 
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/vart-utbud/pro/traderprogram/infront.html" class="">
+																			Infront
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+													<li>
+														
+															
+																<button class="expandNavItem ">
+																	Prislista
+																</button>
+															
+															
+														
+														
+														
+															<ul class="fourthNav cleanList hide">
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/handel-sverige.html" class="">
+																			Handel Sverige
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/handel-utland.html" class="">
+																			Handel utland
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/rantor.html" class="">
+																			Räntor
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/tillaggstjanster.html" class="">
+																			Tilläggstjänster
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/administrativa-avgifter.html" class="">
+																			Administrativa avgifter
+																		</a>	
+																	</li>
+																
+																	<li>
+																		<a href="/vart-utbud/pro/prislista/information-ersattning.html" class="">
+																			Information om ersättning
+																		</a>	
+																	</li>
+																
+															</ul>
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+												<button class="expandNavItem "
+													data-second-nav-id="6">
+													Företag
+												</button>
+											
+											
+										
+										
+										
+											<ul class="thirdNav cleanList hide hiddenMd hiddenLg" data-third-nav-id="6">
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/foretag/foretagstjanster.html" class="">
+																	Företagstjänster
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/foretag/tjanstepension.html" class="">
+																	Tjänstepension
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/foretag/foretagskonton.html" class="">
+																	Företagskonton
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/foretag/corporate-finance.html" class="">
+																	Corporate Finance
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+													<li>
+														
+															
+															
+																<a href="/vart-utbud/foretag/foretagswebben.html" class="">
+																	Företagswebben
+																</a>
+															
+														
+														
+														
+													</li>											
+												
+											</ul>
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/vart-utbud/lan.html" class="">
+													Lån
+												</a>
+											
+										
+										
+										
+									</li>
+								
+							</ul>
+							
+							<div class="thirdNavContainer hiddenXs hiddenSm">
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="0">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/handelsutbud.html" class="">
+																Handelsutbud översikt
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/aktiehandel.html" class="">
+																Aktiehandel
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/aktiehandel-usa-kanada.html" class="">
+																Aktiehandel USA & Kanada
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/aktiehandel-norden.html" class="">
+																Aktiehandel Norden
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/aktiehandel-europa.html" class="">
+																Aktiehandel Europa
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/aktiehandel-ovriga-varlden.html" class="">
+																Aktiehandel övriga världen
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/fondhandel.html" class="">
+																Fondhandel
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/avanza-zero.html" class="">
+																Avanza Zero
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/handelsutbud/manadssparande.html" class="">
+																Månadssparande
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="1">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/konton/isk.html" class="">
+																ISK
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/konton/aktie-och-fondkonto.html" class="">
+																Aktie- och fondkonto
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/konton/kapitalforsakring.html" class="">
+																Kapitalförsäkring
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/konton/barnspar.html" class="">
+																Barnspar
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/konton/sparkonto.html" class="">
+																Sparkonto
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Pensionskonton
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/tjanstepension.html" class="">
+																		Tjänstepension
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/IPS.html" class="">
+																		IPS
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/pensionsforsakring.html" class="">
+																		Pensionsförsäkring
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/saflo.html" class="">
+																		Avtalspension SAF-LO
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/pa03.html" class="">
+																		Avtalspension PA 03
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/konton/pensionskonton/kapkl.html" class="">
+																		Avtalspension KAP-KL
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="2">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/courtageklasser.html" class="">
+																Courtageklasser
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/kontoavgifter.html" class="">
+																Kontoavgifter
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/handel-sverige.html" class="">
+																Handel Sverige
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/handel-utland.html" class="">
+																Handel utland
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/rantor.html" class="">
+																Räntor
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/administrativa-avgifter.html" class="">
+																Administrativa avgifter
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/tillaggstjanster.html" class="">
+																Tilläggstjänster
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/prislista/information-ersattning.html" class="">
+																Information om ersättning
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="3">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pension/borja-pensionsspara.html" class="">
+																Börja pensionsspara
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pension/flytta-din-pension.html" class="">
+																Flytta din pension
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pension/formedlare.html" class="">
+																Förmedlare
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="4">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pb/start.html" class="">
+																Översikt
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pb/kontakta-oss.html" class="">
+																Kontakta oss
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Prislista
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/handel-sverige.html" class="">
+																		Handel Sverige
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/handel-utland.html" class="">
+																		Handel utland
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/rantor.html" class="">
+																		Räntor
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/tillaggstjanster.html" class="">
+																		Tilläggstjänster
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/administrativa-avgifter.html" class="">
+																		Administrativa avgifter
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pb/prislista/information-ersattning.html" class="">
+																		Information om ersättning
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pb/superbolanet-pb.html" class="">
+																Superbolånet PB
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="5">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pro/start.html" class="">
+																Översikt
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/pro/kontakta-oss.html" class="">
+																Kontakta oss
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Traderprogram 
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/vart-utbud/pro/traderprogram/infront.html" class="">
+																		Infront
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+												<li>
+													
+														
+															<button class="expandNavItem ">
+																Prislista
+															</button>
+														
+														
+													
+													
+													
+														<ul class="fourthNav cleanList hide">
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/handel-sverige.html" class="">
+																		Handel Sverige
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/handel-utland.html" class="">
+																		Handel utland
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/rantor.html" class="">
+																		Räntor
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/tillaggstjanster.html" class="">
+																		Tilläggstjänster
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/administrativa-avgifter.html" class="">
+																		Administrativa avgifter
+																	</a>	
+																</li>
+															
+																<li>
+																	<a href="/vart-utbud/pro/prislista/information-ersattning.html" class="">
+																		Information om ersättning
+																	</a>	
+																</li>
+															
+														</ul>
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+										<ul class="thirdNav cleanList hide" data-third-nav-id="6">
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/foretag/foretagstjanster.html" class="">
+																Företagstjänster
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/foretag/tjanstepension.html" class="">
+																Tjänstepension
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/foretag/foretagskonton.html" class="">
+																Företagskonton
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/foretag/corporate-finance.html" class="">
+																Corporate Finance
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+												<li>
+													
+														
+														
+															<a href="/vart-utbud/foretag/foretagswebben.html" class="">
+																Företagswebben
+															</a>
+														
+													
+													
+													
+												</li>											
+											
+										</ul>
+									
+								
+									
+								
+							</div>
+						</div>
+					
+				</li>
+			
+				<li>
+					
+						
+						
+							<a href="/placera/forstasidan.html" class=" is-placeraPage">
+								<span>
+									Nyheter
+								</span>
+							</a>
+						
+					
+					
+					
+				</li>
+			
+				<li>
+					
+						
+							<button class="expandNavItem ">
+								<span>
+									Lär dig mer
+								</span>
+							</button>
+						
+						
+					
+					
+					
+						<div class="secondNavContainer">
+							<ul class="secondNav cleanList hide">
+								
+									<li>
+										
+											
+											
+												<a href="/lar-dig-mer/avanza-play.html" class="">
+													Avanza Play
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/lar-dig-mer/avanzaakademin.html" class="">
+													Avanza Akademin
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/lar-dig-mer/kom-igang.html" class="">
+													Kom igång
+												</a>
+											
+										
+										
+										
+									</li>
+								
+							</ul>
+							
+							<div class="thirdNavContainer hiddenXs hiddenSm">
+								
+									
+								
+									
+								
+									
+								
+							</div>
+						</div>
+					
+				</li>
+			
+				<li>
+					
+						
+							<button class="expandNavItem ">
+								<span>
+									Kundservice
+								</span>
+							</button>
+						
+						
+					
+					
+					
+						<div class="secondNavContainer">
+							<ul class="secondNav cleanList hide">
+								
+									<li>
+										
+											
+											
+												<a href="/kundservice/oversikt.html" class="">
+													Frågor & Svar
+												</a>
+											
+										
+										
+										
+									</li>
+								
+									<li>
+										
+											
+											
+												<a href="/kundservice/kontakta-oss.html" class="">
+													Kontakta oss
+												</a>
+											
+										
+										
+										
+									</li>
+								
+							</ul>
+							
+							<div class="thirdNavContainer hiddenXs hiddenSm">
+								
+									
+								
+									
+								
+							</div>
+						</div>
+					
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+
+
+	</div>
+</header>
+
+    
+    
+
+    
+        
+        
+            <div id="main" role="main" class="sWidth">
+                <div class="gridMarginFix">
+                    <div class="row">
+                        <div class="column grid_12 runningText">
+                               
+                            
+                                
+                                                           
+                                
+                                    
+    <div class="pagetitle">
+
+
+
+
+
+
+    
+    
+        
+    
+    
+
+
+
+    <div class="clearFix">
+        <h1 class="MText noMargin fLeft">Information om aktien ABB Ltd</h1>
+        
+            <ul class="fLeft cleanList floatList pageTools">
+                
+                    <li><span class="icon pushIco disabled tipTrigger" data-auto_push_off="Autokurser visas inte. Slå på dem under Sajtinställningar." data-auto_push_on="Autokurser visas. Stäng av dem under Sajtinställningar." title="Autokurser visas inte. Slå på dem under Sajtinställningar."></span></li>
+                
+                
+            </ul>
+            
+        
+    </div>
+</div>
+
+
+<div class="parsys content"><div class="suffix-specific-content section">
+
+
+
+
+
+    
+        
+        <div class="parsys 5447">
+</div>
+
+    
+
+
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	 
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	 
+	
+	
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+		<div class="parsys customercategorycontentparsys"><div class="avdelare section">
+
+
+
+
+
+	
+
+	
+		<div class="divider space-5"></div>
+	
+
+</div>
+<div class="section cq-bgImageWrapper">
+
+
+
+<div style="background-image: url(/avanzabank/hem/konton/support/aktieguidetop.png);" class="bgImage left top ">
+	<div class="parsys content"><div class="section cq-bgImageWrapper">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="contentBoxGrey borderOnly   relative bgImage" style="">
+	
+	<div class="parsys content"><div class="section text"><span class="runningText">&nbsp; &nbsp; &nbsp; &nbsp; Vill du också handla aktier från 0 kronor i courtage? <a adhocenable="false" href="/bli-kund.html">Bli kund på 3 min med BankID</a></span></div>
+
+</div>
+
+	
+	
+	
+</div></div>
+
+</div>
+
+</div></div>
+
+</div>
+
+	
+</div>
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+<div class="section ssicomponent">
+
+
+
+
+
+    
+
+    
+    
+    
+                
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+    
+    
+		
+	       	
+			    
+	    	
+	    	
+		
+        
+
+
+
+
+
+
+<div id="surface" class="marginTop1_5 surface page defaultText" data-page_type="stock">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+	<div class="column grid_7">		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+	
+		
+	
+	
+
+
+<div class="component orderbook_search " data-only_tradable="false" data-instrument_type="STOCK" data-component_type="orderbooksearch" data-selected_id="5447">
+	<div class="content">
+		
+			<form method="POST" name="orderbookSearch">
+		
+		
+			
+				
+
+
+
+
+
+
+
+
+
+
+	<span class="flag  flag-se flag-icon">
+		
+	</span>
+
+
+			
+			
+		
+
+		<input type="search"
+			name="searchString"
+			class="searchInput orderbookSearch STOCK MText  "
+			placeholder="ABB Ltd (ABB)"
+			data-placeholder-recalc="true"
+			data-targetpagetype="stock"
+			data-targetordertypeview=""
+			
+			
+		/>
+		<div class="autocomplete-arrow"></div>
+			
+		
+			</form>
+		
+	</div>
+</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="column grid_12">
+		<div class="highlightComponent">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="component quote" data-component_type="quote">
+
+	<div class="content">
+	
+		
+			
+			
+				
+			
+			
+	
+		<ul class="cleanList floatList clearFix highlightMargins quoteBar " 
+			data-oid="5447" 
+			data-delayed="true" 
+			data-currency=" SEK"
+			
+			data-update_page_title="true"
+			data-intrument_name="ABB Ltd"
+			data-change_percent="0.96"
+			data-short_name="ABB"
+			
+			>
+			
+				<li>
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+	
+
+
+
+
+
+
+
+
+	
+		
+			
+			
+				<a href="/handla/aktier.html/kop/5447/abb-ltd" class="orderLink button buy buyBtn "
+						title="Köp aktier i ABB Ltd">
+					Köp
+				</a>
+				
+					 
+				<a href="/handla/aktier.html/salj/5447/abb-ltd" class="orderLink button sell sellBtn "
+				   title="Sälj aktier i ABB Ltd">
+					Sälj
+				</a>
+				
+			
+		
+	
+	
+
+				</li>
+			
+			<li>
+				<div class="fLeft">
+
+
+
+<div class="arrowBox positive medium"></div></div>
+				
+				<div class="fLeft">
+					<span class="XSText">Utv. i dag %<br/></span>
+					<span class="changePercent SText bold positive">+0,96 %</span> 
+				</div>
+			</li>
+			<li>
+				<div class="fLeft">
+					<span class="XSText">Utv. i dag SEK<br/></span>
+					<span class="change SText bold positive">+2,10  SEK</span>										
+				</div>
+			</li>
+			<li>
+				<span class="XSText">Köp<br/></span>
+				<span class="buyPrice SText bold">221,20</span>
+			</li>
+			<li>
+				<span class="XSText">Sälj<br/></span>
+				<span class="sellPrice SText bold">221,30</span>
+			</li>
+			<li>
+				<span class="XSText">Senast<br/></span>
+				<span class="lastPrice SText bold"><span class="pushBox roundCorners3" title="Senast uppdaterad: 15:14:00">221,30</span></span>
+			</li>
+			
+			<li>
+				<span class="XSText">Högst<br/></span>
+				<span class="highestPrice SText bold">221,50</span>
+			</li>
+			<li>
+				<span class="XSText">Lägst<br/></span>
+				<span class="lowestPrice SText bold">220,10</span>
+			</li>
+			<li>
+				<span class="XSText">
+					
+						
+						
+							Antal<br/>
+						
+					
+				</span>
+				<span class="totalVolumeTraded SText bold">702 190</span>
+			</li>
+			<li>
+				<span class="XSText">Tid<br/></span>
+				<span class="updated SText bold">15:14:00</span>
+			</li>
+									
+			<li class="fRight orderbook_tools-quote">
+				<ul class="orderbook_tools cleanList floatList fLeft">
+            <li>
+                    <a title="Lägg till kurslarm" class="icon alertIco triggerLogin" href="javascript:void(0)"></a>
+                </li>
+            <li>
+                    <a title="Visa anteckningar" class="icon noteIco triggerLogin" href="javascript:void(0)"></a>
+                </li>
+            <li>
+                    <a title="Lägg till i bevakningslistor" class="icon watchListIco triggerLogin" href="javascript:void(0)"></a>
+                </li>
+            </ul>
+    
+			</li>
+		</ul>
+		 
+	</div>
+</div>
+		</div>
+	</div>
+</div>
+
+
+	<div class="row">
+		<div class="column grid_12">
+			<ul class="cleanList floatList clearFix tabs defaultTabs">
+				<li class="active">
+					<a href="/aktier/om-aktien.html/5447/abb-ltd">Om aktien</a>
+				</li>
+				<li class="">
+					<a href="/aktier/om-bolaget.html/5447/abb-ltd">Om bolaget</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+<div class="row">
+	<div class="column grid_7">
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="hsChartWrapper">
+			<div class="component hsControlPanel"
+     data-component_type="hscontrolpanel">
+	<div class="controlPanel chartsPanel clearFix">
+		<div class="displayName fLeft bold ellipsis">
+			ABB Ltd</div>
+		<ul class="actionToolbar cleanList floatList fRight">
+			<li class="actionGroup compare relative"
+			    data-action="compare"
+			    data-default_index_id="19002"
+			    data-default_index_label="OMX Stockholm 30">
+				<button class="marginLeft4px actionDropToggle" tabIndex="1">Jämför
+					<span class="arrow fRight marginTop8px"></span>
+				</button>
+				<ul class="actionDropdown cleanList hide">
+					<li>
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+	
+		
+	
+
+
+<div class="component orderbook_search vpSearch" data-only_tradable="false" data-instrument_type="ALL_INSTRUMENT_TYPES" data-component_type="orderbooksearch" >
+	<div class="content">
+		
+			<form method="POST" name="orderbookSearch">
+		
+		
+			
+			
+				
+
+
+
+
+
+
+
+
+
+
+	<span class="flag flag-small flag-nonexisting flag-icon hide">
+		
+	</span>
+
+
+			
+		
+
+		<input type="search"
+			name="searchString"
+			class="searchInput orderbookSearch ALL_INSTRUMENT_TYPES  noFlag "
+			placeholder="Sök värdepapper att jämföra med"
+			data-placeholder-recalc="true"
+			data-targetpagetype=""
+			data-targetordertypeview=""
+			data-reload="false"
+			data-replace-placeholder="false"
+		/>
+		<div class="autocomplete-arrow"></div>
+			
+		
+			</form>
+		
+	</div>
+</div><ul class="cleanList compareItems">
+							<li class="chartsGroupLabel black">Världsindex</li>
+								<li class="chartsAction " data-id="155324" data-shortname="DJX-W1DOW">
+											DJ World Index</li>
+									<li class="chartsAction " data-id="53547" data-shortname="OMXNPI">
+											OMX Nordic PI</li>
+									<li class="chartsAction " data-id="53548" data-shortname="OMXN40">
+											OMX Nordic 40</li>
+									<li class="chartsAction " data-id="155702" data-shortname="SIXPRX">
+											SIX Portfolio Return Index</li>
+									<li class="chartsAction " data-id="155363" data-shortname="SIX30RX">
+											SIX30 Return Index</li>
+									<li class="chartsAction selected" data-id="19002" data-shortname="OMXS30">
+											OMX Stockholm 30</li>
+									<li class="chartsAction " data-id="18988" data-shortname="OMXSPI">
+											OMX Stockholm PI</li>
+									<li class="chartsAction " data-id="53295" data-shortname="OMXH25">
+											OMX Helsinki 25</li>
+									<li class="chartsAction " data-id="53291" data-shortname="OMXC20">
+											OMX Copenhagen 20</li>
+									<li class="chartsAction " data-id="53294" data-shortname="OSEBX">
+											OSEBX Oslo</li>
+									<li class="chartsAction " data-id="18985" data-shortname="DJIA">
+											Dow Jones</li>
+									<li class="chartsAction " data-id="19006" data-shortname="NASDAQ">
+											NASDAQ</li>
+									<li class="chartsAction " data-id="155458" data-shortname="DJ USA">
+											DJ USA</li>
+									<li class="chartsAction " data-id="155541" data-shortname="SIX-IDX-N100">
+											NASDAQ 100 Index</li>
+									<li class="chartsAction " data-id="134949" data-shortname="DJ Kanada">
+											DJ Canada</li>
+									<li class="chartsAction " data-id="18981" data-shortname="DAX">
+											DAX</li>
+									<li class="chartsAction " data-id="155698" data-shortname="DJ UK">
+											DJ UK</li>
+									<li class="chartsAction " data-id="18997" data-shortname="Nikkei">
+											Nikkei</li>
+									<li class="chartsAction " data-id="18984" data-shortname="Hang Seng">
+											Hang Seng</li>
+									<li class="chartsAction " data-id="155694" data-shortname="DJX-W5DOW">
+											DJ Emerging Markets</li>
+									<li class="chartsAction " data-id="633079" data-shortname="OMXSGI">
+											OMX Stockholm GI</li>
+									<li class="chartsGroupLabel black">Branschindex</li>
+								<li class="chartsAction " data-id="334578" data-shortname="Energi">
+											Energi</li>
+									<li class="chartsAction " data-id="334593" data-shortname="Fin&fast">
+											Finans&amp;Fastighet</li>
+									<li class="chartsAction " data-id="334580" data-shortname="SX3300PI">
+											Fordon och reservdelar</li>
+									<li class="chartsAction " data-id="334584" data-shortname="Hälsa">
+											Hälsovård</li>
+									<li class="chartsAction " data-id="334586" data-shortname="Industri">
+											Industrivaror</li>
+									<li class="chartsAction " data-id="334600" data-shortname="Kon.tjän">
+											Konsumenttjänster</li>
+									<li class="chartsAction " data-id="334582" data-shortname="Kon.vara">
+											Konsumentvaror</li>
+									<li class="chartsAction " data-id="334591" data-shortname="Kraft">
+											Kraftförsörjning</li>
+									<li class="chartsAction " data-id="334581" data-shortname="SX3500PI">
+											Livsmedel</li>
+									<li class="chartsAction " data-id="334577" data-shortname="Material">
+											Material</li>
+									<li class="chartsAction " data-id="334603" data-shortname="SX5700PI">
+											Resor och Fritid</li>
+									<li class="chartsAction " data-id="334597" data-shortname="Teknik">
+											Teknologi</li>
+									<li class="chartsAction " data-id="334602" data-shortname="Telekom">
+											Telekom</li>
+									<li class="chartsGroupLabel black">Räntor</li>
+								<li class="chartsAction " data-id="171940" data-shortname="Stibor 3-mån">
+											3-mån stibor</li>
+									<li class="chartsAction " data-id="18993" data-shortname="3-mån ränta">
+											3-mån ränta</li>
+									<li class="chartsAction " data-id="18982" data-shortname="5-mån ränta">
+											5-mån ränta</li>
+									<li class="chartsAction " data-id="19001" data-shortname="5-års ränta">
+											5-års ränta</li>
+									<li class="chartsAction " data-id="18995" data-shortname="10-års ränta">
+											10-års ränta</li>
+									<li class="chartsGroupLabel black">Valutor</li>
+								<li class="chartsAction " data-id="18998" data-shortname="EUR">
+											EUR/SEK</li>
+									<li class="chartsAction " data-id="19000" data-shortname="USD">
+											USD/SEK</li>
+									<li class="chartsAction " data-id="108701" data-shortname="CAD">
+											CAD/SEK</li>
+									<li class="chartsAction " data-id="53292" data-shortname="DKK">
+											DKK/SEK</li>
+									<li class="chartsAction " data-id="53293" data-shortname="NOK">
+											NOK/SEK</li>
+									<li class="chartsAction " data-id="155736" data-shortname="AUD">
+											AUD/SEK</li>
+									<li class="chartsAction " data-id="108703" data-shortname="GBP">
+											GBP/SEK</li>
+									<li class="chartsAction " data-id="108704" data-shortname="CHF">
+											CHF/SEK</li>
+									<li class="chartsAction " data-id="108702" data-shortname="JPY">
+											JPY/SEK</li>
+									<li class="chartsAction " data-id="18987" data-shortname="EURUSD">
+											EUR/USD</li>
+									<li class="chartsAction " data-id="18999" data-shortname="USDJPY">
+											USD/JPY</li>
+									<li class="chartsAction " data-id="155735" data-shortname="EURGBP">
+											EUR/GBP</li>
+									<li class="chartsAction " data-id="455491" data-shortname="AUDUSD">
+											AUD/USD</li>
+									<li class="chartsAction " data-id="455492" data-shortname="USDCAD">
+											USD/CAD</li>
+									<li class="chartsAction " data-id="455493" data-shortname="GBPUSD">
+											GBP/USD</li>
+									<li class="chartsAction " data-id="455494" data-shortname="EURCHF">
+											EUR/CHF</li>
+									<li class="chartsAction " data-id="155726" data-shortname="USDDKK">
+											USD/DKK</li>
+									<li class="chartsAction " data-id="155727" data-shortname="USDNOK">
+											USD/NOK</li>
+									<li class="chartsAction " data-id="155730" data-shortname="EURNOK">
+											EUR/NOK</li>
+									<li class="chartsGroupLabel black">Råvaror</li>
+								<li class="chartsAction " data-id="18990" data-shortname="Aluminium">
+											Aluminium</li>
+									<li class="chartsAction " data-id="18983" data-shortname="Bly">
+											Bly</li>
+									<li class="chartsAction " data-id="18986" data-shortname="Guld">
+											Guld</li>
+									<li class="chartsAction " data-id="18989" data-shortname="Koppar">
+											Koppar</li>
+									<li class="chartsAction " data-id="18996" data-shortname="Nickel">
+											Nickel</li>
+									<li class="chartsAction " data-id="19005" data-shortname="Olja">
+											Olja</li>
+									<li class="chartsAction " data-id="18991" data-shortname="Silver">
+											Silver</li>
+									<li class="chartsAction " data-id="18992" data-shortname="Zink">
+											Zink</li>
+									</ul>
+					<li>
+				</ul>
+			</li>
+		<li class="actionGroup event relative" data-action="event">
+				<button class="marginLeft4px actionDropToggle" tabIndex="2">Händelser
+					<span class="arrow fRight marginTop8px"></span>
+				</button>
+				<ul class="cleanList actionDropdown hide">
+					<li class="chartsAction transactions" data-id="transactions">Mina transaktioner
+						<span class="menuIcon fRight"></span>
+					</li>
+					<li class="chartsAction news" data-id="news">Pressmeddelanden
+								<span class="menuIcon fRight"></span>
+							</li>
+						<li class="chartsAction dividends" data-id="dividends">Utdelningar
+								<span class="menuIcon fRight"></span>
+							</li>
+						<li class="chartsAction reports" data-id="reports">Rapporter
+								<span class="menuIcon fRight"></span>
+							</li>
+						<li class="chartsAction owners" data-id="owners">Antal ägare
+								<span class="menuIcon fRight"></span>
+							</li>
+						</ul>
+			</li>
+		<li class="actionGroup ta relative" data-action="ta">
+				<button class="marginLeft4px actionDropToggle" tabIndex="3">TA
+					<span class="arrow fRight marginTop8px"></span>
+				</button>
+				<ul class="cleanList actionDropdown hide">
+					<li class="hoverDropdown relative">
+						<a class="marginLeft4px" href="javascript:void(0)" tabIndex="1">
+							Indikator
+							<span class="arrow fRight marginTop6px"></span>
+						</a>
+						<ul class="hide cleanList">
+							<li class="chartsAction" data-id="trendline">Trendlinje</li>
+							<li class="chartsAction" data-id="sma" title="Simple Moving Average">SMA</li>
+							<li class="chartsAction" data-id="ema" title="Exponential Moving Average">EMA</li>
+							<li class="chartsAction" data-id="bollinger" title="Bollinger Bands">Bollinger</li>
+						</ul>
+					</li>
+					<li class="hoverDropdown relative">
+						<a class="marginLeft4px" href="javascript:void(0)" tabIndex="2">
+							Oscillator
+							<span class="arrow fRight marginTop6px"></span>
+						</a>
+						<ul class="hide cleanList">
+							<li class="chartsAction" data-id="rsi" title="Relative Strength Index">RSI</li>
+							<li class="chartsAction" data-id="macd" title="Moving Average Convergence/Divergence">MACD</li>
+							<li class="chartsAction" data-id="stochastic" title="Stochastic">Stochastic</li>
+						</ul>
+					</li>
+					<li class="chartsAction drawMode" data-id="annotations">Rita i grafen
+						<span class="menuIcon fRight"></span>
+					</li>
+					</ul>
+			</li>
+			<li class="actionGroup graphType relative" data-action="graphtype">
+				<button class="marginLeft4px actionDropToggle area" tabIndex="4">Graftyp
+					<span class="menuIcon fRight"></span>
+				</button>
+				<ul class="cleanList actionDropdown hide">
+					<li class="chartsAction area selected" data-id="area">
+						Linje<span class="menuIcon fRight"></span>
+					</li>
+					<li class="chartsAction candlestick " data-id="candlestick">
+						Candlestick<span class="menuIcon fRight"></span>
+					</li>
+					<li class="chartsAction ohlc " data-id="ohlc">
+						OHLC<span class="menuIcon fRight"></span>
+					</li>
+					<li class="chartsAction logarithmic " data-id="logarithmic">
+							Logaritmisk<span class="menuIcon fRight"></span>
+						</li>
+					</ul>
+			</li>
+			<li class="actionGroup settings relative" data-action="settings">
+					<button class="marginLeft4px actionDropToggle" tabIndex="5">
+						<span class="settingsIco icon"></span>
+					</button>
+					<ul class="cleanList actionDropdown hide">
+						<li class="chartsAction " data-id="volume">Volym</li>
+						<li class="chartsAction selected" data-id="highlow">Högst / Lägst</li>
+						<li class="chartsAction selected" data-id="closingprice">Gårdagens stängning</li>
+						<li class="chartsAction selected" data-id="lastprice">Senast betalt</li>
+						</ul>
+				</li>
+			</ul>
+	</div>
+	<div class="chartsTabsWrapper" >
+		<div class="chartsTabs clearFix">
+			<ul class="cleanList floatList fLeft tabList">
+			</ul>
+			<span class="fRight clearTabs bold"></span>
+		</div>
+	</div>
+	<ul class="chartsTab hide">
+		<li class="tab fLeft">
+			<span class="dot fLeft"></span>
+			<a href="#" class="removeTab fLeft"></a>
+			<span class="marginLeft5px tabLabel"></span>
+		</li>
+	</ul>
+	<div class="annotationsToolsWrapper hide">
+		<div class="toolbar noBullets noPadding noMargin clearFix">
+			<div class="toolbarItem"><span class="bold marginRight10px">Rita</span></div>
+			<div class="toolbarItem toolbarItem-button" data-action="line" title="Linje">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_line.svg" class="toolbarIcon" alt="Linje" title="Linje">
+			</div>
+			<div class="toolbarItem toolbarItem-button" data-action="square" title="Rektangel">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_square.svg" class="toolbarIcon" alt="Rektangel" title="Rektangel">
+			</div>
+			<div class="toolbarItem toolbarItem-button" data-action="circle" title="Cirkel">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_circle.svg" class="toolbarIcon" alt="Cirkel" title="Cirkel">
+			</div>
+			<div class="toolbarItem toolbarItem-button" data-action="text" title="Text">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_text.svg" class="toolbarIcon" alt="Text" title="Text">
+			</div>
+			<div class="toolbarItem toolbarItem-button" data-action="select" title="Välj">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_arrow.svg" class="toolbarIcon" alt="Välj" title="Välj">
+			</div>
+			<div class="toolbarItem toolbarItem-dropdown first" data-action="fillColor" title="Bakgrundsfärg">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_fill_color.svg" class="toolbarIcon dropDown" alt="Bakgrundsfärg" title="Bakgrundsfärg">
+				<div class="toolbarItem-dropdownContainer hide">
+					<ul class="annotationColors">
+						<li data-color="rgba(34, 34, 34, 0.4)" style="background-color: #222222"></li>
+						<li data-color="rgba(153, 153, 153, 0.4)" style="background-color: #999999"></li>
+						<li data-color="rgba(255, 80, 27, 0.4)" style="background-color: #ff501b"></li>
+						<li data-color="rgba(65, 155, 208, 0.4)" style="background-color: #419bd0"></li>
+						<li data-color="rgba(108, 192, 113, 0.4)" style="background-color: #6cc071"></li>
+					</ul>
+				</div>
+			</div>
+			<div class="toolbarItem toolbarItem-dropdown" data-action="borderColor" title="Linjefärg">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_line_color.svg" class="toolbarIcon dropDown" alt="Linjefärg" title="Linjefärg">
+				<div class="toolbarItem-dropdownContainer hide">
+					<ul class="annotationColors">
+						<li data-color="rgb(34, 34, 34)" style="background-color: #222222"></li>
+						<li data-color="rgb(153, 153, 153)" style="background-color: #999999"></li>
+						<li data-color="rgb(255, 80, 27)" style="background-color: #ff501b"></li>
+						<li data-color="rgb(65, 155, 208)" style="background-color: #419bd0"></li>
+						<li data-color="rgb(108, 192, 113)" style="background-color: #6cc071"></li>
+					</ul>
+				</div>
+			</div>
+			<div class="toolbarItem toolbarItem-button deleteAnnotation" data-action="delete" title="Ta bort">
+				<img src="/jmvc/avanzabank/images/chart_draw_mode_delete.svg"
+					class="toolbarIcon" alt="Ta bort" title="Ta bort">
+			</div>
+			<span class="fRight clearTabs bold"></span>
+		</div>
+		<div class="annotationDialog hide">
+			<label>
+				<input class="marginTop10px" type="text" maxlength="30" name="" value=""/>
+			</label>
+		</div>
+	</div>
+	<div class="chartsSettingsDialogs hide">
+	<div class="sma">
+		<label>
+			Intervall
+			<br/>
+			<input class="timeFrame marginTop8px" placeholder="Intervall" type="text" name="timeFrame" value="50" />
+		</label>
+		<p class="info marginTop20px">
+			SMA (Simple Moving Average), eller Glidande Medelvärde, visar det genomsnittliga värdet historiskt för det intervall du väljer.
+			<br/><br/>
+			Vissa menar att när ett mindre intervall (50) skär ett högre (200) så är det en köp- eller säljsignal.
+		</p>
+	</div>
+	<div class="ema">
+		<label>
+			Intervall
+			<br/>
+			<input class="timeFrame marginTop8px" placeholder="Intervall" type="text" name="timeFrame" value="12" />
+		</label>
+		<p class="info marginTop20px">
+            EMA (Exponential Moving Average), eller Exponentiellt Glidande Medelvärde, visar ett viktat medelvärde historiskt för det intervall du väljer. Skillnaden mot SMA (Glidande medelvärde) är att istället för att alla punkter har lika stor inverkan så får de punkter som är närmare mer vikt än de första i serien.
+            <br/><br/>
+			Detta leder till att EMA rör sig snabbare än SMA.
+		</p>
+	</div>
+	<div class="rsi">
+		<label>
+			Intervall
+			<br/>
+			<input class="timeFrame marginTop8px" placeholder="Intervall" type="text" name="timeFrame" value="14" />
+		</label>
+		<br/>
+		<label>
+			Högsta
+			<br/>
+			<input class="highThreshold marginTop8px" placeholder="Högsta" type="text" name="highThreshold" value="70" />
+		</label>
+		<br/>
+		<label>
+			Lägsta
+			<br/>
+			<input class="lowThreshold marginTop8px" placeholder="Lägsta"  type="text" name="lowThreshold" value="30" />
+		</label>
+		<p class="info marginTop20px">
+			RSI (Relative Strength Index) kan bland annat användas för att se om en aktie är så kallad överköpt/såld. För varje punkt som en aktie går ner så sjunker RSI, och går den upp så höjs RSI.
+			<br/><br/>
+			Vid ett högt värde kan en aktie anses överköpt, och vid ett lågt för översåld. I dessa lägen så brukar man anse att det är dags för en rekyl åt motsatt håll. Vanligt förekommande gränsvärden är 30 för översåld och 70 för överköpt.
+		</p>
+	</div>
+	<div class="macd">
+		<label>
+			Kort
+			<br/>
+			<input class="shortTimeFrame marginTop8px" placeholder="Kort" type="text" name="shortTimeFrame" value="12" />
+		</label>
+		<br/>
+		<label>
+			Lång
+			<br/>
+			<input class="longTimeFrame marginTop8px" placeholder="Lång" type="text" name="longTimeFrame" value="26" />
+		</label>
+		<br/>
+		<label>
+			Signal
+			<br/>
+			<input class="signalTimeFrame marginTop8px" placeholder="Signal" type="text" name="signalTimeFrame" value="9" />
+		</label>
+		<p class="info marginTop20px">
+			MACD (Moving Average Convergence Divergence) fås fram genom att subtrahera två stycken EMA-värden (kort - lång), som komplement finns även ett signal-EMA baserat på det framtagna MACD-värdet. Differensen mellan dessa två (MACD och Signal) visualiseras i form av staplar.
+			<br/><br/>
+			MACD används ofta för att både uttyda en trend samt hitta momentum i ett värdepapper.
+		</p>
+	</div>
+	<div class="stochastic">
+		<label>
+			Signal(K)
+			<br/>
+			<input class="timeFrame marginTop8px" placeholder="Signal(K)" type="text" name="timeFrame" value="14" />
+		</label>
+		<br/>
+		<label>
+			Period(D)
+			<br/>
+			<input class="slowTimeFrame marginTop8px" placeholder="Period(D)" type="text" name="slowTimeFrame" value="3" />
+		</label>
+		<br/>
+		<label>
+			Högsta
+			<br/>
+			<input class="highThreshold marginTop8px" placeholder="Högsta" type="text" name="highThreshold" value="70" />
+		</label>
+		<br/>
+		<label>
+			Lägsta
+			<br/>
+			<input class="lowThreshold marginTop8px" placeholder="Lägsta"  type="text" name="lowThreshold" value="30" />
+		</label>
+		<p class="info marginTop20px">
+			Stochastic används som en momentumindikator för att se om en aktie är överköpt eller översåld. Indikatorn består utav ett signalvärde(K) som jämför aktiens stängningsvärde relativt högsta/lägsta kurs inom samma period.
+			<br/><br/>
+			Känsligheten för indikatorn justeras sedan med ett periodvärde(D) (SMA, vanligtvis 3).
+			<br/><br/>
+			Köp-och säljsignal brukar anses inträffa när signalvärdet korsar periodvärdet.
+		</p>
+	</div>
+	<div class="bollinger">
+		<label>
+			Intervall
+			<br/>
+			<input class="timeFrame marginTop8px" placeholder="Intervall" type="text" name="timeFrame" value="20" />
+		</label>
+		<br/>
+		<label>
+			Faktor
+			<br/>
+			<input class="coefficient marginTop8px" placeholder="Faktor" type="text" name="coefficient" value="2" />
+		</label>
+		<p class="info marginTop20px">
+			Bollinger Band är en indikator som använd dels för att se om en aktie är överköpt/såld men också för att förutspå ökad volatilitet.
+			<br/><br/>
+			Indikatorn mäter standardavvikelsen (standard 2) utifrån ett SMA (standard 20). Detta representeras sedan av två "band" runt SMA.
+			<br/><br/>
+			Att banden tajtas ihop anses av vissa som ett tecken på att volatiliteten i aktien kommer öka.<br/>
+			Man brukar även anse att en aktie är överköpt om kursen rör sig i den övre delen av banden och översåld om den rör sig i den nedre.
+		</p>
+	</div>
+	
+	<div class="saveTaTemplate">
+		<label class="templateName">
+			Namnge ny TA-mall
+			<br/>
+			<input class="marginTop10px" placeholder="Namn" type="text" name="templateName" />
+		</label>
+		<label class="marginTop15px">Inställningar som sparas</label>
+		<ul class="settingsToSave">
+		</ul>
+	</div>
+	<div class="overWriteTaTemplate">
+		<label>Du har uppnått maximala antalet mallar</label>
+		<p>Du kan antingen radera eller skriva över en befintlig mall</p>
+		<div class="templateNames">
+			<label>
+				Skriv över befintlig mall
+			</label>
+			<select class="marginTop10px" name="templateName">
+				</select>
+		</div>		
+		<label class="marginTop15px">Inställningar som sparas</label>
+		<ul class="settingsToSave">
+		</ul>	
+	</div>
+</div></div>
+			<div class="component hschart"
+     data-component_type="hschart"
+     data-chart_context="STOCKPAGE"
+     data-orderbook_id="5447"
+     data-instrument_id="5605"
+     data-company_id="87"
+     data-orderbook_name="ABB Ltd"
+     data-orderbook_currency="SEK"
+     data-default_index_id="19002"
+     data-chart_type="AREA"
+     data-time_period="today"
+     data-high_low="true"
+     data-advanced_zoom="false"
+     data-last_price="true"
+     data-closing_price="true"
+     data-volume="false"
+     data-owners="false"
+     data-resolution="MINUTE"
+     data-is_percentage_graph=""
+     data-include_negative_values=""
+     data-resolution_values="{&#034;MINUTE&#034;: &#034;1 min.&#034;,&#034;TWO_MINUTES&#034;: &#034;2 min.&#034;,&#034;FIVE_MINUTES&#034;: &#034;5 min.&#034;,&#034;TEN_MINUTES&#034;: &#034;10 min.&#034;,&#034;THIRTY_MINUTES&#034;: &#034;30 min.&#034;,&#034;HOUR&#034;: &#034;Timme&#034;,&#034;DAY&#034;: &#034;Dag&#034;,&#034;WEEK&#034;: &#034;Vecka&#034;,&#034;MONTH&#034;: &#034;Månad&#034;,&#034;QUARTER&#034;: &#034;Kvartal&#034;}"
+     data-disable_settings=""
+     data-disable_navigator=""
+     data-draw_mode="true"
+     data-delayed="true">
+
+	<div class="highstockchart relative"></div>
+	<div class="chartsPointTooltips hide">
+		<div class="compare">
+		</div>
+		<script class="line" type="text/template">
+			<span class="pointRow">
+				<span class="pointRowDot fLeft" style="background-color:{series.color};"></span>{series.name}&nbsp;<span class="value bold">{point.y}</span>
+			</span>
+		</script>
+		<script class="ta" type="text/template">
+			<span class="pointRow">
+				<span class="pointRowDot fLeft" style="background-color:{series.color};"></span>{series.name}&nbsp;<span class="value bold">{point.y}</span>
+			</span>
+		</script>
+		<div class="news toolTip">
+			<h4>{point.text}</h4>
+
+			<p class="intro">{point.intro}</p>
+		</div>
+		<div class="volume">
+			<span class="tooltip-divider"></span>
+			<span class="volumePoint pointRow">{series.name}&nbsp;<span class="value bold">{point.y}</span></span>
+		</div>
+		<div class="owners">
+			<span class="tooltip-divider"></span>
+			<span class="volumePoint pointRow">{series.name}&nbsp;<span class="value bold">{point.y}</span></span>
+		</div>		
+		<div class="date">
+			<span class="datePoint pointRow">{point.key}</span>
+		</div>
+		<div class="ohlc">
+			<span class="pointRow">
+				{series.name}</span>
+			<ul class="cleanList ohlcRows">
+				<li class="open">O:&nbsp;{point.open}</li>
+				<li class="high">H:&nbsp;{point.high}</li>
+				<li class="low">L:&nbsp;{point.low}</li>
+				<li class="close">C:&nbsp;{point.close}</li>
+			</ul>
+		</div>
+		<div class="transaction">
+			<ul class="cleanList hsTooltip">
+				<li><span class="label">Typ</span><span class="value bold">{point.transactionType}</span></li>
+				<li><span class="label">Dag</span><span class="value bold">{point.x:%e %b}</span></li>
+				<li><span class="label">Antal</span><span class="value bold">{point.volume}</span></li>
+				<li><span class="label">Kurs</span><span class="value bold">{point.price:.2f} SEK</span></li>
+			</ul>
+		</div>
+		<div class="report">
+			<ul class="cleanList hsTooltip">
+				<li><span class="value bold">{point.reportType}</span></li>
+			</ul>
+		</div>
+		<div class="dividend">
+			<ul class="cleanList hsTooltip">
+				<li><span class="value">
+					<span class="bold">{point.amountPerShare}</span>
+					SEK / aktie</span>
+				</li>
+				<li><span class="value">
+					<span class="bold">{point.messageType}</span></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="lastPriceIndicator hide"></div>
+	<div class="changePercentIndicator hide"></div>
+	<div class="axisLegend XSText bold clearFix">
+		<div class="fLeft label"><span class="labelPrefix"></span><span class="labelValue"></span></div>
+		<span class="fRight removeAxis"></span>
+	</div>
+</div>
+			<div class="component hstimepanel clearFix" 
+	 data-component_type="hstimepanel"
+	 data-exclude_datepickers=""
+	 data-earliest_possible_date="1999/06/22">
+	<div class="fLeft">
+		<ul class="chartsTimeperiod cleanList floatList clearFix buttonPane">
+			<li class="active">
+					<a href="#" data-timeperiod="today" class="active default">
+						1 d.</a>
+				</li>
+			<li class="">
+					<a href="#" data-timeperiod="week" class="">
+						1 v.</a>
+				</li>
+			<li class="">
+					<a href="#" data-timeperiod="month" class="">
+						1 mån.</a>
+				</li>
+			<li class="">
+					<a href="#" data-timeperiod="three_months" class="">
+						3 mån.</a>
+				</li>
+			<li class="">
+					<a href="#" data-timeperiod="this_year" class="">
+						i år</a>
+				</li>
+			<li class="">
+					<a href="#" data-timeperiod="year" class="">
+						1 år</a>
+				</li>
+			<li class="last">
+					<a href="#" data-timeperiod="three_years" class="">
+						3 år</a>
+				</li>
+			</ul>
+	</div>
+	<div class="fLeft chartsResolution marginLeft10px">
+			<select name="grouping">
+				<option value="MINUTE"  selected>  1 min.</option>
+				<option value="TWO_MINUTES" >  2 min.</option>
+				<option value="FIVE_MINUTES" >  5 min.</option>
+				<option value="TEN_MINUTES" >  10 min.</option>
+				<option value="THIRTY_MINUTES" >  30 min.</option>
+				<option value="HOUR" >  Timme</option>
+				</select>
+		</div>
+	<div class="fRight datePickerContainer chartForm">
+			<span class="datePickerHolder first">
+				<input type="text" class="datePicker first" name="mydate" value="Från"/>
+			</span>
+			<span class="datePickerHolder second">
+				<input type="text" class="datePicker second" name="mydate" value="Till"/>
+			</span>
+		</div>
+	</div>
+		</div>
+
+		<div class="standardDivider tableV2">
+			
+			
+			
+
+
+<div class="component placerabox" data-component_type="placerabox" data-url="/placera/rutor/multi/aktieguiden-mellan.7.87.a.html">
+	<div class="relative">
+		<div class="loaderCover">
+			<div class="loaderAnim"></div>
+		</div>
+	</div>
+</div>
+		</div>
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="stock_data">
+	
+	
+	
+	
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+		
+	<span class="toolTipToggler fRight icon helpIco2 marginLeft5px" data-verticalposition="bottom"></span>
+		<div class="tooltip large">
+
+			<p class="noMargin">
+				<h3>Effektivavkastning</h3>
+				<div>Effektivavkastning visar den totala avkastningen i procent sedan årsskiftet. 
+				Nyckeltalet beaktar både utdelningen och eventuell värdeökning.
+				 Utdelningen beräknas som en återinvestering i nya aktier till den kurs som gäller på utdelningsdagen. 
+				Alla typer av utdelningar tas med i beräkningen och även avknoppningar tas med i beräkningen och kan värderas olika från fall till fall.
+				När utdelning sker i annan valuta än SEK räknas utdelningsbeloppet om till den valutakurs som gäller handelsdagen innan X-dagen.
+				</div>
+				<br/>
+	
+				<h3>Volatilitet</h3>
+				<div>Volatilitet anger hur stora rörelserna i aktiekursen är uttryckt i procent. 
+				Nyckeltalet beräknas på senast betald kurs i aktien under de senaste 30 handelsdagarna och anger hur mycket som aktien varierar i procent.
+				</div>
+				<br/>
+	
+				<h3>Beta</h3>
+	            <div>Beta ger ett mått på samrörligheten mellan en aktie och ett jämförelseindex. 
+	            Nyckeltalet beräknas på 48 månadsvisa observationer och baseras på aktiens köpkurs i relation till de 4 nordiska indexen (SSE/CSE/HEX/OSE). 
+	            </div>
+	            <br/>
+				
+				<h3>Direktavkastning</h3>
+				<div>Direktavkastning visar procentuell relation mellan utdelningens storlek och aktiekursen. 
+				Det senaste redovisningsårets totalutdelning (föreslagen eller utbetald) jämförs med gårdagens stängningskurs. 
+				Om information inte finns för årets samtliga utdelningar baseras beräkningen på utdelningarna året innan.
+				</div>
+				<br/>	
+				
+				<h3>Vinst/Omsättning</h3>
+				<div>Vinst/Omsättning anger företagets vinst i förhållande till omsättning. Uppdatering sker vid varje kvartalsrapportering och baseras 
+				rullande på 12 månader bakåt i tiden.
+				</div>
+			
+			</p>
+		</div>
+	
+	
+	
+
+	
+		<h2 class="fLeft upperCase">Aktiedata</h2>
+	
+	
+		
+	
+	
+	
+	
+	<span class="fRight">Baserat på den kvartalsrapport som avser 2017-03-31</span>
+
+	
+	
+</div>
+
+	<div class="content">
+		<div class="row">
+			<div class="column grid_3point5">
+				<dl class="border XSText rightAlignText noMarginTop highlightOnHover thickBorderBottom noTopBorder">
+					<dt><span>Kortnamn</span></dt>
+					<dd><span>ABB</span></dd>
+					<dt><span>ISIN</span></dt>
+					<dd><span>CH0012221716</span></dd>
+					<dt><span>Marknad</span></dt>
+					<dd><span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Stockholmsbörsen
+	
+		(Large Cap Stockholm)
+	
+	<br />
+</span></dd>
+					<dt><span>Bransch</span></dt>
+					<dd><span>Industrivaror & tjänster</span></dd>
+					<dt><span>Handlas i</span></dt>
+					<dd><span>SEK</span></dd>
+					<dt><span>Beta</span></dt>
+					<dd><span>0,85</span></dd>
+					<dt><span>Volatilitet %</span></dt>
+					<dd><span>10,69</span></dd>
+					<dt><span>Belåningsvärde %</span></dt>
+					<dd><span>80</span></dd>
+					<dt><span>Säkerhetskrav %</span></dt>
+					<dd><span>130</span></dd>
+					<dt><span>Med i Superlånet</span></dt>
+					<dd><span>Ja</span></dd>
+					<dt><span>Blankningsbar</span></dt>
+					<dd><span>Ja</span></dd>
+					
+						<dt><span>Utförlig bolagsdata</span></dt>
+						<dd><span class="morningstarFactsheet"><span class="icon pdfIcoSmall"></span><a href="http://lt.morningstar.com/gj8uge2g9k/custom/simplepage1/default.aspx?isin=CH0012221716&exchange=XSTO&curr=BAS" target="_blank">Morningstar faktablad</a></span></dd>
+					
+				</dl>
+			</div>
+			<div class="column grid_3point5">
+				<dl class="border XSText rightAlignText noMarginTop highlightOnHover thickBorderBottom noTopBorder">
+					<dt><span>Antal aktier</span></dt>
+					<dd><span>500 751 253</span></dd>
+					<dt><span>Börsvärde MSEK</span></dt>
+					<dd><span>485 471,72</span></dd>
+					<dt><span>Direktavkastning %</span></dt>
+					<dd><span>3,12</span></dd>
+					<dt><span>P/E-tal</span></dt>
+					<dd><span>24,42</span></dd>
+					<dt><span>P/S-tal</span></dt>
+					<dd><span>1,58</span></dd>
+					<dt><span>Kurs/eget kapital </span></dt>
+					<dd><span>3,97</span></dd>
+					<dt><span>Omsättning/aktie SEK</span></dt>
+					<dd><span>138,67</span></dd>
+					<dt><span>Vinst/aktie SEK</span></dt>
+					<dd><span>8,98</span></dd>
+					<dt><span>Eget kapital/aktie SEK</span></dt>
+					<dd><span>55,71</span></dd>
+					<dt><span>Försäljning/aktie SEK</span></dt>
+					<dd><span>138,55</span></dd>
+					<dt><span>Effektivavkastning %</span></dt>
+					<dd><span>18,18</span></dd>
+                    <dt><span>Antal ägare hos Avanza</span></dt>
+                    <dd><span>15 120</span></dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+	
+	
+
+		</div>
+
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+		<div class="component broker_trades" data-component_type="broker_trades">
+
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+		
+				<span class="toolTipToggler fRight icon helpIco2" data-verticalposition="top"></span>
+				<div class="tooltip medium">
+					<h3>Köpt snittpris</h3>
+					<p>Anger det volymvägda snittpris (VWAP) som mäklaren har köpt på i dag beräknat över alla avslut exklusive rapporterade affärer.</p>
+
+					<h3>Sålt snittpris</h3>
+					<p>Anger det volymvägda snittpris (VWAP) som mäklaren har sålt på i dag beräknat över alla avslut exklusive rapporterade affärer.</p>
+				</div>
+			
+	
+
+	
+	
+		<h2 class="fLeft upperCase">Mäklarstatistik</h2>
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+			
+			<div class="content">
+				<table class="tRight tableV2 solidRows solidThickEnding colorOddRows shortened tablesorter tablesorterIcons"
+					data-orderbook_id="5447">
+
+					<thead>
+						<tr>
+							<th class="tLeft"><a href="javascript:void(0)">Mäklare</a></th>
+							<th data-sorter="commaDigit"><a href="javascript:void(0)">Köpt snittpris</a></th>
+							<th data-sorter="commaDigit"><a href="javascript:void(0)">Köpt</a></th>
+							<th data-sorter="commaDigit"><a href="javascript:void(0)">Sålt</a></th>
+							<th data-sorter="commaDigit"><a href="javascript:void(0)">Sålt snittpris</a></th>
+							<th data-sorter="commaDigit" class="headerSortUp"><a href="javascript:void(0)">Nettoköpt</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Anonyma">Anonyma</span></td>
+								<td>221,04</td>
+								<td>561 602</td>
+								<td>460 009</td>
+								<td>221,06</td>
+								<td class="last">101 593</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="NORDNET BANK AB">NON</span></td>
+								<td>221,05</td>
+								<td>12 918</td>
+								<td>5 206</td>
+								<td>220,93</td>
+								<td class="last">7 712</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Sydbank A/S">SYD</span></td>
+								<td>220,90</td>
+								<td>3 000</td>
+								<td>0</td>
+								<td>-</td>
+								<td class="last">3 000</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Ålandsbanken Abp">AAL</span></td>
+								<td>220,98</td>
+								<td>2 270</td>
+								<td>200</td>
+								<td>220,80</td>
+								<td class="last">2 070</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Erik Penser Bankaktiebolag">EPB</span></td>
+								<td>221,26</td>
+								<td>650</td>
+								<td>0</td>
+								<td>-</td>
+								<td class="last">650</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="OP Corporate Bank plc">POH</span></td>
+								<td>-</td>
+								<td>0</td>
+								<td>100</td>
+								<td>221,50</td>
+								<td class="last">-100</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Länsförsäkringar Bank AB">LFB</span></td>
+								<td>-</td>
+								<td>0</td>
+								<td>250</td>
+								<td>221,00</td>
+								<td class="last">-250</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="SkandiaBanken AB">SBN</span></td>
+								<td>221,40</td>
+								<td>100</td>
+								<td>355</td>
+								<td>221,22</td>
+								<td class="last">-255</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="ALL OPTIONS INTERNATIONAL B.V.">AOI</span></td>
+								<td>221,20</td>
+								<td>1 550</td>
+								<td>2 408</td>
+								<td>221,39</td>
+								<td class="last">-858</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Danske Bank A/S, Danske Markets">DDB</span></td>
+								<td>-</td>
+								<td>0</td>
+								<td>3 593</td>
+								<td>220,90</td>
+								<td class="last">-3 593</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Svenska Handelsbanken AB">SHB</span></td>
+								<td>220,80</td>
+								<td>1 000</td>
+								<td>7 079</td>
+								<td>221,07</td>
+								<td class="last">-6 079</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Nordea Bank Finland Plc">NRD</span></td>
+								<td>221,08</td>
+								<td>5 225</td>
+								<td>17 838</td>
+								<td>221,09</td>
+								<td class="last">-12 613</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Avanza Bank AB">AVA</span></td>
+								<td>221,05</td>
+								<td>4 905</td>
+								<td>24 650</td>
+								<td>220,92</td>
+								<td class="last">-19 745</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="Skandinaviska Enskilda Banken AB">ENS</span></td>
+								<td>221,31</td>
+								<td>48 976</td>
+								<td>80 507</td>
+								<td>221,10</td>
+								<td class="last">-31 531</td>
+							</tr>
+						
+							<tr class="viewMoreLessRow clientSortedRow">
+								<td class="tLeft"><span class="tipTrigger" title="SWEDBANK AB">SWB</span></td>
+								<td>221,05</td>
+								<td>880</td>
+								<td>40 881</td>
+								<td>220,98</td>
+								<td class="last">-40 001</td>
+							</tr>
+						
+						
+ 					</tbody>
+				</table>
+
+				<div class="clearFix componentBottomToolbar hide">
+					<div class="fRight">
+						<a href="#" class="XSText moreLess" data-moretext="Fler" data-lesstext="Färre">Se fler</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	
+	
+		</div>
+	</div>
+	<div class="column grid_5">
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="component order_depth" data-component_type="order_depth">
+
+<div class="content">
+	
+	<table class="tRight tableV2 fixedTable noPyjamas" data-orderbook_id="5447">
+		
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<caption class="captionBar clearFix">
+	<h2 class="fLeft upperCase noMargin">Orderdjup</h2>
+	
+	
+		
+</caption>
+		
+	   	<thead>
+		   	<tr>
+		   		<th class="amount tLeft">Antal</th>
+		   		<th class="price tLeft">Pris</th>
+				<th class="buySell dottedRight">Köp</th>
+				<th class="buySell tLeft">Sälj</th>
+		   		<th class="price">Pris</th>
+		   		<th class="amount last">Antal</th>
+		   	</tr>
+	   	</thead>
+	   	
+	   	<tbody>
+			
+									
+					<tr data-sellprice="221.30" data-buyprice="221.20">
+						<td class="tLeft">5 479</td>
+						<td class="tLeft">221,20</td>
+						<td class="tLeft dottedRight">	
+							<div class="orderDepthBarContainer clearFix">
+							    
+							    	<div class="orderDepthBar orderDepthBarBid" style="width: 100%;"></div>
+								
+							</div>
+						</td>
+						<td class="tLeft">
+							<div class="orderDepthBarContainer clearFix">
+							    
+							    	<div class="orderDepthBar orderDepthBarAsk" style="width: 68%;"></div>
+								
+							</div>
+						</td>
+						<td>221,30</td>
+						<td class="last">3 711</td>
+					</tr>
+				
+			
+		</tbody>
+	</table>
+	
+	
+	<table class="pushTemplate hide">
+		<tbody>
+			<tr data-sellprice="" data-buyprice="">
+				<td class="tLeft"></td>
+				<td class="tLeft"></td>
+				<td class="tLeft dottedRight">	
+					<div class="orderDepthBarContainer clearFix">          
+					    	<div class="orderDepthBar orderDepthBarBid" style=""></div>
+					</div>
+				</td>
+				<td class="tLeft">
+					<div class="orderDepthBarContainer clearFix">          
+					    	<div class="orderDepthBar orderDepthBarAsk" style=""></div>
+					</div>
+				</td>
+				<td></td>
+				<td class="last"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	
+		<p class="tCenter">För att se fler orderdjup måste du <a href="javascript:void(0);" class="triggerLogin">logga in</a>.</p>
+	
+
+</div>
+</div>
+
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="component latest_trades"
+		data-component_type="latest_trades">
+
+		
+			
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+		
+				
+				<span class="toolTipToggler fRight icon helpIco2 " data-verticalposition="top"></span>
+				<div class="tooltip large">
+					<h3>Makulerat avslut</h3>
+					<p>Ett överstruket avslut innebär att avslutet har blivit makulerat på börsen. Avslut kan bli makulerade av flera olika anledningar, t.ex. av börsens övervakning som inte anser att det berörda avslutet har skett på en marknadsmässig kurs.</p>
+
+					<h3>Rapporterat avslut</h3>
+					<p>Ett avslut med symbolen <img src="/jmvc/avanzabank/images/reported_trade.svg" class="reportedTradeIcon"> innebär att avslutet är ett rapporterat avslut som skett utanför börsen genom att två motparter kommit överens om pris och volym sinsemellan. Sådana affärer kallas för lappningar och det handlar ofta om större poster som inte annars går att omsätta i marknaden utan att väsentligt påverka kursen.</p>
+				</div>
+			
+	
+
+	
+	
+		<h2 class="fLeft upperCase">Senaste avslut</h2>
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+
+		
+
+
+
+		<div class="content">
+			<table class="tRight tableV2 solidRows solidThinEnding" data-orderbook_id="5447" data-max_shown_trades="8">
+				<thead>
+					<tr>
+						<th class="tLeft">Köpare</th>
+						<th class="tLeft">Säljare</th>
+						<th>Antal</th>
+						<th>Betalt</th>
+						<th class="last">Tid</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Skandinaviska Enskilda Banken AB'>
+        	ENS
+		</span>
+	</td>
+	
+	<td>119</td>
+	<td>221,30</td>
+	<td class="last ">15:13:56</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Skandinaviska Enskilda Banken AB'>
+        	ENS
+		</span>
+	</td>
+	
+	<td>331</td>
+	<td>221,30</td>
+	<td class="last ">15:13:56</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Skandinaviska Enskilda Banken AB'>
+        	ENS
+		</span>
+	</td>
+	
+	<td>65</td>
+	<td>221,30</td>
+	<td class="last ">15:13:56</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Skandinaviska Enskilda Banken AB'>
+        	ENS
+		</span>
+	</td>
+	
+	<td>53</td>
+	<td>221,30</td>
+	<td class="last ">15:13:56</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+        	-
+		</span>
+	</td>
+	
+	<td>309</td>
+	<td>221,30</td>
+	<td class="last ">15:12:35</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Avanza Bank AB'>
+        	AVA
+		</span>
+	</td>
+	
+	<td>1</td>
+	<td>221,20</td>
+	<td class="last ">15:12:25</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Avanza Bank AB'>
+        	AVA
+		</span>
+	</td>
+	
+	<td>99</td>
+	<td>221,20</td>
+	<td class="last ">15:12:25</td>
+</tr>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr class="clientSortedRow ">
+	<td class="tLeft">
+		<span class="tipTrigger" title='-'>
+			-
+        </span>
+	</td>
+	
+	<td class="tLeft">
+		<span class="tipTrigger" title='Skandinaviska Enskilda Banken AB'>
+        	ENS
+		</span>
+	</td>
+	
+	<td>171</td>
+	<td>221,30</td>
+	<td class="last ">15:12:17</td>
+</tr>
+					
+					
+
+
+
+				</tbody>
+				<tbody>
+				<tr class="noHighlight noTradesMatch hide">
+					<td class="tLeft" colspan="5">Inga avslut matchade ditt val.</td>
+				</tr>
+				</tbody>
+			</table>
+
+			
+				<div class="fLeft bold paddingTop10px">
+					Omsättning SEK: <span class="totalValueTraded">154 580 600</span>
+				</div>
+            	<div class="fRight paddingTop10px">
+	                <a class="XSText fRight" href="/aktier/dagens-avslut.html/5447/abb-ltd">Se fler avslut</a>
+            	</div>
+	            <div class="tLeft clearLeft clearFix bold">
+					Volymvägt snittpris: <span class="volumeWeightedAveragePrice">221,06</span>
+				</div>
+			
+
+			
+		</div>
+	</div>
+
+		</div>
+
+        <div class="standardDivider tableV2">
+            <div class="relative">
+        <div class="component recommendations borderBox bold clearFix" data-component_type="recommendations">
+            <div class="recommendationsHeader">
+                <span class="thermometerLabel fLeft">Rekommendationer</span>
+                <span class="toolTipToggler icon helpIco2 fLeft marginLeft10px marginTop1px" data-verticalposition="top"></span>
+				<span class="plcMiniLogo icon fRight"></span>
+                <div class="tooltip">
+                    <p class="noMargin">
+						Funktionen visar konsensus av analyser som finns tillgängliga för ABB Ltd. Funktionen bygger på, och visas för, de bolag som är med i SME Direkts sammanställningar.
+						<br><br>
+						<b>Så läser du av</b>
+						<br>
+						Siffran i varje kolumn anger antalet analyshus som har en köp/behåll/sälj-rekommendation på bolaget. Under "Visa kommentarer" går det att se mer info från respektive analyshus för de flesta rekommendationer inkomna senaste 3 månaderna.
+						<br><br>
+						För mer detaljerade prognoser och estimat, använd tjänsten <a href="/placera/externa-tjanster/sme-direkt.html">SME Direkt</a>
+						
+                    </p>
+                </div>
+            </div>
+            <div class="recommendationsContent clearFix noBorderBottom">
+                <div class="thermometerBar">
+                    <div class="gained" style="width: 36.666666666666664%;"></div>
+                    <div class="unchanged" style="width: 50.0%;"></div>
+                    <div class="declined" style="width: 13.333333333333334%;"></div>
+                </div>
+
+                <div class="thermometerDesc XSText">
+                    <ul class="cleanList floatList">
+                        <li class="gained">
+                            <span class="icon gainedDescription"></span>
+                            <span class="descriptionText">Köp (11)</span>
+                        </li>
+                        <li class="unchanged">
+                            <span class="icon unchangedDescription"></span>
+                            <span class="descriptionText">Behåll
+                                (15)</span>
+                        </li>
+                        <li class="declined noMarginRight fRight">
+                            <span class="icon declinedDescription"></span>
+                            <span class="descriptionText">Sälj (4)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="commentListWrapper fLeft XSText buy marginTop10px hide">
+                	<div class="detailsListWrapper clearFix marginTop8px">
+	                    <h4 class="marginBottom5px">
+	                    	<span class="icon gainedDescription"></span>	
+	                    	<span class="descriptionText">Köp - Tillgängliga kommentarer</span>
+	                    </h4>
+	                    <span class="defaulttext normal">Inga tillgängliga kommentarer</span>
+	</div>
+                   
+                   	<div class="detailsListWrapper clearFix">
+	                    <h4 class="marginBottom5px">
+	                    	<span class="icon unchangedDescription"></span>
+	                    	<span class="descriptionText">Behåll - Tillgängliga kommentarer</span>
+	                    </h4>
+	                    <span class="defaulttext normal">Inga tillgängliga kommentarer</span>
+	</div>
+                    
+                    <div class="detailsListWrapper clearFix">
+	                    <h4 class="marginBottom5px">
+	                    	<span class="icon declinedDescription"></span>
+	                    	<span class="descriptionText">Sälj - Tillgängliga kommentarer</span>
+	                    </h4>
+	                    <span class="defaulttext normal">Inga tillgängliga kommentarer</span>
+	</div>
+                </div>
+            </div>
+		    <a href="javascript:void(0)" title="Visa analyshus och kommentarer" class="toggleComments noTopBorder showMoreItems recommendations XSText" data-hide="Dölj Kommentarer" data-show="Visa Kommentarer">Visa Kommentarer</a>
+        </div>
+    </div>
+
+        </div>
+		
+
+        
+			<div class="standardDivider tableV2">
+				<div class="component relatedItems relatedStocks relative" data-component_type="relateditems">
+	<table class="relatedStocksTable relatedItemsTable" data-gtm_event="relatedStocksClick">
+		<caption class="bold defaultSize">
+            Relaterade aktier
+            <span class="toolTipToggler fRight icon helpIco2 marginTop1px" data-verticalposition="top"></span>
+            <div class="tooltip">
+                <p class="noMargin">
+                    Aktieägare i de relaterade bolagen äger också aktier i <b>ABB Ltd</b>.
+                    Andelen <b>96 %</b>
+                    anger hur många av <b>ASML Holding NV-ägarna</b> som även har <b>ABB Ltd</b> i sin portfölj.
+                    <br/><br/>
+                    Informationen bygger på dagsaktuellt ägande hos Avanzas kunder och presenteras för bolag som ägs av minst 100 kunder.
+                </p>
+            </div>
+		</caption>
+		<thead class="whiteBg">
+			<tr>
+				<th class="buySellButtons">Köp/sälj</th>
+				<th class="owner">Ägare av</th>
+				<th class="tRight partOwner">Andel som även äger <span title="ABB Ltd">ABB</span></th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr data-orderbookname="ASML Holding NV"
+	data-orderbookid="3723"
+	data-position="1">
+    <td class="buySellButtons">
+        <ul class="cleanList floatList actionButtons buySellButtons">
+            <li class="first">
+                <a href="/handla/aktier.html/kop/3723/asml-holding-nv"
+                           title="Köp aktier i ASML Holding NV"
+                           class="orderLink XXSText">K</a>
+	                </li>
+            <li class="last">
+                <a href="/handla/aktier.html/salj/3723/asml-holding-nv"
+                           title="Sälj aktier i ASML Holding NV"
+                           class="orderLink XXSText">S</a>
+	                </li>
+        </ul>
+    </td>
+    <td colspan="2" class="contentPart">
+        <div class="topRow">
+            <span class="ellipsis">
+    
+
+
+
+
+
+
+
+
+
+
+	<span class="flag flag-small flag-us ">
+		
+	</span>
+
+<a href="/aktier/om-aktien.html/3723/asml-holding-nv" class="link" title="ASML Holding NV">
+                ASML Holding NV</a>
+        </span><div class="fRight bold">
+                Andel 96 %</div>
+        </div>
+        <div class="bottomRow">
+            Utveckling 1 år
+			<span class="positive">
+			    36,94 %</span>
+            <div class="barContainer fRight">
+                <div style="width: 95.60%;" class="bar"></div>
+            </div>
+        </div>
+    </td>
+</tr><tr data-orderbookname="ING Groep NV"
+	data-orderbookid="3815"
+	data-position="2">
+    <td class="buySellButtons">
+        <ul class="cleanList floatList actionButtons buySellButtons">
+            <li class="first">
+                <a href="/handla/aktier.html/kop/3815/ing-groep-nv"
+                           title="Köp aktier i ING Groep NV"
+                           class="orderLink XXSText">K</a>
+	                </li>
+            <li class="last">
+                <a href="/handla/aktier.html/salj/3815/ing-groep-nv"
+                           title="Sälj aktier i ING Groep NV"
+                           class="orderLink XXSText">S</a>
+	                </li>
+        </ul>
+    </td>
+    <td colspan="2" class="contentPart">
+        <div class="topRow">
+            <span class="ellipsis">
+    
+
+
+
+
+
+
+
+
+
+
+	<span class="flag flag-small flag-us ">
+		
+	</span>
+
+<a href="/aktier/om-aktien.html/3815/ing-groep-nv" class="link" title="ING Groep NV">
+                ING Groep NV</a>
+        </span><div class="fRight bold">
+                Andel 90 %</div>
+        </div>
+        <div class="bottomRow">
+            Utveckling 1 år
+			<span class="positive">
+			    49,69 %</span>
+            <div class="barContainer fRight">
+                <div style="width: 89.82%;" class="bar"></div>
+            </div>
+        </div>
+    </td>
+</tr><tr data-orderbookname="BNP Paribas SA"
+	data-orderbookid="745795"
+	data-position="3">
+    <td class="buySellButtons">
+        <ul class="cleanList floatList actionButtons buySellButtons">
+            <li class="first">
+                <a href="/handla/aktier.html/kop/745795/bnp-paribas-sa"
+                           title="Köp aktier i BNP Paribas SA"
+                           class="orderLink XXSText">K</a>
+	                </li>
+            <li class="last">
+                <a href="/handla/aktier.html/salj/745795/bnp-paribas-sa"
+                           title="Sälj aktier i BNP Paribas SA"
+                           class="orderLink XXSText">S</a>
+	                </li>
+        </ul>
+    </td>
+    <td colspan="2" class="contentPart">
+        <div class="topRow">
+            <span class="ellipsis">
+    
+
+
+
+
+
+
+
+
+
+
+	<span class="flag flag-small flag-fr ">
+		
+	</span>
+
+<a href="/aktier/om-aktien.html/745795/bnp-paribas-sa" class="link" title="BNP Paribas SA">
+                BNP Paribas SA</a>
+        </span><div class="fRight bold">
+                Andel 90 %</div>
+        </div>
+        <div class="bottomRow">
+            Utveckling 1 år
+			<span class="unknown">
+			    -</span>
+            <div class="barContainer fRight">
+                <div style="width: 89.66%;" class="bar"></div>
+            </div>
+        </div>
+    </td>
+</tr></tbody>
+        </table>
+    <span class="showMoreItems related XSText">
+                <a class="triggerLogin" href="#">Logga in</a> eller <a href="/bli-kund.html">bli kund</a> för att se fler
+            </span>
+        </div>
+			</div>
+		
+
+        
+
+        
+			<div class="standardDivider tableV2">
+				
+
+
+<div class="component placerabox" data-component_type="placerabox" data-url="/placera/rutor/multi/aktieguiden-liten.7.87.html">
+	<div class="relative">
+		<div class="loaderCover">
+			<div class="loaderAnim"></div>
+		</div>
+	</div>
+</div>
+			</div>
+		
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="history">
+	<div class="content">
+		<table class="tRight tableV2 solidRows solidThinEnding" data-orderbook_id="5447">
+			
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<caption class="captionBar clearFix">
+	<h2 class="fLeft upperCase noMargin">Historik</h2>
+	
+	
+		
+</caption>
+			<thead>
+				<tr class="solidBorder">
+					<th class="tLeft">Sedan</th>
+					<th>Kurs</th>
+					<th class="last">+/- %</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="noRowHighlight">
+					<td class="tLeft">1 vecka</td>
+					<td>219,00 </td>
+					<td class="last">1,05</td>
+				</tr>
+			
+				<tr class="rowHighlight">
+					<td class="tLeft">1 månad</td>
+					<td>217,90</td>
+					<td class="last">1,56</td>
+				</tr>
+			
+				<tr class="noRowHighlight">
+					<td class="tLeft">3 månader</td>
+					<td>205,10</td>
+					<td class="last">7,90</td>
+				</tr>
+				<tr class="rowHighlight">
+					<td class="tLeft">i år</td>
+					<td>191,80</td>
+					<td class="last">15,38</td>
+				</tr>
+				<tr class="noRowHighlight">
+					<td class="tLeft">12 månader</td>
+					<td>170,70</td>
+					<td class="last">29,64</td>
+				</tr>
+				<tr class="rowHighlight">
+					<td class="tLeft">3 år</td>
+					<td>155,80</td>
+					<td class="last">42,04</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+
+	
+	
+		<h2 class="fLeft upperCase">1 års utveckling</h2>
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+			<div class="oneYearDevelop clearFix">
+		
+				
+				
+					
+				
+			
+				<div class="developSliderWrap">
+					<div class="developSlider">
+						<span style="margin-left:-180px" >Senast <span class="bold">221,30</span></span>
+						<div style="left:97.50415973377704%;" class="developerMarker"></div>
+					</div>
+					<div>
+						<div class="fLeft">Lägst <span class=" bold">162,70</span></div>
+						<div class="fRight">Högst <span class="bold">222,80</span></div>
+					</div>
+			
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+		</div>
+		
+			<div class="standardDivider">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="component dividends" data-component_type="company_events">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+		
+		<span class="toolTipToggler fRight icon helpIco2 marginLeft5px" data-verticalposition="top"></span>
+		<div class="tooltip medium">
+			<h3>Utdelning/aktie</h3>
+			<p>Visar vilket belopp som betalas ut i utdelning per aktie.</p>
+
+			<h3>Handlas utan utdelning</h3>
+			<p>Visar vilket datum aktien handlas utan rätt till utdelning. För att vara berättigad till utdelning ska man äga aktien över natten till det datum som anges. Därefter kan aktien säljas och man erhåller fortfarande utdelningen.</p>
+
+			<h3>Utdelningsdag</h3>
+			<p>Visar vilket datum utdelningen bokas in på kontot.</p>
+
+			<p class="noMarginBottom">Du kan läsa mer om hur utdelningar går till i <a class="noPadding" href="https://www.avanza.se/kundservice/kundservice/fragor-svar/handel-vardepapper/utdelningar.html">Frågor & Svar</a>.</p>
+		</div>
+	
+	
+
+	
+		<h2 class="fLeft upperCase">Utdelningar</h2>
+	
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+
+	<div class="content">
+		
+			<table class="solidRows tableV2 highlightOnHover solidThinEnding tRight">
+				<thead>
+					<tr>
+						<th class="tLeft">Typ</th>
+						<th>Utdelning/aktie</th>
+						<th>Handlas utan utdelning</th>
+						<th class="last">Utdelningsdag</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+					
+						
+						
+						
+						<tr 
+							class="
+							
+							
+								noRowHighlight
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>6,84 SEK</td>
+							<td>2017-04-19</td>
+							<td class="last">
+                                2017-04-25
+                            </td>
+						</tr>
+					
+						
+						
+						
+						<tr 
+							class="
+							
+								rowHighlight
+							
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>6,47 SEK</td>
+							<td>2016-07-11</td>
+							<td class="last">
+                                2016-07-15
+                            </td>
+						</tr>
+					
+						
+						
+						
+						<tr 
+							class="
+							
+							
+								noRowHighlight
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>1,52 SEK</td>
+							<td>2015-07-27</td>
+							<td class="last">
+                                2015-07-31
+                            </td>
+						</tr>
+					
+						
+						
+						
+						<tr 
+							class="
+							
+								rowHighlight
+							
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>4,92 SEK</td>
+							<td>2015-05-05</td>
+							<td class="last">
+                                2015-05-11
+                            </td>
+						</tr>
+					
+						
+						
+						
+						<tr 
+							class="
+							
+							
+								noRowHighlight
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>5,19 SEK</td>
+							<td>2014-05-05</td>
+							<td class="last">
+                                2014-05-12
+                            </td>
+						</tr>
+					
+						
+						
+							 
+						
+						
+						<tr 
+							class="hide
+							
+								rowHighlight
+							
+							
+							"
+						>
+							<td class="tLeft">Ordinarie utdelning</td>
+							<td>4,74 SEK</td>
+							<td>2013-04-29</td>
+							<td class="last">
+                                2013-05-07
+                            </td>
+						</tr>
+					
+					
+				</tbody>
+			</table>
+			
+			
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="clearFix componentBottomToolbar ">
+	
+	<div class="fRight">
+		<a class="readMore" href="#">Visa alla</a>
+	</div>
+</div>
+			
+			
+		
+
+		
+
+	</div>
+</div>
+
+			</div>
+		
+        
+			<div class="standardDivider tableV2">
+	            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="externalLinkList">
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+
+	
+	
+		<h2 class="fLeft upperCase">Mer om ABB</h2>
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+    <div class="content marginTop8px">
+        <ul class="cleanList">
+           
+            <li><a href="https://marknadssok.fi.se/publiceringsklient" target="_blank">Insiderhandel</a></li>
+        </ul>
+    </div>
+</div>
+	        </div>
+	    
+		<div class="standardDivider tableV2">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="related_instruments externalLinkList">
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+<div class="componentToolbar clearFix relative tableV2" role="toolbar">
+	
+
+	
+		<h2 class="fLeft upperCase">Relaterade värdepapper</h2>
+	
+	
+		
+	
+	
+	
+	
+	
+	
+</div>
+
+	
+	<div class="content marginTop8px">
+		<ul class="cleanList">
+			
+				<li><a href="/optioner/lista.html?underlyingInstrumentId=5605">Optioner</a></li>
+			
+				<li><a href="/borshandlade-produkter/warranter-torg/lista.html?underlyingInstruments=5605">Warranter</a></li>
+			
+		</ul>
+	</div>
+	
+</div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+    
+
+        
+        <br />
+    
+</div>
+<div class="collist section">
+
+
+
+
+
+	
+	
+		<div class="row ">
+			
+				<div class="column grid_8 ">
+					<div class="parsys col0"><div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	 
+	
+	
+	
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+		<div class="parsys customercategorycontentparsys"><div class="banner-rotation section">
+
+
+    
+    
+        
+                                
+            
+                                
+            
+                                
+            <div class="banner-3 parsys"><div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+        	
+			
+            <a href="http://blogg.avanza.se/avanza/" class="addToGtm  noExternalIco" data-action="normal-omaktien-bloggenreklam" target="_blank" data-gtm_event="banner" data-gtm_data='{"name":"normal-omaktien-bloggenreklam", "destination":"http://blogg.avanza.se/avanza/"}'>
+            	
+        
+
+        
+
+        
+            <img src="/avanzabank/puffar/blogg/Bloggen.png"/>
+        
+
+        
+            </a>
+        
+        
+    
+    
+
+
+</div>
+
+</div>
+
+                                
+            
+            
+    
+</div>
+
+</div>
+
+	
+</div>
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	
+    
+	
+	 
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	
+    
+	 
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+
+</div>
+
+				</div>
+			
+				<div class="column grid_4 ">
+					<div class="parsys col1"><div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+<div class="customer-dependent-content section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="customerDependentContent" >
+	
+    
+    
+	
+		
+	
+	
+	
+	
+	
+    
+	
+	
+	
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+
+	
+</div>
+</div>
+
+</div>
+
+				</div>
+			
+		</div>
+	
+</div>
+
+</div>
+
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    
+    
+        
+	<div class="footer">
+
+<footer id="footer">
+	 
+         
+         
+             
+                 <div class="parsys fotcont"><div class="section cq-bgImageWrapper">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+ 
+	
+
+ 
+	
+
+
+
+
+
+	
+
+
+	
+
+
+	
+
+
+
+
+<div class="contentBoxGrey row noMargin white whiteLinks   relative bgImage" style=" background-color: #333333; border: 1px solid #333333; border-top: 2px solid #333333; border-bottom: 2px solid #333333;">
+	
+		<div class="sWidth">
+	
+	<div class="parsys content"><div class="avdelare section">
+
+
+
+
+
+	
+
+	
+		<div class="divider space-10"></div>
+	
+
+</div>
+<div class="collist section">
+
+
+
+
+
+	
+	
+		<div class="row ">
+			
+				<div class="column grid_2 ">
+					<div class="parsys col0"><div class="img section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+	@media (max-width: 768px) {
+		.rl .img .img-552e6537-4944-4f23-b259-a6f256aa97e1-auto {
+			min-width: autopx;
+			max-width: autopx;
+			height: 0px;
+		}
+	}
+
+	@media (min-width: 769px) {
+		.rl .img .img-552e6537-4944-4f23-b259-a6f256aa97e1-auto {
+				min-width: autopx;
+			max-width: autopx;
+			height: 0px;
+		}
+	}
+</style>
+
+</div>
+<div class="img section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+	@media (max-width: 768px) {
+		.rl .img .img-ec6f1306-9a3b-45df-8517-3b2bee734250-auto {
+			min-width: autopx;
+			max-width: autopx;
+			height: 0px;
+		}
+	}
+
+	@media (min-width: 769px) {
+		.rl .img .img-ec6f1306-9a3b-45df-8517-3b2bee734250-auto {
+				min-width: autopx;
+			max-width: autopx;
+			height: 0px;
+		}
+	}
+</style>
+
+</div>
+<div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+
+        
+
+        
+            <img src="/avanzabank/startsida/footer/kundservice-ic.svg" width="20" height="20"/>
+        
+
+        
+        
+    
+    
+
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="heading section">
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+    
+		<h3 style='color:#ffffff;' class="  small  tLeft  ">
+		
+			<div id="vill-du-ha-hjalp" class="">
+			    
+			        
+			        
+			        	
+				         	
+				         	
+				         		Vill du ha hjälp?
+				         	
+			        	
+			        
+			    
+			</div>
+		
+		</h3>
+	
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="/kundservice/oversikt.html">Frågor &amp; Svar</a><br>
+ <a style="font-weight: normal;" adhocenable="false" href="/kundservice/kontakta-oss.html">Kontakta oss</a></span></span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 30px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+				</div>
+			
+				<div class="column grid_2point5 ">
+					<div class="parsys col1"><div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+
+        
+
+        
+            <img src="/avanzabank/startsida/footer/bloggar-ic.svg" width="20" height="20"/>
+        
+
+        
+        
+    
+    
+
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="heading section">
+
+
+
+
+
+
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+    
+		<h3 style='color:#ffffff;' class="  small noMarginTop  tLeft  ">
+		
+			<div id="bloggar" class="">
+			    
+			        
+			        
+			        	
+				         	
+				         	
+				         		Bloggar
+				         	
+			        	
+			        
+			    
+			</div>
+		
+		</h3>
+	
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="http://blogg.avanza.se/hemberg/">Spara med Hemberg</a><br>
+ <a style="font-weight: normal;" adhocenable="false" href="http://blogg.avanza.se/avanza/">Aktuellt från Avanza</a></span></span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 30px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+				</div>
+			
+				<div class="column grid_2point5 ">
+					<div class="parsys col2"><div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+
+        
+
+        
+            <img src="/avanzabank/startsida/footer/socialamedier-ic.svg" width="21" height="21"/>
+        
+
+        
+        
+    
+    
+
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="heading section">
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+    
+		<h3 style='color:#ffffff;' class="  noMarginTop  tLeft  ">
+		
+			<div id="sociala-medier" class="">
+			    
+			        
+			        
+			        	
+				         	
+				         	
+				         		Sociala medier
+				         	
+			        	
+			        
+			    
+			</div>
+		
+		</h3>
+	
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="https://www.facebook.com/AvanzaBank/">Facebook</a><br>
+ <span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="https://twitter.com/AvanzaBank">Twitter</a><br>
+ <span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="https://www.youtube.com/user/Avanzabank">Youtube</a><br>
+ <span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="https://se.linkedin.com/company/avanza-bank">Linkedin</a><br>
+ <span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="https://www.instagram.com/avanzabank/">Instagram</a></span></span></span></span></span></span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 30px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+				</div>
+			
+				<div class="column grid_2point5 ">
+					<div class="parsys col3"><div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+
+        
+
+        
+            <img src="/avanzabank/startsida/footer/avanza-ic.svg" width="18" height="21"/>
+        
+
+        
+        
+    
+    
+
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="heading section">
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+    
+		<h3 style='color:#ffffff;' class="  noMarginTop  tLeft  ">
+		
+			<div id="avanza" class="">
+			    
+			        
+			        
+			        	
+				         	
+				         	
+				         		Avanza
+				         	
+			        	
+			        
+			    
+			</div>
+		
+		</h3>
+	
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="http://investors.avanza.se/sv" target="_blank">Om Avanza</a></span><br>
+<span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="/om-avanza/jobba-pa-avanza.html">Karriär</a><br>
+ </span></span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 30px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+				</div>
+			
+				<div class="column grid_2point5 ">
+					<div class="parsys col4"><div class="bild section">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+    
+
+
+
+
+
+    
+        
+
+        
+
+        
+            <img src="/avanzabank/startsida/footer/play_symbol_tinywhite.svg" width="18" height="21"/>
+        
+
+        
+        
+    
+    
+
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="heading section">
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+	
+
+
+
+	
+    
+		<h3 style='color:#ffffff;' class="  noMarginTop  tLeft  ">
+		
+			<div id="avanza-play" class="">
+			    
+			        
+			        
+			        	
+				         	
+				         	
+				         		Avanza Play
+				         	
+			        	
+			        
+			    
+			</div>
+		
+		</h3>
+	
+
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><span class="runningText"><a style="font-weight: normal;" adhocenable="false" href="/lar-dig-mer/avanza-play/hall-koll.html">Håll koll</a><br>
+ <a style="font-weight: normal;" adhocenable="false" href="/lar-dig-mer/avanza-play/lar-dig-mer.html">Lär dig mer</a></span></span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 30px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+				</div>
+			
+		</div>
+	
+</div>
+<div class="avdelare section">
+
+
+
+
+
+	
+
+	
+		<div class="divider thin"></div>
+	
+
+</div>
+<div class="section text"><span class="runningText"><div style="text-align: center;"><span class="XSText"><a style="font-weight: normal;" adhocenable="false" href="/kundservice/sakerhet-villkor/anvandarvillkor.html">Användarvillkor</a>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a style="font-weight: normal;" adhocenable="false" href="/kundservice/sakerhet-villkor/sakerhet.html">Säkerhet</a>&nbsp; &nbsp; &nbsp; &nbsp; <a style="font-weight: normal;" adhocenable="false" href="/kundservice/kundservice/fragor-svar/konto-avtal/klagomal.html">Reklamationer &amp; Klagomål</a> &nbsp; &nbsp; &nbsp; &nbsp;<a style="font-weight: normal;" href="/kundservice/sakerhet-villkor/din-integritet.html" adhocenable="false">Din integritet</a>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a style="font-weight: normal;" href="/kundservice/sakerhet-villkor/cookies.html" adhocenable="false">Cookies</a></span></div>
+</span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 10px;"></div>
+	
+
+	
+
+</div>
+<div class="section text"><span class="runningText"><div style="text-align: center;"><span class="XSText">Historisk avkastning är ingen garanti för framtida avkastning. En investering i värdepapper/fonder kan både öka och minska i värde och det är inte säkert att du får tillbaka det investerade kapitalet.</span></div>
+</span></div>
+<div class="avdelare section">
+
+
+
+
+
+	
+		<div style="margin-top: 5px;"></div>
+	
+
+	
+
+</div>
+
+</div>
+
+	
+		</div>
+	
+	
+	
+</div></div>
+
+</div>
+
+             
+         
+     
+</footer></div>
+
+
+
+<div id="dialog_feedback" class="hide">
+	<h2>Tyck till</h2>
+	<p class="feedbackText"></p>
+	<a href="#" target="_blank" class="button focusBtn feedbackLink">Gå till Labs</a>
+</div>
+
+    
+</body>
+</html>

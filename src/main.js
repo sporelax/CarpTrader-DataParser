@@ -1,6 +1,7 @@
 import Avanza from 'avanza'
 import dotenv from 'dotenv';
 dotenv.config()
+const debugMode = true;
 const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
@@ -29,9 +30,10 @@ const user = process.env.USER;
 //dailyStockParseSerializeCalls(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-buildStockList().then(() => {
-    dailyStockParse();
-}); 
+buildStockList()
+.then(storeAvaIdsInDb())
+.then(dailyStockParse())
+.catch(err => {console.log(err)});
 
 //testRequest();
 
@@ -80,9 +82,10 @@ function dailyStockParseSerializeCalls(idx,stockList){
                 insert_values.push(data.yield);
                 insert_values.push(data.brokerStat);
                 
-                db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-
-                updateDailyBroker(date_str, data.brokerStat);
+                if (!debugMode) {
+                    db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                    updateDailyBroker(date_str, data.brokerStat);
+                }
                 dailyStockParseSerializeCalls(idx+1,stockList);
             }).catch((error) => {
                 console.log("Promise rejected for stock "+stockList.ticker+", error: "+error);
@@ -110,7 +113,9 @@ function scrapeAvanza(id,name){
  */
 function parseCheerioData(content){
     const $ = cheerio.load(content);
-    //fs.writeFileSync('./testFile',content,'utf-8');
+    if (debugMode) {
+        fs.writeFileSync('./testFile',content,'utf-8');
+    }
 
     var dbRow = {};
     var brokerStat = {};
@@ -165,8 +170,11 @@ function parseCheerioData(content){
         dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
-    
-    console.log(dbRow);
+
+    if (debugMode) {
+        console.log(dbRow);
+    }
+
     return dbRow;
 }
 
@@ -196,7 +204,6 @@ function updateDailyBroker(date, jsonBrokerStats){
                 newSell = currSell + addSell;
 
                 db_overview.run("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)",[date,broker,newSell,newBuy]);
-                //console.log(broker,currBuy,currSell,newBuy,newSell);
             });
         })(broker);
     }
@@ -206,24 +213,21 @@ function updateDailyBroker(date, jsonBrokerStats){
  * Store avanza ids and name in table stockIds
  */
 function storeAvaIdsInDb(){
-    //this probably fails sometimes because of no real serialization
-    db_overview.serialize(()=>{
-        db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
-        if(diffBetweenDbAndList){
-            console.log("Updating stockId database");
-            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
-            var id, name;
-            JSON.parse(globalAvanzaIds, (key,value) => {
-                if(key=='id'){
-                    id = value;
-                }else if(key == 'name'){
-                    name = value;
-                }else if(key){
-                    stmt.run(key, id, name);
+    return new Promise((resolve, reject) => {
+        //this probably fails sometimes because of no real serialization
+        db_overview.serialize(()=>{
+            db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
+            if(diffBetweenDbAndList || debugMode){
+                console.log("Updating stockId database");
+                var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+                var tickerList = JSON.parse(globalAvanzaIds);
+                for (var ticker in tickerList){
+                    stmt.run(ticker, tickerList[ticker].id, tickerList[ticker].name);
                 }
-            });
-            stmt.finalize();
-        }
+                stmt.finalize();
+            }
+            resolve();
+        });
     });
 }
 
@@ -247,17 +251,16 @@ function buildStockList(){
         console.log("Number of stocks in list: "+tickerList.length); //should be ~830 for full list
         //Parse avanza if tickerList does not match avaIdFile
         var tmpTickerList = tickerList.slice();
-        JSON.parse(globalAvanzaIds, (key,value) => {
-            if(key && key !='id' && key != 'name'){
-                var idx = tmpTickerList.indexOf(key);
-                if (idx > -1){
-                    tmpTickerList.splice(idx,1);
-                }else{
-                    console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
-                    diffBetweenDbAndList = 1;    
-                } 
+        var globalTickerList = JSON.parse(globalAvanzaIds);
+        for (var key in globalTickerList){
+            var idx = tmpTickerList.indexOf(key);
+            if( idx > -1){
+                tmpTickerList.splice(idx,1);
+            } else {
+                console.log("Ticker "+key+" not found in tickerlist. tmpTickerList: "+tmpTickerList.toString());
+                diffBetweenDbAndList = 1; 
             }
-        });
+        }
 
         if(tmpTickerList.length != 0){
             diffBetweenDbAndList = 1;
@@ -305,9 +308,8 @@ function searchStocks(i,list,jsonObj){
                 reject(error);
             });
         } else {
-            console.log("Reached end of stock list! Writing data to file: ");
+            console.log("Reached end of stock list! Writing data to file. ");
             fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
-            console.log("Write completed");
             globalAvanzaIds = jsonObj;
             resolve();
         }  

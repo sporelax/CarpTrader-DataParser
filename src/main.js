@@ -16,9 +16,10 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
                         './stocklists/ngm.txt',
                         './stocklists/aktietorget.txt'];
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
+const date = new Date();    
 var globalAvanzaIds = fs.readFileSync(avaIdFile,'utf8');
 var diffBetweenDbAndList = 0;
-const date = new Date();    
+var dailyBrokerInfo = {};
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -84,14 +85,18 @@ function dailyStockParseSerializeCalls(idx,stockList){
                 
                 if (!debugMode) {
                     db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-                    updateDailyBroker(date_str, data.brokerStat);
                 }
+                prepareDailyBroker(date_str, data.brokerStat);
                 dailyStockParseSerializeCalls(idx+1,stockList);
             }).catch((error) => {
                 console.log("Promise rejected for stock "+stockList.ticker+", error: "+error);
             });
     } else {
         console.log("Reached end of stock list! Parsed "+idx+" stocks.");
+        var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
+        if (!debugMode) {
+            finalizeDailyBroker(date_str);
+        }
     }  
 }
 
@@ -183,30 +188,34 @@ function parseCheerioData(content){
  * @param {*} date 
  * @param {*} jsonBrokerStats 
  */
-function updateDailyBroker(date, jsonBrokerStats){
+function prepareDailyBroker(date, jsonBrokerStats){
     for (var broker in jsonBrokerStats){
-        //Wrap db statements is anon function to bind broker variable
-        (function(broker){
-            db_overview.get("SELECT sellValue,buyValue FROM dailyBroker WHERE date = ? AND broker = ?",[date,broker], function(err,row) {
-                var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
-                if(row){
-                    currSell = row.sellValue || 0; //is null if not existing
-                    currBuy = row.buyValue || 0;
-                }
+        var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
+         
+        currSell = dailyBrokerInfo[broker].sellValue || 0;
+        currBuy = dailyBrokerInfo[broker].buyValue || 0;
+        
+        if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
+            addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
+        }
+        if (jsonBrokerStats[broker].sellPrice != '-'){
+            addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
+        }
+        newBuy = currBuy + addBuy;
+        newSell = currSell + addSell;
 
-                if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
-                    addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
-                }
-                if (jsonBrokerStats[broker].sellPrice != '-'){
-                    addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
-                }
-                newBuy = currBuy + addBuy;
-                newSell = currSell + addSell;
-
-                db_overview.run("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)",[date,broker,newSell,newBuy]);
-            });
-        })(broker);
+        dailyBrokerInfo[broker].buyValue = newBuy;
+        dailyBrokerInfo[broker].sellValue = newSell;
     }
+}
+
+function finalizeDailyBroker(date){
+    var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
+    var brokerList = JSON.parse(dailyBrokerInfo);
+    for (var broker in dailyBrokerInfo){
+        stmt.run(date, broker, brokerList[broker].sellValue, brokerList[broker].buyValue);
+    }
+    stmt.finalize();
 }
 
 /**

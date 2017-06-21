@@ -16,7 +16,8 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
                         './stocklists/ngm.txt',
                         './stocklists/aktietorget.txt'];
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
-const date = new Date();    
+const fullDate = new Date();
+var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalAvanzaIds = fs.readFileSync(avaIdFile,'utf8');
 var diffBetweenDbAndList = 0;
 var dailyBrokerInfo = {};
@@ -34,6 +35,7 @@ const user = process.env.USER;
 buildStockList()
 .then(storeAvaIdsInDb())
 .then(dailyStockParse())
+//.then(dailySplitScan())
 .catch(err => {console.log(err)});
 
 //testRequest();
@@ -52,52 +54,51 @@ function dailyStockParse(){
     db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
     db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
     db_overview.all("SELECT ticker, id, name FROM stockIds", (err,rows) => {
-        dailyStockParseSerializeCalls(0,rows)
+        dailyStockParseSerializeCalls(0,rows);
     });
 }
 
 function dailyStockParseSerializeCalls(idx,stockList){ 
     if(idx<stockList.length){
-            scrapeAvanza(stockList[idx].id,stockList[idx].name).then(data => {
-                console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
-                var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
-                //If time before 9, set date to prev day? 
-                //If market = not open this day, dont store?
+        scrapeAvanza(stockList[idx].id,stockList[idx].name).then(data => {
+            console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
+            //If time before 9, set date to prev day? 
+            //If market = not open this day, dont store?
                 
-                var insert_values = [date_str];
-                insert_values.push(data.id);
-                insert_values.push(data.marketPlace);
-                insert_values.push(data.currency);
-                insert_values.push(data.ticker);
-                insert_values.push(data.lastPrice);
-                insert_values.push(data.highestPrice);
-                insert_values.push(data.lowestPrice);
-                insert_values.push(data.numberOfOwners);
-                insert_values.push(data.change);
-                insert_values.push(data.totalVolumeTraded); 
-                insert_values.push(data.marketCapital);
-                insert_values.push(data.volatility);
-                insert_values.push(data.beta);
-                insert_values.push(data.pe);
-                insert_values.push(data.ps);
-                insert_values.push(data.yield);
-                insert_values.push(data.brokerStat);
+            var insert_values = [date];
+            insert_values.push(stockList[idx].id);
+            insert_values.push(data.marketPlace);
+            insert_values.push(data.currency);
+            insert_values.push(data.ticker);
+            insert_values.push(data.lastPrice);
+            insert_values.push(data.highestPrice);
+            insert_values.push(data.lowestPrice);
+            insert_values.push(data.numberOfOwners);
+            insert_values.push(data.change);
+            insert_values.push(data.totalVolumeTraded); 
+            insert_values.push(data.marketCapital);
+            insert_values.push(data.volatility);
+            insert_values.push(data.beta);
+            insert_values.push(data.pe);
+            insert_values.push(data.ps);
+            insert_values.push(data.yield);
+            insert_values.push(data.brokerStat);
                 
-                if (!debugMode) {
-                    db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
-                }
-                prepareDailyBroker(date_str, data.brokerStat);
-                dailyStockParseSerializeCalls(idx+1,stockList);
-            }).catch((error) => {
-                console.log("Promise rejected for stock "+stockList.ticker+", error: "+error);
-            });
+            if (!debugMode) {
+                db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+            }
+            prepareDailyBroker(data.brokerStat)
+            .then(dailyStockParseSerializeCalls(idx+1,stockList));
+
+        }).catch((error) => {
+            console.log("!Promise rejected for stock "+stockList.ticker+", error: "+error);
+        });
     } else {
         console.log("Reached end of stock list! Parsed "+idx+" stocks.");
-        var date_str = date.toJSON().slice(0,-14); //YEAR-MONTH-DAY. // make date-formatting function?
         if (!debugMode) {
-            finalizeDailyBroker(date_str);
+            finalizeDailyBroker();
         }
-    }  
+    } 
 }
 
 function scrapeAvanza(id,name){
@@ -151,10 +152,10 @@ function parseCheerioData(content){
      $('.component.quote').find('.content').each(function() {
         var $ul = $(this).find('ul');
         var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
-        dbRow['change'] = change.replace(/\s*(\+|[A-Za-z])/g, '');
-        dbRow['lastPrice'] = $ul.children('li').eq(5).children('span').eq(1).children('span').text().replace(/\s+/g, '');
-        dbRow['highestPrice'] = $ul.children('li').eq(6).children('span').eq(1).text().replace(/\s+/g, '');
-        dbRow['lowestPrice'] = $ul.children('li').eq(7).children('span').eq(1).text().replace(/\s+/g, '');
+        dbRow['change'] = change.replace(/\s*(\+|[A-Za-z])/g, '').replace(',', '.');
+        dbRow['lastPrice'] = $ul.children('li').eq(5).children('span').eq(1).children('span').text().replace(/\s+/g, '').replace(',','.');
+        dbRow['highestPrice'] = $ul.children('li').eq(6).children('span').eq(1).text().replace(/\s+/g, '').replace(',', '.');
+        dbRow['lowestPrice'] = $ul.children('li').eq(7).children('span').eq(1).text().replace(/\s+/g, '').replace(',', '.');
         dbRow['totalVolumeTraded'] = $ul.children('li').eq(8).children('span').eq(1).text().replace(/\s+/g, '');
     });
 
@@ -185,37 +186,112 @@ function parseCheerioData(content){
 
 /**
  * Generate list of daily broker activites/trades/volumes
- * @param {*} date 
  * @param {*} jsonBrokerStats 
  */
-function prepareDailyBroker(date, jsonBrokerStats){
-    for (var broker in jsonBrokerStats){
-        var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
-         
-        currSell = dailyBrokerInfo[broker].sellValue || 0;
-        currBuy = dailyBrokerInfo[broker].buyValue || 0;
-        
-        if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
-            addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
-        }
-        if (jsonBrokerStats[broker].sellPrice != '-'){
-            addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
-        }
-        newBuy = currBuy + addBuy;
-        newSell = currSell + addSell;
+function prepareDailyBroker(jsonBrokerStats){
+    return new Promise((resolve,reject) => {
+        for (var broker in jsonBrokerStats){
+            var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
+    
+            if(dailyBrokerInfo[broker]){
+                currBuy = dailyBrokerInfo[broker].buyValue;
+                currSell = dailyBrokerInfo[broker].sellValue;
+            }
+            
+            if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
+                addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
+            }
+            if (jsonBrokerStats[broker].sellPrice != '-'){
+                addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
+            }
+            newBuy = currBuy + addBuy;
+            newSell = currSell + addSell;
 
-        dailyBrokerInfo[broker].buyValue = newBuy;
-        dailyBrokerInfo[broker].sellValue = newSell;
-    }
+            dailyBrokerInfo[broker] = {'buyValue': newBuy, 'sellValue': newSell};
+            resolve();
+        }
+    })
 }
 
-function finalizeDailyBroker(date){
+function finalizeDailyBroker(){
     var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
-    var brokerList = JSON.parse(dailyBrokerInfo);
     for (var broker in dailyBrokerInfo){
-        stmt.run(date, broker, brokerList[broker].sellValue, brokerList[broker].buyValue);
+        if(debugMode){
+            console.log(date, broker, dailyBrokerInfo[broker].sellValue, dailyBrokerInfo[broker].buyValue);
+        }else{
+            stmt.run(date, broker, dailyBrokerInfo[broker].sellValue, dailyBrokerInfo[broker].buyValue);
+        }
     }
     stmt.finalize();
+}
+
+function dailySplitScan(){
+    return new Promise((resolve,reject) => {
+        // We assume this wont be run on a saturday or sunday because that wouldnt make any sense as we wouldnt have any data for "today"
+        var tmpDate = new Date();
+        var noDaysSinceLastStockday = tmpDate.getDay() == 1 ? 3 : 1; //if monday, it was 3 days since friday
+        tmpDate.setTime(fullDate.getTime()-(24*60*60*1000)*noDaysSinceLastStockday);
+        var yesterStockDay = tmpDate.toJSON().slice(0,-14);
+        console.log(date);
+        console.log(yesterStockDay);
+
+        db_overview.all("SELECT ticker,id FROM stockIds", (err,rows) => {
+             for(var i=0;i<rows.length;i++){
+                db_overview.all("SELECT ticker,id,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)",[rows[i].ticker,date,yesterStockDay], (err,rows) => {
+                    if(rows.length == 2){
+                        if(rows[0].date==yesterStockDay){
+                            //return these to normal once we get a few days worth of data
+                            var r00 = rows[0].lastPrice.replace(/,/g, '.');
+                            var r01 = rows[0].priceChange.replace(/,/g, '.');
+                            var r10 = rows[1].lastPrice.replace(/,/g, '.');
+                            var r11 = rows[1].priceChange.replace(/,/g, '.');
+                            
+                            if(r00 + r01 - r10 != 0){
+                                console.log("Something fishy is up, stock " + rows[0].id + " might be splitted");
+                                if(r00 == 0) {
+                                    reject("error caught, lastprice should never be zero for stock ",rows[0].id)
+                                }else{
+                                    var splitRatio = (r10 - r11) / r00;
+                                    fixSplit(rows[0].ticker, rows[0].id, splitRatio);
+                                }
+                            } else { 
+                                console.log("Check: ", (r00 + r01 - r10));
+                            }
+                        }else{
+                            console.log("Strange error, first row should always be yesterstockday")
+                        }
+                    } else {
+                        //console.log('no two-day data found for stock, ',rows);
+                    }
+                });
+            }
+        });
+    });
+}
+
+function fixSplit(ticker, id, sr){
+    db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?",ticker, (err,r) => {
+        console.log("r:",r);
+        var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice, highestPrice, lowestPrice, priceChange) = (?,?,?,?) WHERE id=?, date=?");
+        for(var i=0;i<r.length;i++){
+            if(r && r[i].date != date){
+                
+                var p0 = r[i].lastPrice.replace(/,/g, '.');
+                var p1 = r[i].highestPrice.replace(/,/g, '.');
+                var p2 = r[i].lowestPrice.replace(/,/g, '.');
+                var p3 = r[i].priceChange.replace(/,/g, '.');
+
+                if (debugMode){
+                    console.log(p0,p1,p2,p3, r[i].id, r[i].date)
+                }else{
+                    stmt.run(p0,p1,p2,p3, r[i].id, r[i].date);  
+                }  
+            } 
+        }
+        console.log("crash on finalize?")
+        stmt.finalize();
+        console.log("safe!")
+    });
 }
 
 /**

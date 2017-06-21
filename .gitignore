@@ -3,3 +3,4 @@ lib
 npm-debug.log
 .env
 sqlite3.exe
+testFile

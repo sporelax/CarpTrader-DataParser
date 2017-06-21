@@ -19,8 +19,9 @@ const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const fullDate = new Date();
 var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalAvanzaIds = fs.readFileSync(avaIdFile,'utf8');
+var globalRetryAttempts = 0;
 var diffBetweenDbAndList = 0;
-var dailyBrokerInfo = {};
+var brokerInfo = {};
 
 const psw = process.env.PASSWORD;
 const user = process.env.USER;
@@ -29,14 +30,15 @@ const user = process.env.USER;
 //storeAvaIdsInDb();
 //scrapeAvanza(577898,'footway-group-pref');
 //parseCheerioData('test');
-//dailyStockParseSerializeCalls(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
+//parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
 buildStockList()
-.then(storeAvaIdsInDb())
-.then(dailyStockParse())
-//.then(dailySplitScan())
-.catch(err => {console.log(err)});
+.then(storeAvaIdsInDb)
+.then(stockParse)
+.then(finalizeBroker)
+.then(splitScan)
+.catch(err => {console.log("Main:",err)});
 
 //testRequest();
 
@@ -50,23 +52,63 @@ process.stdin.on('keypress', (str, key) => {
     }
 })
 
-function dailyStockParse(){
-    db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
-    db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
-    db_overview.all("SELECT ticker, id, name FROM stockIds", (err,rows) => {
-        dailyStockParseSerializeCalls(0,rows);
+function stockParse(){
+    return new Promise((resolve,reject) => {
+        db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+        db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+        db_overview.all("SELECT ticker, id, name FROM stockIds", (err,rows) => {
+            parseSerialized([0,rows])
+            .then((nrParsed)=>{
+                console.log("Reached end of stock list! Parsed "+nrParsed+" stocks with "+globalRetryAttempts+" retries.");
+                resolve();
+            }).catch((error) => {
+                console.log("!parse:",error)
+            });
+        });
     });
 }
 
-function dailyStockParseSerializeCalls(idx,stockList){ 
-    if(idx<stockList.length){
-        scrapeAvanza(stockList[idx].id,stockList[idx].name).then(data => {
-            console.log("found data for stock ("+(idx+1)+"/"+stockList.length+"): "+data.ticker);
+
+function parseSerialized(idxAndRows){ 
+    function decide(idxAndRows){    
+        idxAndRows[0]++;
+        if(idxAndRows[0]<idxAndRows[1].length){
+            return parseSerialized(idxAndRows);
+        } else {
+            return idxAndRows[0]; //this resolves the serialized chain
+        } 
+    }
+
+    function handleError(errormsg){   
+        if (errormsg.error.code == 'ECONNRESET' || errormsg.error.code == 'ETIMEDOUT') {
+            console.log("Connection reset or timed out. Retrying...");
+            globalRetryAttempts++;
+            return parseSerialized(idxAndRows);
+        } else {
+            throw errormsg;
+        }
+    }
+
+    return parseAsync(idxAndRows).then(decide,handleError);
+}
+
+
+function parseAsync(idxAndRows){
+    return new Promise((resolve, reject) => {
+        var idx = idxAndRows[0];
+        var stock = idxAndRows[1][idx];
+        var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/' + stock.id + '/' + stock.name;
+        rp(strAvaPage).then(htmlString => {
+            return parseCheerioData(htmlString)
+        }).then(data => {
+            return prepareBroker(data)
+        }).then(data => {
+            console.log("found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker+", id: "+stock.id);
             //If time before 9, set date to prev day? 
             //If market = not open this day, dont store?
-                
+
             var insert_values = [date];
-            insert_values.push(stockList[idx].id);
+            insert_values.push(stock.id);
             insert_values.push(data.marketPlace);
             insert_values.push(data.currency);
             insert_values.push(data.ticker);
@@ -75,7 +117,7 @@ function dailyStockParseSerializeCalls(idx,stockList){
             insert_values.push(data.lowestPrice);
             insert_values.push(data.numberOfOwners);
             insert_values.push(data.change);
-            insert_values.push(data.totalVolumeTraded); 
+            insert_values.push(data.totalVolumeTraded);
             insert_values.push(data.marketCapital);
             insert_values.push(data.volatility);
             insert_values.push(data.beta);
@@ -83,32 +125,14 @@ function dailyStockParseSerializeCalls(idx,stockList){
             insert_values.push(data.ps);
             insert_values.push(data.yield);
             insert_values.push(data.brokerStat);
-                
+
             if (!debugMode) {
                 db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
             }
-            prepareDailyBroker(data.brokerStat)
-            .then(dailyStockParseSerializeCalls(idx+1,stockList));
-
-        }).catch((error) => {
-            console.log("!Promise rejected for stock "+stockList.ticker+", error: "+error);
-        });
-    } else {
-        console.log("Reached end of stock list! Parsed "+idx+" stocks.");
-        if (!debugMode) {
-            finalizeDailyBroker();
-        }
-    } 
-}
-
-function scrapeAvanza(id,name){
-    return new Promise((resolve, reject) => {
-        var strAvaPage = 'https://www.avanza.se/aktier/om-aktien.html/'+id+'/'+name;
-        rp(strAvaPage).then(function(htmlString){
-            resolve(parseCheerioData(htmlString))
-        }).catch( function(err) {
-            console.log(err)
-            reject(err)
+            resolve(idxAndRows);
+        }).catch((msg) => {
+            console.log("!Promise rejected for stock " + stock.ticker + ", error: " + msg)
+            reject(msg);
         });
     });
 }
@@ -164,21 +188,21 @@ function parseCheerioData(content){
         dbRow['ticker'] = $dl.children('dd').eq(0).children('span').text();
         dbRow['marketPlace'] = $dl.children('dd').eq(2).children('span').text().replace(/\s+/g, '');
         dbRow['currency'] = $dl.children('dd').eq(4).children('span').text();
-        dbRow['beta'] = $dl.children('dd').eq(5).children('span').text();
-        dbRow['volatility'] = $dl.children('dd').eq(6).children('span').text();
+        dbRow['beta'] = $dl.children('dd').eq(5).children('span').text().replace(',','.');
+        dbRow['volatility'] = $dl.children('dd').eq(6).children('span').text().replace(',','.');
     });
   
     $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function() {
         var $dl = $(this);
-        dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '');
-        dbRow['yield'] = $dl.children('dd').eq(2).children('span').text();
-        dbRow['pe'] = $dl.children('dd').eq(3).children('span').text();
-        dbRow['ps'] = $dl.children('dd').eq(4).children('span').text();
+        dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '').replace(',','.');
+        dbRow['yield'] = $dl.children('dd').eq(2).children('span').text().replace(',','.');
+        dbRow['pe'] = $dl.children('dd').eq(3).children('span').text().replace(',','.');
+        dbRow['ps'] = $dl.children('dd').eq(4).children('span').text().replace(',','.');
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
 
     if (debugMode) {
-        console.log(dbRow);
+        //console.log(dbRow);
     }
 
     return dbRow;
@@ -188,52 +212,57 @@ function parseCheerioData(content){
  * Generate list of daily broker activites/trades/volumes
  * @param {*} jsonBrokerStats 
  */
-function prepareDailyBroker(jsonBrokerStats){
+function prepareBroker(data){
     return new Promise((resolve,reject) => {
+        var jsonBrokerStats = data.brokerStat;
         for (var broker in jsonBrokerStats){
-            var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
-    
-            if(dailyBrokerInfo[broker]){
-                currBuy = dailyBrokerInfo[broker].buyValue;
-                currSell = dailyBrokerInfo[broker].sellValue;
-            }
-            
-            if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
-                addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
-            }
-            if (jsonBrokerStats[broker].sellPrice != '-'){
-                addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
-            }
-            newBuy = currBuy + addBuy;
-            newSell = currSell + addSell;
+            if(broker){
+                var currSell=0,currBuy=0,newSell=0,newBuy=0,addSell=0,addBuy=0;
+        
+                if(brokerInfo[broker]){
+                    currBuy = brokerInfo[broker].buyValue;
+                    currSell = brokerInfo[broker].sellValue;
+                }
+                
+                if (jsonBrokerStats[broker].buyPrice != '-'){ //to prevent NaN
+                    addBuy = jsonBrokerStats[broker].buyVolume*jsonBrokerStats[broker].buyPrice;
+                }
+                if (jsonBrokerStats[broker].sellPrice != '-'){
+                    addSell = jsonBrokerStats[broker].sellVolume*jsonBrokerStats[broker].sellPrice;
+                }
+                newBuy = currBuy + addBuy;
+                newSell = currSell + addSell;
 
-            dailyBrokerInfo[broker] = {'buyValue': newBuy, 'sellValue': newSell};
-            resolve();
+                brokerInfo[broker] = {'buyValue': newBuy, 'sellValue': newSell};
+            }
         }
+        resolve(data);
     })
 }
 
-function finalizeDailyBroker(){
-    var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
-    for (var broker in dailyBrokerInfo){
-        if(debugMode){
-            console.log(date, broker, dailyBrokerInfo[broker].sellValue, dailyBrokerInfo[broker].buyValue);
-        }else{
-            stmt.run(date, broker, dailyBrokerInfo[broker].sellValue, dailyBrokerInfo[broker].buyValue);
+function finalizeBroker(){
+    return new Promise((resolve, reject) => {
+        var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
+        console.log(brokerInfo);
+        for (var broker in brokerInfo) {
+            if (debugMode) {
+                console.log(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
+            } else {
+                stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
+            }
         }
-    }
-    stmt.finalize();
+        stmt.finalize().then(resolve());
+    })
 }
 
-function dailySplitScan(){
+function splitScan(){
     return new Promise((resolve,reject) => {
+        console.log('Scanning for potential splits')
         // We assume this wont be run on a saturday or sunday because that wouldnt make any sense as we wouldnt have any data for "today"
         var tmpDate = new Date();
         var noDaysSinceLastStockday = tmpDate.getDay() == 1 ? 3 : 1; //if monday, it was 3 days since friday
         tmpDate.setTime(fullDate.getTime()-(24*60*60*1000)*noDaysSinceLastStockday);
         var yesterStockDay = tmpDate.toJSON().slice(0,-14);
-        console.log(date);
-        console.log(yesterStockDay);
 
         db_overview.all("SELECT ticker,id FROM stockIds", (err,rows) => {
              for(var i=0;i<rows.length;i++){
@@ -389,7 +418,8 @@ function searchStocks(i,list,jsonObj){
                 }
                 resolve(searchStocks(i+1,list,jsonObj));
             }).catch( (error) => {
-                console.log("Promise rejected for stock "+stockName+" at "+i+", error: "+error);
+                console.log("Promise rejected at searchStocks for stock "+stockName+" at "+i+", error: "+error);
+                //Create retry here?
                 reject(error);
             });
         } else {

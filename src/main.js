@@ -1,7 +1,7 @@
 import Avanza from 'avanza'
 import dotenv from 'dotenv';
 dotenv.config()
-const debugMode = true;
+const debugMode = false;
 const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
@@ -40,8 +40,6 @@ buildStockList()
 .then(splitScan)
 .catch(err => {console.log("Main:",err)});
 
-//testRequest();
-
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -52,6 +50,9 @@ process.stdin.on('keypress', (str, key) => {
     }
 })
 
+/**
+ * Initialize the stock parsing
+ */
 function stockParse(){
     return new Promise((resolve,reject) => {
         db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
@@ -68,7 +69,10 @@ function stockParse(){
     });
 }
 
-
+/**
+ * Serialized part of the webscrape/stock parse. We do it serialized or we receive hundreds of timeouts
+ * @param {*} idxAndRows 
+ */
 function parseSerialized(idxAndRows){ 
     function decide(idxAndRows){    
         idxAndRows[0]++;
@@ -92,7 +96,10 @@ function parseSerialized(idxAndRows){
     return parseAsync(idxAndRows).then(decide,handleError);
 }
 
-
+/**
+ * Async part of the web scraping / stock parsing
+ * @param {*} idxAndRows 
+ */
 function parseAsync(idxAndRows){
     return new Promise((resolve, reject) => {
         var idx = idxAndRows[0];
@@ -138,7 +145,7 @@ function parseAsync(idxAndRows){
 }
 
 /**
- * Parse avanza html content to find the data we need. Content fetched from phantom js scraper
+ * Parse avanza html content to find the data we need
  * @param {*} content 
  */
 function parseCheerioData(content){
@@ -209,7 +216,7 @@ function parseCheerioData(content){
 }
 
 /**
- * Generate list of daily broker activites/trades/volumes
+ * Prepare list of daily broker activites/trades/volumes
  * @param {*} jsonBrokerStats 
  */
 function prepareBroker(data){
@@ -240,6 +247,9 @@ function prepareBroker(data){
     })
 }
 
+/**
+ * Store all todays broker transactions in the database
+ */
 function finalizeBroker(){
     return new Promise((resolve, reject) => {
         var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
@@ -251,10 +261,16 @@ function finalizeBroker(){
                 stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
             }
         }
-        stmt.finalize().then(resolve());
+        stmt.finalize().then(() => {
+            resolve()
+        });
     })
 }
 
+/**
+ * Go through todays data and find out if any stocks have been splitted since yesterday.
+ * We find this by comparing yesterdays closing price with todays closing price and the reported change in SEK.
+ */
 function splitScan(){
     return new Promise((resolve,reject) => {
         console.log('Scanning for potential splits')
@@ -298,33 +314,35 @@ function splitScan(){
     });
 }
 
+/**
+ * Fix split when detected
+ * NOT DONE
+ */
 function fixSplit(ticker, id, sr){
-    db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?",ticker, (err,r) => {
-        console.log("r:",r);
-        var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice, highestPrice, lowestPrice, priceChange) = (?,?,?,?) WHERE id=?, date=?");
-        for(var i=0;i<r.length;i++){
-            if(r && r[i].date != date){
-                
-                var p0 = r[i].lastPrice.replace(/,/g, '.');
-                var p1 = r[i].highestPrice.replace(/,/g, '.');
-                var p2 = r[i].lowestPrice.replace(/,/g, '.');
-                var p3 = r[i].priceChange.replace(/,/g, '.');
-
-                if (debugMode){
-                    console.log(p0,p1,p2,p3, r[i].id, r[i].date)
-                }else{
-                    stmt.run(p0,p1,p2,p3, r[i].id, r[i].date);  
-                }  
-            } 
-        }
-        console.log("crash on finalize?")
-        stmt.finalize();
-        console.log("safe!")
+    return new Promise((resolve, reject) => {
+        db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
+            console.log("r:", row);
+            var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice, highestPrice, lowestPrice, priceChange) = (?,?,?,?) WHERE id=?, date=?");
+            for (var i = 0; i < row.length; i++) {
+                if (row && row[i].date != date) {
+                    if (debugMode) {
+                        console.log(r[i].lastPrice, r[i].highestPrice, r[i].lowestPrice, r[i].priceChange, row[i].id, row[i].date)
+                    } else {
+                        stmt.run(r[i].lastPrice, r[i].highestPrice, r[i].lowestPrice, r[i].priceChange, row[i].id, row[i].date);
+                    }
+                }
+            }
+            console.log("crash on finalize?")
+            stmt.finalize().then(() => {
+                resolve()
+                console.log("safe!")
+            });
+        });
     });
 }
 
 /**
- * Store avanza ids and name in table stockIds
+ * Store avanza ids and name in database
  */
 function storeAvaIdsInDb(){
     return new Promise((resolve, reject) => {
@@ -349,7 +367,7 @@ function storeAvaIdsInDb(){
 *   build list of avanza stock Id numbers from lists of Tickers. 
 *   Compare list of Id Numbers to existing list stored in @globalAvanzaIds
 *   Overwrite it if change is detected.
-*   Modify @stockList in order to change included stocks.
+*   Modify @stockList in order to change included marketplaces.
 */
 function buildStockList(){
     return new Promise((resolve, reject) => {
@@ -387,7 +405,7 @@ function buildStockList(){
             username: process.env.USER,
             password: process.env.PASSWORD
             }).then(() => {  
-                resolve(searchStocks(0,tickerList,{}));
+                resolve(searchStocksSerialize([0,tickerList,{}]));
             });
         }else{
             console.log("TickerList matched AvaJsonIdObj, DB update not required.");
@@ -401,33 +419,42 @@ function buildStockList(){
  *  Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
  * 
  */
-function searchStocks(i,list,jsonObj){
-    return new Promise((resolve, reject) => {
-        if(i<list.length){
-            var stockName = list[i];
-            avanza.search(stockName).then(answer => {
-                //console.log(JSON.stringify(answer));
-                if (answer.totalNumberOfHits != 0){
-                    var arrIdName = parseSearchString(stockName,answer);
-                    arrIdName[1] = arrIdName[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
-                    console.log("Found answer("+i+"): "+arrIdName[0]+" and "+arrIdName[1]+" for stock "+stockName);
-                    //space AND DOT needs to be replaced with dash, see bald pref
-                    jsonObj[stockName] = {'id': arrIdName[0], 'name': arrIdName[1]};
-                }else{
-                    console.log("Stock "+stockName+" potentially delisted? No matching stock found on Ava search.");
-                }
-                resolve(searchStocks(i+1,list,jsonObj));
-            }).catch( (error) => {
-                console.log("Promise rejected at searchStocks for stock "+stockName+" at "+i+", error: "+error);
-                //Create retry here?
-                reject(error);
-            });
+function searchStocksSerialize(arr){ 
+    function decide(arr){    
+        arr[0]++;
+        if(arr[0]<arr[1].length){
+            return searchStocksSerialize(arr);
         } else {
             console.log("Reached end of stock list! Writing data to file. ");
-            fs.writeFileSync(avaIdFile, JSON.stringify(jsonObj));
-            globalAvanzaIds = jsonObj;
-            resolve();
-        }  
+            fs.writeFileSync(avaIdFile, JSON.stringify(arr[2]));
+            globalAvanzaIds = arr[2];
+            return 0; //this resolves the serialized chain
+        } 
+    }
+
+    return searchStocks(arr).then(decide,errormsg => { throw errormsg });
+}
+
+/**
+ *  Asynchronous part of fetching avanza stock ids.
+ */
+function searchStocks(arr){
+    return new Promise((resolve, reject) => {
+        var stockName = arr[1][arr[0]];
+        avanza.search(stockName).then(answer => {
+            if (answer.totalNumberOfHits != 0) {
+                var arrIdName = parseSearchString(stockName, answer);
+                arrIdName[1] = arrIdName[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
+                console.log("Found answer(" + arr[0] + "): " + arrIdName[0] + " and " + arrIdName[1] + " for stock " + stockName);
+                arr[2][stockName] = { 'id': arrIdName[0], 'name': arrIdName[1] };
+            } else {
+                console.log("Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
+            }
+            resolve(arr);
+        }).catch((error) => {
+            console.log("Promise rejected at searchStocks for stock " + stockName + " at " + i + ", error: " + error);
+            reject(error);
+        });
     });
 }
 

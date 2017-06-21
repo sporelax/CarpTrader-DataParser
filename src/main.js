@@ -352,9 +352,8 @@ function storeAvaIdsInDb(){
             if(diffBetweenDbAndList || debugMode){
                 console.log("Updating stockId database");
                 var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
-                var tickerList = JSON.parse(globalAvanzaIds);
-                for (var ticker in tickerList){
-                    stmt.run(ticker, tickerList[ticker].id, tickerList[ticker].name);
+                for (var ticker in globalAvanzaIds){
+                    stmt.run(ticker, globalAvanzaIds[ticker].id, globalAvanzaIds[ticker].name);
                 }
                 stmt.finalize();
             }

@@ -18,11 +18,12 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const fullDate = new Date();
 
+/*
 var tmpDate = new Date();
 tmpDate.setTime(fullDate.getTime() - (24 * 60 * 60 * 1000) * 2);
 var date = tmpDate.toJSON().slice(0, -14); //YEAR-MONTH-DAY
-
-//var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
+*/
+var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalAvanzaIds = fs.readFileSync(avaIdFile, 'utf8');
 var globalRetryAttempts = 0;
 var diffBetweenDbAndList = 0;
@@ -38,16 +39,14 @@ const user = process.env.USER;
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-/*
 buildStockList()
 .then(storeAvaIdsInDb)
 .then(stockParse)
 .then(finalizeBroker)
 .then(splitScan)
 .catch(err => {console.log("Main:",err)});
-*/
 
-findNewListings();
+//findNewListings();
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -507,27 +506,46 @@ function findNewListings() {
     var arrAvaListings = [];
     findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/main-market/2017')
         .then(newListings => {
-            console.log("1");
-            return parseListingResults(arrAvaListings, newListings, 'nasdaq_stockholm')
-        })
+            return parseListingResults(newListings, 'nasdaq_stockholm')
+        }).then(res => {
+            res.forEach(function(item) {
+                arrAvaListings.push(item)
+            });
+            return findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017');
+        }).then(newListings => {
+            return parseListingResults(newListings, 'nasdaq_firstnorth')
+        }).then(res => {
+            res.forEach(function(item) {
+                arrAvaListings.push(item)
+            });
+            return findNewListingAktietorget('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1');
+        }).then(newListings => {
+            return parseListingResults(newListings, 'aktietorget')
+        }).then(res => {
+            res.forEach(function(item) {
+                arrAvaListings.push(item)
+            });
+            if (arrAvaListings != []){
+                console.log('New listings for today: ',arrAvaListings);
+            }
+        }).catch(err => console.log(err));
 
+/*
     findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017')
         .then(newListings => {
-            console.log("2");
-            return parseListingResults(arrAvaListings, newListings, 'nasdaq_firstnorth')
+            return parseListingResults(newListings, 'nasdaq_firstnorth')
         })
 
     findNewListingAktietorget('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1')
         .then(newListings => {
-            console.log("5");
-            return parseListingResults(arrAvaListings, newListings, 'aktietorget')
+            return parseListingResults(newListings, 'aktietorget')
         }).then(() => {
-            console.log("6");
             console.log(arrAvaListings)
         })
+*/
 }
 
-function parseListingResults(arr,newListings, market) {
+function parseListingResults(newListings, market) {
     return new Promise((resolve, reject) => {
         avanza.authenticate({
             username: process.env.USER,
@@ -542,11 +560,7 @@ function parseListingResults(arr,newListings, market) {
                     })
                 });
             }));
-        }).then(resultArr=> {
-            console.log(resultArr);
-            arr = arr.concat(resultArr);
-            resolve(arr);
-        });
+        }).then(resultArr => resolve(resultArr) );
     })
 }
 

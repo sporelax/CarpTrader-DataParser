@@ -64,13 +64,14 @@ function stockParse() {
     return new Promise((resolve, reject) => {
         db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
         db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+        db_overview.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
         db_overview.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
             parseSerialized([0, rows])
                 .then((nrParsed) => {
-                    console.log("Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries.");
+                    console.log((new Date()).toJSON()+" - Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries.");
                     resolve();
                 }).catch((error) => {
-                    console.log("!parse:", error)
+                    console.log((new Date()).toJSON()+" - !parse error:", error)
                 });
         });
     });
@@ -92,7 +93,7 @@ function parseSerialized(idxAndRows) {
 
     function handleError(errormsg) {
         if (errormsg.error.code == 'ECONNRESET' || errormsg.error.code == 'ETIMEDOUT') {
-            console.log("Connection reset or timed out. Retrying...");
+            console.log((new Date()).toJSON()+" - Connection reset or timed out. Retrying...");
             globalRetryAttempts++;
             return parseSerialized(idxAndRows);
         } else {
@@ -117,7 +118,7 @@ function parseAsync(idxAndRows) {
         }).then(data => {
             return prepareBroker(data)
         }).then(data => {
-            console.log("found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
+            console.log((new Date()).toJSON()+" - Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
             //If time before 9, set date to prev day? 
             //If market = not open this day, dont store?
 
@@ -145,7 +146,7 @@ function parseAsync(idxAndRows) {
             }
             resolve(idxAndRows);
         }).catch((msg) => {
-            console.log("!Promise rejected for stock " + stock.ticker + ", error: " + msg)
+            console.log((new Date()).toJSON()+" - !Error: Promise rejected for stock " + stock.ticker + ", error: " + msg)
             reject(msg);
         });
     });
@@ -281,7 +282,7 @@ function finalizeBroker() {
  */
 function splitScan() {
     return new Promise((resolve, reject) => {
-        console.log('Scanning for potential splits')
+        console.log((new Date()).toJSON()+" - Scanning for potential splits")
         // We assume this wont be run on a saturday or sunday because that wouldnt make any sense as we wouldnt have any data for "today"
         var tmpDate = new Date();
         var noDaysSinceLastStockday = tmpDate.getDay() == 1 ? 3 : 1; //if monday, it was 3 days since friday
@@ -358,7 +359,7 @@ function storeAvaIdsInDb() {
         db_overview.serialize(() => {
             db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
             if (diffBetweenDbAndList || debugMode) {
-                console.log("Updating stockId database");
+                console.log((new Date()).toJSON()+" - Updating stockId database");
                 var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
                 for (var ticker in globalAvanzaIds) {
                     stmt.run(ticker, globalAvanzaIds[ticker].id, globalAvanzaIds[ticker].name);
@@ -381,10 +382,10 @@ function buildStockList() {
         var tickerList = [];
         var numOfRequests = 0;
         stockList.forEach((list) => {
-            console.log("Parsing stocklist: " + list);
+            console.log((new Date()).toJSON()+" - Parsing stocklist: " + list);
             var contents = fs.readFileSync(list, 'utf8');
-            contents.split('\r\n').forEach((ticker) => {
-                tickerList.push(ticker);
+            contents.split('\n').forEach((ticker) => {
+                tickerList.push(ticker.replace('\r','')); //need split with only \n for RaspPi, and replace \r for windows
             });
         })
         console.log("Number of stocks in list: " + tickerList.length); //should be ~830 for full list
@@ -396,18 +397,18 @@ function buildStockList() {
             if (idx > -1) {
                 tmpTickerList.splice(idx, 1);
             } else {
-                console.log("Ticker " + key + " not found in tickerlist. tmpTickerList: " + tmpTickerList.toString());
+                console.log((new Date()).toJSON()+" - Ticker " + key + " not found in tickerlist. tmpTickerList: " + tmpTickerList.toString());
                 diffBetweenDbAndList = 1;
             }
         }
 
         if (tmpTickerList.length != 0) {
             diffBetweenDbAndList = 1;
-            console.log("Remaining tickers in list: " + tmpTickerList.toString());
+            console.log((new Date()).toJSON()+" - Remaining tickers in list: " + tmpTickerList.toString());
         }
 
         if (diffBetweenDbAndList) {
-            console.log("globalAvanzaIds does not match Stocklist, rebuilding globalAvanzaIds.");
+            console.log((new Date()).toJSON()+" - globalAvanzaIds does not match Stocklist, rebuilding globalAvanzaIds.");
             avanza.authenticate({
                 username: process.env.USER,
                 password: process.env.PASSWORD
@@ -415,7 +416,7 @@ function buildStockList() {
                 resolve(searchStocksSerialize([0, tickerList, {}]));
             });
         } else {
-            console.log("TickerList matched AvaJsonIdObj, DB update not required.");
+            console.log((new Date()).toJSON()+" - TickerList matched AvaJsonIdObj, DB update not required.");
             resolve();
         }
     });
@@ -431,7 +432,7 @@ function searchStocksSerialize(arr) {
         if (arr[0] < arr[1].length) {
             return searchStocksSerialize(arr);
         } else {
-            console.log("Reached end of stock list! Writing data to file. ");
+            console.log((new Date()).toJSON()+" - Reached end of stock list! Writing data to file. ");
             fs.writeFileSync(avaIdFile, JSON.stringify(arr[2]));
             globalAvanzaIds = arr[2];
             return 0; //this resolves the serialized chain
@@ -455,11 +456,11 @@ function searchStocks(arr) {
                 console.log("Found answer(" + arr[0] + "): " + parsedRes[0] + " and " + parsedRes[1] + " for stock " + parsedRes[2]);
                 arr[2][parsedRes[2]] = { 'id': parsedRes[0], 'name': parsedRes[1] };
             } else {
-                console.log("Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
+                console.log((new Date()).toJSON()+" - Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
             }
             resolve(arr);
         }).catch((error) => {
-            console.log("Promise rejected at searchStocks for stock " + stockName + " at " + arr[0] + ", error: " + error);
+            console.log((new Date()).toJSON()+" - !Error - Promise rejected at searchStocks for stock " + stockName + " at " + arr[0] + ", error: " + error);
             reject(error);
         });
     });
@@ -495,8 +496,8 @@ function parseSearchString(name, answer) {
             }
         }
     } catch (err) {
-        console.log("Name: " + name + ", Answer: " + JSON.stringify(answer));
-        console.log("Error received: ", err);
+        console.log((new Date()).toJSON()+" - Name: " + name + ", Answer: " + JSON.stringify(answer));
+        console.log((new Date()).toJSON()+" - Error received: ", err);
     }
 }
 
@@ -525,7 +526,7 @@ function findNewListings() {
                 arrAvaListings.push(item)
             });
             if (arrAvaListings != []){
-                console.log('New listings for today: ',arrAvaListings);
+                console.log((new Date()).toJSON()+" - New listings for today: " + arrAvaListings);
             }
         }).catch(err => console.log(err));
 
@@ -552,7 +553,6 @@ function parseListingResults(newListings, market) {
         }).then(() => {
             return Promise.all(newListings.map(function (listing) {
                 return new Promise((resolve, reject) => {
-                    console.log("New listing! Stock " + listing.name + " listed today on " + market)
                     searchStocks([0, [listing.name], {}])
                     .then(searchRes => {
                         resolve(searchRes[2]);

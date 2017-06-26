@@ -16,18 +16,17 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
     './stocklists/aktietorget.txt'];
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const fullDate = new Date();
-
 /*var tmpDate = new Date();
 tmpDate.setTime(fullDate.getTime() - (24 * 60 * 60 * 1000) * 5);
 var date = tmpDate.toJSON().slice(0, -14); //YEAR-MONTH-DAY
 console.log(date);
 */
-
 var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalAvanzaIds = fs.readFileSync(avaIdFile, 'utf8');
 var globalRetryAttempts = 0;
 var diffBetweenDbAndList = 0;
 var brokerInfo = {};
+var arrClosedStockDays=[];
 
 //****** DEBUG FUNCTION CALLS */
 //storeAvaIdsInDb();
@@ -36,17 +35,14 @@ var brokerInfo = {};
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-//todo: splitscan and special dates in DB
-
-/*
-parseNewListings()
+checkStockMarketOpen()
+.then(parseNewListings)
 .then(buildStockList)
 .then(storeAvaIdsInDb)
 .then(stockParse)
 .then(finalizeBroker)
-.then(splitScan)
+//.then(splitScan)
 .catch(err => {console.log("Main:",err)});
-*/
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -57,6 +53,26 @@ process.stdin.on('keypress', (str, key) => {
         process.exit(0);
     }
 })
+
+/**
+ * Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
+ */
+function checkStockMarketOpen() {
+    return new Promise((resolve,reject) => {
+        db_overview.all("SELECT date FROM marketStatus where market='test' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
+            for (var i = 0; i<rows.length; i++){
+                arrClosedStockDays.push(rows[i].date);
+            }
+
+            if(arrClosedStockDays.indexOf(date) > -1 ){
+                console.log('Stock market closed today. Exiting.');
+                resolve(process.exit(0));
+            }else{
+                resolve();
+            }
+        });
+    })
+}
 
 /**
  * Initialize the stock parsing
@@ -285,11 +301,19 @@ function finalizeBroker() {
 function splitScan() {
     return new Promise((resolve, reject) => {
         console.log((new Date()).toJSON()+" - Scanning for potential splits")
-        // We assume this wont be run on a saturday or sunday because that wouldnt make any sense as we wouldnt have any data for "today"
+
         var tmpDate = new Date();
-        var noDaysSinceLastStockday = tmpDate.getDay() == 1 ? 3 : 1; //if monday, it was 3 days since friday
-        tmpDate.setTime(fullDate.getTime() - (24 * 60 * 60 * 1000) * noDaysSinceLastStockday);
+        var foundDay = false;
+        console.log(arrClosedStockDays);
+        while( !foundDay ){
+            tmpDate.setTime(tmpDate.getTime() - 86400000);
+            if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrClosedStockDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
+                foundDay = true;
+            }
+        }
         var yesterStockDay = tmpDate.toJSON().slice(0, -14);
+        console.log(yesterStockDay);
+        reject(process.exit(0))
 
         db_overview.all("SELECT ticker,id FROM stockIds", (err, rows) => {
             for (var i = 0; i < rows.length; i++) {
@@ -337,9 +361,9 @@ function fixSplit(ticker, id, sr) {
             for (var i = 0; i < row.length; i++) {
                 if (row && row[i].date != date) {
                     if (debugMode) {
-                        console.log(r[i].lastPrice, r[i].highestPrice, r[i].lowestPrice, r[i].priceChange, row[i].id, row[i].date)
+                        console.log(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date)
                     } else {
-                        stmt.run(r[i].lastPrice, r[i].highestPrice, r[i].lowestPrice, r[i].priceChange, row[i].id, row[i].date);
+                        stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date);
                     }
                 }
             }

@@ -17,19 +17,17 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
 const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const fullDate = new Date();
 
-/*
-var tmpDate = new Date();
-tmpDate.setTime(fullDate.getTime() - (24 * 60 * 60 * 1000) * 2);
+/*var tmpDate = new Date();
+tmpDate.setTime(fullDate.getTime() - (24 * 60 * 60 * 1000) * 5);
 var date = tmpDate.toJSON().slice(0, -14); //YEAR-MONTH-DAY
+console.log(date);
 */
+
 var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalAvanzaIds = fs.readFileSync(avaIdFile, 'utf8');
 var globalRetryAttempts = 0;
 var diffBetweenDbAndList = 0;
 var brokerInfo = {};
-
-const psw = process.env.PASSWORD;
-const user = process.env.USER;
 
 //****** DEBUG FUNCTION CALLS */
 //storeAvaIdsInDb();
@@ -38,14 +36,17 @@ const user = process.env.USER;
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-buildStockList()
+//todo: splitscan and special dates in DB
+
+/*
+parseNewListings()
+.then(buildStockList)
 .then(storeAvaIdsInDb)
 .then(stockParse)
 .then(finalizeBroker)
 .then(splitScan)
 .catch(err => {console.log("Main:",err)});
-
-//findNewListings();
+*/
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -270,8 +271,9 @@ function finalizeBroker() {
                     stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
                 }
             }
-            stmt.finalize()
-            resolve()
+            stmt.finalize().then(() => {
+                resolve()
+            });
         })
     })
 }
@@ -361,8 +363,13 @@ function storeAvaIdsInDb() {
             if (diffBetweenDbAndList || debugMode) {
                 console.log((new Date()).toJSON()+" - Updating stockId database");
                 var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
-                for (var ticker in globalAvanzaIds) {
-                    stmt.run(ticker, globalAvanzaIds[ticker].id, globalAvanzaIds[ticker].name);
+                var tickerList = JSON.parse(globalAvanzaIds);
+                for (var ticker in tickerList) {
+                    if (debugMode) {
+                        console.log(ticker, tickerList[ticker].id, tickerList[ticker].name)
+                    } else {
+                        stmt.run(ticker, tickerList[ticker].id, tickerList[ticker].name);
+                    }
                 }
                 stmt.finalize();
             }
@@ -410,7 +417,7 @@ function buildStockList() {
         if (diffBetweenDbAndList) {
             console.log((new Date()).toJSON()+" - globalAvanzaIds does not match Stocklist, rebuilding globalAvanzaIds.");
             avanza.authenticate({
-                username: process.env.USER,
+                username: process.env.AVAUSER,
                 password: process.env.PASSWORD
             }).then(() => {
                 resolve(searchStocksSerialize([0, tickerList, {}]));
@@ -501,61 +508,57 @@ function parseSearchString(name, answer) {
     }
 }
 
-function findNewListings() {
-
-    var arrAvaListings = [];
-    findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/main-market/2017')
-        .then(newListings => {
-            return parseListingResults(newListings, 'nasdaq_stockholm')
-        }).then(res => {
-            res.forEach(function(item) {
-                arrAvaListings.push(item)
+function parseNewListings() {
+    return new Promise((resolve, reject) => {
+        console.log((new Date()).toJSON()+" - Parsing websites for new listings matching todays date.");
+        var objAvaListings = {};
+        parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/main-market/2017')
+            .then(newListings => {
+                return handleListingResults(newListings, 'nasdaq_stockholm')
+            }).then(() => {
+                return parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017');
+            }).then(newListings => {
+                return handleListingResults(newListings, 'nasdaq_firstnorth')
+            }).then(() => {
+                return parseListingWebsite('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1');
+            }).then(newListings => {
+                return handleListingResults(newListings, 'aktietorget')
+            }).then(() => {
+                resolve();
+            }).catch(err =>{
+                console.log(err)
+                reject();
             });
-            return findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017');
-        }).then(newListings => {
-            return parseListingResults(newListings, 'nasdaq_firstnorth')
-        }).then(res => {
-            res.forEach(function(item) {
-                arrAvaListings.push(item)
-            });
-            return findNewListingAktietorget('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1');
-        }).then(newListings => {
-            return parseListingResults(newListings, 'aktietorget')
-        }).then(res => {
-            res.forEach(function(item) {
-                arrAvaListings.push(item)
-            });
-            if (arrAvaListings != []){
-                console.log((new Date()).toJSON()+" - New listings for today: " + arrAvaListings);
-            }
-        }).catch(err => console.log(err));
-
-/*
-    findNewListingNasdaq('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017')
-        .then(newListings => {
-            return parseListingResults(newListings, 'nasdaq_firstnorth')
-        })
-
-    findNewListingAktietorget('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1')
-        .then(newListings => {
-            return parseListingResults(newListings, 'aktietorget')
-        }).then(() => {
-            console.log(arrAvaListings)
-        })
-*/
+    });
 }
 
-function parseListingResults(newListings, market) {
+function handleListingResults(newListings, market) {
     return new Promise((resolve, reject) => {
         avanza.authenticate({
-            username: process.env.USER,
+            username: process.env.AVAUSER,
             password: process.env.PASSWORD
         }).then(() => {
             return Promise.all(newListings.map(function (listing) {
                 return new Promise((resolve, reject) => {
                     searchStocks([0, [listing.name], {}])
                     .then(searchRes => {
-                        resolve(searchRes[2]);
+                        var tickerList = JSON.parse(globalAvanzaIds);
+                        for (var ticker in searchRes[2]){
+                            if (!tickerList[ticker]) { //not already listed on another market
+                                console.log('Added new listing ' +ticker+ ' on market '+market+' to file.')
+                                if(market == 'aktietorget'){
+                                    fs.appendFileSync(stockList[3],'\n'+ticker)
+                                }else if(market == 'nasdaq_stockholm'){
+                                    fs.appendFileSync(stockList[0],'\n'+ticker)
+                                }else if(market == 'nasdaq_firstnorth'){
+                                    fs.appendFileSync(stockList[1],'\n'+ticker) //will \n mess up on RPI?
+                                }
+                                resolve();
+                            }else{
+                                console.log('Skipped new listing ' +ticker+ '. It\'s already listed on another market.')
+                                resolve();
+                            }
+                        }
                     })
                 });
             }));
@@ -563,52 +566,45 @@ function parseListingResults(newListings, market) {
     })
 }
 
-function findNewListingAktietorget(website) {
+function parseListingWebsite(website) {
     return new Promise((resolve, reject) => {
         rp(website).then(htmlString => {
             const $ = cheerio.load(htmlString);
             var newListings = [];
 
-            $('#ctl00_ctl00_MasterContentBody_InvestorMasterContentBody_tblStatistic').children('tbody').children('tr').each(function () {
-                var $tr = $(this)
-                var stock = {};
-                stock['name'] = $tr.children('td').eq(0).text();
-                if (stock['name'] ) {
-                    var listDate = new Date(Date.parse($tr.children('td').eq(1).text()));
-                    stock['date'] = listDate.toJSON().slice(0, -14);
-                    if(stock['date'] == date){
-                        newListings.push(stock)
+            if(website.match(/nasdaq/i) ){
+                $('.nordic-right-content-area').children('article').each(function () {
+                    var headerText = $(this).children('header').children('h3').text();
+                    if (headerText.match(/listings 2017/i)) {
+                        $(this).children('div').children('p').each(function () {
+                            var $p = $(this)
+                            var stock = {};
+                            var locAndDate = $p.children('b').text().split(',');
+                            var tmpDate = new Date(Date.parse('2017' + locAndDate[1] + ' GMT')); //GMT or we get wrong date
+                            var listDate = tmpDate.toJSON().slice(0, -14);
+                            if (locAndDate[0] == 'Stockholm' && listDate == date) {
+                                stock['date'] = listDate;
+                                stock['name'] = $p.children('a').text()
+                                newListings.push(stock)
+                            }
+                        });
                     }
-                }
-            });
-            resolve(newListings);
-        })
-    });
-}
-
-function findNewListingNasdaq(website) {
-    return new Promise((resolve, reject) => {
-        rp(website).then(htmlString => {
-            const $ = cheerio.load(htmlString);
-            var newListings = [];
-
-            $('.nordic-right-content-area').children('article').each(function () {
-                var headerText = $(this).children('header').children('h3').text();
-                if (headerText.match(/listings 2017/i)) {
-                    $(this).children('div').children('p').each(function () {
-                        var $p = $(this)
-                        var stock = {};
-                        var locAndDate = $p.children('b').text().split(',');
-                        var tmpDate = new Date(Date.parse('2017' + locAndDate[1]));
-                        var listDate = tmpDate.toJSON().slice(0, -14);
-                        if (locAndDate[0] == 'Stockholm' && listDate == date) {
-                            stock['date'] = listDate;
-                            stock['name'] = $p.children('a').text()
+                })
+            } else if(website.match(/aktietorget/i)) {
+                $('#ctl00_ctl00_MasterContentBody_InvestorMasterContentBody_tblStatistic').children('tbody').children('tr').each(function () {
+                    var $tr = $(this)
+                    var stock = {};
+                    stock['name'] = $tr.children('td').eq(0).text();
+                    if (stock['name'] ) {
+                        var listDate = new Date(Date.parse($tr.children('td').eq(1).text()  + ' 12:00')); //12:00 here or we get wrong date due to timezone
+                        stock['date'] = listDate.toJSON().slice(0, -14);
+                        if(stock['date'] == date){
                             newListings.push(stock)
                         }
-                    });
-                }
-            });
+                    }
+                })
+            }
+
             resolve(newListings);
         })
     });

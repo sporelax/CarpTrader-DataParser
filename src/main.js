@@ -1,7 +1,7 @@
 import Avanza from 'avanza'
 import dotenv from 'dotenv';
 dotenv.config()
-const debugMode = true;
+const debugMode = false;
 const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
@@ -39,10 +39,10 @@ checkStockMarketOpen()
 .then(parseNewListings)
 .then(buildStockList)
 .then(storeAvaIdsInDb)
-//.then(stockParse)
-//.then(finalizeBroker)
+.then(stockParse)
+.then(finalizeBroker)
 .then(splitScan)
-.catch(err => {console.log("Main:",err)});
+.catch(err => {console.log("Main loop:",err)});
 
 
 console.log('Press \'q\' to exit.');
@@ -138,8 +138,6 @@ function parseAsync(idxAndRows) {
             return prepareBroker(data)
         }).then(data => {
             console.log((new Date()).toJSON()+" - Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
-            //If time before 9, set date to prev day? 
-            //If market = not open this day, dont store?
 
             var insert_values = [date];
             insert_values.push(stock.id);
@@ -311,29 +309,27 @@ function splitScan() {
             }
         }
         var yesterStockDay = tmpDate.toJSON().slice(0, -14);
-        console.log(yesterStockDay);
 
         db_overview.all("SELECT ticker,id FROM stockIds", (err, rows) => {
             for (var i = 0; i < rows.length; i++) {
                 db_overview.all("SELECT ticker,id,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [rows[i].ticker, date, yesterStockDay], (err, rows) => {
                     if (rows.length == 2) {
                         if (rows[0].date == yesterStockDay) {
-                            //return these to normal once we get a few days worth of data
-
-                            if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) {
+                            if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) { //to account for rounding errors
                                 console.log("Something fishy is up, stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice+", sum: "+(rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice));
                                 if (rows[0].lastPrice == 0) {
                                     reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
                                 } else {
                                     var splitRatio = (rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice;
-                                    fixSplit(rows[0].ticker, rows[0].id, splitRatio);
+                                    if (splitRatio > 1.1 || splitRatio < 0.9){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
+                                        console.log("Ticker: "+rows[0].ticker+" , split ratio: "+splitRatio);
+                                        fixSplit(rows[0].ticker, rows[0].id, splitRatio);
+                                    }
                                 }
                             }
                         } else {
                             console.log("Strange error, first row should always be yesterstockday")
                         }
-                    } else {
-                        //console.log('no two-day data found for stock:',rows);
                     }
                 });
             }
@@ -349,7 +345,6 @@ function fixSplit(ticker, id, sr) {
     return new Promise((resolve, reject) => {
         db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
             //console.log("r:", row);
-            console.log("Ticker: "+ticker+" , split ratio: "+sr);
             var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=?) WHERE (id=?, date=?)");
             for (var i = 0; i < row.length; i++) {
                 if (row && row[i].date != date) {

@@ -1,7 +1,7 @@
 import Avanza from 'avanza'
 import dotenv from 'dotenv';
 dotenv.config()
-const debugMode = false;
+const debugMode = true;
 const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
@@ -39,10 +39,11 @@ checkStockMarketOpen()
 .then(parseNewListings)
 .then(buildStockList)
 .then(storeAvaIdsInDb)
-.then(stockParse)
-.then(finalizeBroker)
-//.then(splitScan)
+//.then(stockParse)
+//.then(finalizeBroker)
+.then(splitScan)
 .catch(err => {console.log("Main:",err)});
+
 
 console.log('Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
@@ -59,7 +60,7 @@ process.stdin.on('keypress', (str, key) => {
  */
 function checkStockMarketOpen() {
     return new Promise((resolve,reject) => {
-        db_overview.all("SELECT date FROM marketStatus where market='test' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
+        db_overview.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
             for (var i = 0; i<rows.length; i++){
                 arrClosedStockDays.push(rows[i].date);
             }
@@ -68,6 +69,7 @@ function checkStockMarketOpen() {
                 console.log('Stock market closed today. Exiting.');
                 resolve(process.exit(0));
             }else{
+                if( debugMode ) console.log(arrClosedStockDays);
                 resolve();
             }
         });
@@ -287,9 +289,7 @@ function finalizeBroker() {
                     stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
                 }
             }
-            stmt.finalize().then(() => {
-                resolve()
-            });
+            resolve(stmt.finalize());
         })
     })
 }
@@ -304,7 +304,6 @@ function splitScan() {
 
         var tmpDate = new Date();
         var foundDay = false;
-        console.log(arrClosedStockDays);
         while( !foundDay ){
             tmpDate.setTime(tmpDate.getTime() - 86400000);
             if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrClosedStockDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
@@ -313,7 +312,6 @@ function splitScan() {
         }
         var yesterStockDay = tmpDate.toJSON().slice(0, -14);
         console.log(yesterStockDay);
-        reject(process.exit(0))
 
         db_overview.all("SELECT ticker,id FROM stockIds", (err, rows) => {
             for (var i = 0; i < rows.length; i++) {
@@ -321,27 +319,21 @@ function splitScan() {
                     if (rows.length == 2) {
                         if (rows[0].date == yesterStockDay) {
                             //return these to normal once we get a few days worth of data
-                            var r00 = rows[0].lastPrice.replace(/,/g, '.');
-                            var r01 = rows[0].priceChange.replace(/,/g, '.');
-                            var r10 = rows[1].lastPrice.replace(/,/g, '.');
-                            var r11 = rows[1].priceChange.replace(/,/g, '.');
 
-                            if (r00 + r01 - r10 != 0) {
-                                console.log("Something fishy is up, stock " + rows[0].id + " might be splitted");
-                                if (r00 == 0) {
-                                    reject("error caught, lastprice should never be zero for stock ", rows[0].id)
+                            if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) {
+                                console.log("Something fishy is up, stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice+", sum: "+(rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice));
+                                if (rows[0].lastPrice == 0) {
+                                    reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
                                 } else {
-                                    var splitRatio = (r10 - r11) / r00;
+                                    var splitRatio = (rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice;
                                     fixSplit(rows[0].ticker, rows[0].id, splitRatio);
                                 }
-                            } else {
-                                console.log("Check: ", (r00 + r01 - r10));
                             }
                         } else {
                             console.log("Strange error, first row should always be yesterstockday")
                         }
                     } else {
-                        //console.log('no two-day data found for stock, ',rows);
+                        //console.log('no two-day data found for stock:',rows);
                     }
                 });
             }
@@ -356,22 +348,19 @@ function splitScan() {
 function fixSplit(ticker, id, sr) {
     return new Promise((resolve, reject) => {
         db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
-            console.log("r:", row);
-            var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice, highestPrice, lowestPrice, priceChange) = (?,?,?,?) WHERE id=?, date=?");
+            //console.log("r:", row);
+            console.log("Ticker: "+ticker+" , split ratio: "+sr);
+            var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=?) WHERE (id=?, date=?)");
             for (var i = 0; i < row.length; i++) {
                 if (row && row[i].date != date) {
                     if (debugMode) {
-                        console.log(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date)
+                        //console.log(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date)
                     } else {
                         stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date);
                     }
                 }
             }
-            console.log("crash on finalize?")
-            stmt.finalize().then(() => {
-                resolve()
-                console.log("safe!")
-            });
+            resolve();
         });
     });
 }
@@ -390,7 +379,7 @@ function storeAvaIdsInDb() {
                 var tickerList = JSON.parse(globalAvanzaIds);
                 for (var ticker in tickerList) {
                     if (debugMode) {
-                        console.log(ticker, tickerList[ticker].id, tickerList[ticker].name)
+                        //console.log(ticker, tickerList[ticker].id, tickerList[ticker].name)
                     } else {
                         stmt.run(ticker, tickerList[ticker].id, tickerList[ticker].name);
                     }

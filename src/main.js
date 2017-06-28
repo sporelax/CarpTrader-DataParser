@@ -349,7 +349,7 @@ function stockParse() {
         db_overview.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
             parseSerialized([0, rows])
                 .then((nrParsed) => {
-                    logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "(Date.now() - startTime));
+                    logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "+(Date.now() - startTime));
                     resolve();
                 }).catch((error) => {
                     logger(0,"!parse error:", error)

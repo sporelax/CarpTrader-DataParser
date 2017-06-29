@@ -29,12 +29,10 @@ var arrClosedStockDays=[];
 //parseCheerioData('test');
 //fixSplit('FING B', 5468, 3);
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
-splitScan().then(()=>{
-    process.exit(0);
-});
+//splitScan()
 //****** END */
 
-/*
+
 initDbAndCheckMarketStatus()
 .then(parseNewListings)
 .then(buildStockList)
@@ -44,7 +42,7 @@ initDbAndCheckMarketStatus()
 .then(()=>{
     process.exit(0);
 }).catch(err => {logger(0,"Main loop:",err)});
-*/
+
 
 logger(1,'Debuglevel: '+debugLevel);
 logger(1,'Press \'q\' to exit.');
@@ -628,9 +626,9 @@ function logger(level,string,optional){
     } else if (debugLevel == 0) {
         var logStr = '\n'+(new Date()).toJSON()+" - "+string;
         if(optional === undefined){
-            fs.appendFileSync(logfile,logStr);
+            fs.appendFileSync(logFile,logStr);
         }else{
-            fs.appendFileSync(logfile,logStr+optional.toString);
+            fs.appendFileSync(logFile,logStr+optional.toString);
         }
     }
 }

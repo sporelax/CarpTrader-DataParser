@@ -14,9 +14,7 @@ const stockList = ['./stocklists/nasdaq_stockholm.txt',
     './stocklists/nasdaq_firstnorth.txt',
     './stocklists/ngm.txt',
     './stocklists/aktietorget.txt'];
-const avaIdFile = "./stocklists/avanzaJsonIdFile.txt";
 const logFile = "./info.log";
-var globalAvanzaIds = JSON.parse(fs.readFileSync(avaIdFile, 'utf8'));
 
 const debugLevel = process.env.DEBUGLEVEL || 2;
 const fullDate = new Date();
@@ -28,22 +26,20 @@ var brokerInfo = {};
 var arrClosedStockDays=[];
 
 //****** DEBUG FUNCTION CALLS */
-//storeAvaIdsInDb();
 //scrapeAvanza(577898,'footway-group-pref');
 //parseCheerioData('test');
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
 //****** END */
 
-checkStockMarketOpen()
+initDbAndCheckMarketStatus()
 .then(parseNewListings)
 .then(buildStockList)
-.then(storeAvaIdsInDb)
 .then(stockParse)
 .then(finalizeBroker)
 .then(splitScan)
 .catch(err => {logger(0,"Main loop:",err)});
 
-
+logger(1,'Debuglevel: '+debugLevel);
 logger(1,'Press \'q\' to exit.');
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
@@ -57,20 +53,26 @@ process.stdin.on('keypress', (str, key) => {
 /**
  * Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
  */
-function checkStockMarketOpen() {
+function initDbAndCheckMarketStatus() {
     return new Promise((resolve,reject) => {
-        db_overview.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
-            for (var i = 0; i<rows.length; i++){
-                arrClosedStockDays.push(rows[i].date);
-            }
+        db_overview.serialize(function() {
+            db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+            db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+            db_overview.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
+            db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
+            db_overview.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
+                for (var i = 0; i<rows.length; i++){
+                    arrClosedStockDays.push(rows[i].date);
+                }
 
-            if(arrClosedStockDays.indexOf(date) > -1 ){
-                logger(1,"Stock market is closed today. Exiting.");
-                resolve(process.exit(0));
-            }else{
-                logger(1,"",arrClosedStockDays);
-                resolve();
-            }
+                if(arrClosedStockDays.indexOf(date) > -1 ){
+                    logger(1,"Stock market is closed today. Exiting.");
+                    resolve(process.exit(0));
+                }else{
+                    logger(1,"Stock market closed days:",arrClosedStockDays);
+                    resolve();
+                }
+            });
         });
     })
 }
@@ -109,18 +111,14 @@ function handleListingResults(newListings, market) {
                 return new Promise((resolve, reject) => {
                     searchStocks([0, [listing.name], {}])
                     .then(searchRes => {
-                        for (var ticker in searchRes[2]){
-                            if (!globalAvanzaIds[ticker]) { //not already listed on another market
-                                logger(1,'Added new listing ' +ticker+ ' on market ' +market+ ' to file.')
-                                if(market == 'aktietorget'){
-                                    fs.appendFileSync(stockList[3],'\n'+ticker)
-                                }else if(market == 'nasdaq_stockholm'){
-                                    fs.appendFileSync(stockList[0],'\n'+ticker)
-                                }else if(market == 'nasdaq_firstnorth'){
-                                    fs.appendFileSync(stockList[1],'\n'+ticker) //will \n mess up on RPI?
-                                }
-                            }else{
-                                logger(1,'Skipped new listing ' +ticker+ '. It\'s already listed on another market.')
+                        for (var ticker in searchRes[2]) {
+                            logger(1, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
+                            if (market == 'aktietorget') {
+                                fs.appendFileSync(stockList[3], '\n' + ticker)
+                            } else if (market == 'nasdaq_stockholm') {
+                                fs.appendFileSync(stockList[0], '\n' + ticker)
+                            } else if (market == 'nasdaq_firstnorth') {
+                                fs.appendFileSync(stockList[1], '\n' + ticker) //will \n mess up on RPI?
                             }
                         }
                         resolve();
@@ -178,7 +176,7 @@ function parseListingWebsite(website) {
 
 /*
 *   build list of avanza stock Id numbers from lists of Tickers. 
-*   Compare list of Id Numbers to existing list stored in @globalAvanzaIds
+*   Compare list of Id Numbers to existing list stored in database
 *   Overwrite it if change is detected.
 *   Modify @stockList in order to change included marketplaces.
 */
@@ -190,41 +188,50 @@ function buildStockList() {
             logger(1,"Parsing stocklist: " + list);
             var contents = fs.readFileSync(list, 'utf8');
             contents.split('\n').forEach((ticker) => {
-                tickerList.push(ticker.replace('\r','')); //need split with only \n for RaspPi, and replace \r for windows
+                if(tickerList.indexOf(ticker)){ 
+                    tickerList.push(ticker.replace('\r','')); //need split with only \n for RaspPi, and replace \r for windows
+                }else{
+                    logger(0,"Warn: Stock "+ticker+" seems to be listed on multiple lists.");
+                }
             });
         })
         logger(1,"Number of stocks in list: " + tickerList.length); //should be ~830 for full list
         //Parse avanza if tickerList does not match avaIdFile
-        var tmpTickerList = tickerList.slice();
-        for (var key in globalAvanzaIds) {
-            var idx = tmpTickerList.indexOf(key);
-            if (idx > -1) {
-                tmpTickerList.splice(idx, 1);
-            } else {
-                logger(1,"Ticker " + key + " not found in stock files.");
-                diffBetweenDbAndList = 1;
-                //these should be removed from DB
+
+        db_overview.all("SELECT ticker FROM stockIds", (err, rows) => {
+            for (var i = 0; i<rows.length; i++){
+                var idx = tickerList.indexOf(rows[i].ticker);
+                if(idx > -1) {
+                    tickerList.splice(idx, 1);
+                } else {
+                    logger(0,"Ticker " + rows[i].ticker + " not found in stock files, removing from database");
+                    db_overview.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
+                }
             }
-        }
 
-        if (tmpTickerList.length != 0) {
-            diffBetweenDbAndList = 1;
-            logger(1,"Tickers not found in globalAvanzaIds: " + tmpTickerList.toString());
-            //these should be removed or added to DB
-        }
-
-        if (diffBetweenDbAndList) {
-            logger(1,"globalAvanzaIds does not match Stocklist, rebuilding globalAvanzaIds.");
-            avanza.authenticate({
-                username: process.env.AVAUSER,
-                password: process.env.PASSWORD
-            }).then(() => {
-                resolve(searchStocksSerialize([0, tickerList, {}]));
-            });
-        } else {
-            logger(1,"TickerList matched AvaJsonIdObj, DB update not required.");
-            resolve();
-        }
+            if (tickerList.length != 0) {
+                logger(1,"Database does not match Stocklist, adding new stocks to DB.");
+                avanza.authenticate({
+                    username: process.env.AVAUSER,
+                    password: process.env.PASSWORD
+                }).then(() => {
+                    searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
+                        db.serialize(function() {
+                            logger(2,"Updating stockId database with stock: "+ticker);
+                            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+                            for (var ticker in newStocks) {
+                                stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name);
+                            }
+                            stmt.finalize();
+                            resolve();
+                        });
+                    })
+                });
+            } else {
+                logger(1,"TickerList matched database, DB update not required.");
+                resolve();
+            }
+        });
     });
 }
 
@@ -238,10 +245,7 @@ function searchStocksSerialize(arr) {
         if (arr[0] < arr[1].length) {
             return searchStocksSerialize(arr);
         } else {
-            logger(1,"Reached end of stock list! Writing data to file. ");
-            fs.writeFileSync(avaIdFile, JSON.stringify(arr[2]));
-            globalAvanzaIds = arr[2];
-            return 0; //this resolves the serialized chain
+            return arr[2]; //this resolves the serialized chain
         }
     }
     function handleError(errormsg) {
@@ -318,34 +322,10 @@ function parseSearchString(name, answer) {
 }
 
 /**
- * Store avanza ids and name in database
- */
-function storeAvaIdsInDb() {
-    return new Promise((resolve, reject) => {
-        //this probably fails sometimes because of no real serialization
-        db_overview.serialize(() => {
-            db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
-            if (diffBetweenDbAndList || debugLevel >= 1) {
-                logger(1,"Updating stockId database");
-                var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
-                for (var ticker in globalAvanzaIds) {
-                    stmt.run(ticker, globalAvanzaIds[ticker].id, globalAvanzaIds[ticker].name);
-                }
-                stmt.finalize();
-            }
-            resolve();
-        });
-    });
-}
-
-/**
  * Initialize the stock parsing
  */
 function stockParse() {
     return new Promise((resolve, reject) => {
-        db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
-        db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
-        db_overview.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
         db_overview.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
             parseSerialized([0, rows])
                 .then((nrParsed) => {

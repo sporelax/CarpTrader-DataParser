@@ -8,7 +8,6 @@ const sqlite3 = require('sqlite3').verbose();;
 const cheerio = require('cheerio')
 const rp = require('request-promise');
 
-const db_intraday = new sqlite3.Database('./databases/omxs_intraday.db');
 const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
 const stockList = ['./stocklists/nasdaq_stockholm.txt',
     './stocklists/nasdaq_firstnorth.txt',
@@ -28,16 +27,24 @@ var arrClosedStockDays=[];
 //****** DEBUG FUNCTION CALLS */
 //scrapeAvanza(577898,'footway-group-pref');
 //parseCheerioData('test');
+//fixSplit('FING B', 5468, 3);
 //parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
+splitScan().then(()=>{
+    process.exit(0);
+});
 //****** END */
 
+/*
 initDbAndCheckMarketStatus()
 .then(parseNewListings)
 .then(buildStockList)
 .then(stockParse)
 .then(finalizeBroker)
 .then(splitScan)
-.catch(err => {logger(0,"Main loop:",err)});
+.then(()=>{
+    process.exit(0);
+}).catch(err => {logger(0,"Main loop:",err)});
+*/
 
 logger(1,'Debuglevel: '+debugLevel);
 logger(1,'Press \'q\' to exit.');
@@ -65,8 +72,8 @@ function initDbAndCheckMarketStatus() {
                     arrClosedStockDays.push(rows[i].date);
                 }
 
-                if(arrClosedStockDays.indexOf(date) > -1 ){
-                    logger(1,"Stock market is closed today. Exiting.");
+                if(arrClosedStockDays.indexOf(date) > -1 && debugLevel <= 1){
+                    logger(0,"Stock market is closed today. Exiting.");
                     resolve(process.exit(0));
                 }else{
                     logger(1,"Stock market closed days:",arrClosedStockDays);
@@ -112,7 +119,7 @@ function handleListingResults(newListings, market) {
                     searchStocks([0, [listing.name], {}])
                     .then(searchRes => {
                         for (var ticker in searchRes[2]) {
-                            logger(1, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
+                            logger(0, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
                             if (market == 'aktietorget') {
                                 fs.appendFileSync(stockList[3], '\n' + ticker)
                             } else if (market == 'nasdaq_stockholm') {
@@ -195,7 +202,7 @@ function buildStockList() {
                 }
             });
         })
-        logger(1,"Number of stocks in list: " + tickerList.length); //should be ~830 for full list
+        logger(1,"Number of stocks in lists: " + tickerList.length); //should be ~830 for full list
         //Parse avanza if tickerList does not match avaIdFile
 
         db_overview.all("SELECT ticker FROM stockIds", (err, rows) => {
@@ -210,13 +217,13 @@ function buildStockList() {
             }
 
             if (tickerList.length != 0) {
-                logger(1,"Database does not match Stocklist, adding new stocks to DB.");
+                logger(0,"Database doesn\'t match parsed list, adding new stocks to DB:",tickerList);
                 avanza.authenticate({
                     username: process.env.AVAUSER,
                     password: process.env.PASSWORD
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
-                        db.serialize(function() {
+                        db_overview.serialize(function() {
                             logger(2,"Updating stockId database with stock: "+ticker);
                             var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
                             for (var ticker in newStocks) {
@@ -329,7 +336,7 @@ function stockParse() {
         db_overview.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
             parseSerialized([0, rows])
                 .then((nrParsed) => {
-                    logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "(Date.now() - startTime));
+                    logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "+(Date.now() - startTime)/1000+" s.");
                     resolve();
                 }).catch((error) => {
                     logger(0,"!parse error:", error)
@@ -541,7 +548,14 @@ function splitScan() {
 
         var tmpDate = new Date();
         var foundDay = false;
+
+        if(tmpDate.getUTCHours() > 0 && tmpDate.getUTCHours() < 7){
+            logger(0,"Skipping splitScan, swedish stock market not yet open.")
+            resolve();
+        }
+
         while( !foundDay ){
+            //Move back one day at a time, and return true once day != saturday/sunday/closed
             tmpDate.setTime(tmpDate.getTime() - 86400000);
             if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrClosedStockDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
                 foundDay = true;
@@ -549,29 +563,34 @@ function splitScan() {
         }
         var yesterStockDay = tmpDate.toJSON().slice(0, -14);
 
-        db_overview.all("SELECT ticker,id FROM stockIds", (err, rows) => {
-            for (var i = 0; i < rows.length; i++) {
-                db_overview.all("SELECT ticker,id,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [rows[i].ticker, date, yesterStockDay], (err, rows) => {
-                    if (rows.length == 2) {
-                        if (rows[0].date == yesterStockDay) {
-                            if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) { //to account for rounding errors
-                                logger(0,"Something fishy is up, stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice+", sum: "+(rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice));
-                                if (rows[0].lastPrice == 0) {
-                                    reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
-                                } else {
-                                    var splitRatio = (rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice;
-                                    if (splitRatio > 1.1 || splitRatio < 0.9){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
-                                        logger(1,"Ticker: "+rows[0].ticker+" , split ratio: "+splitRatio);
-                                        fixSplit(rows[0].ticker, rows[0].id, splitRatio);
+        db_overview.all("SELECT ticker FROM stockIds", (err, tickRow) => {
+            Promise.all(tickRow.map(function (obj) {
+                return new Promise((resolve, reject) => {
+                    db_overview.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, date, yesterStockDay], (err, rows) => {
+                        if (rows.length == 2) {
+                            if (rows[0].date == yesterStockDay) {
+                                if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) { //to account for rounding errors
+                                    logger(0,"Something fishy is up, stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice+", sum: "+(rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice));
+                                    if (rows[0].lastPrice == 0) {
+                                        reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
+                                    } else {
+                                        var splitRatio = (rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice;
+                                        if (splitRatio > 1.3 || splitRatio < 0.7){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
+                                            logger(1,"Ticker: "+rows[0].ticker+" , split ratio: "+splitRatio);
+                                            resolve(fixSplit(rows[0].ticker, splitRatio));
+                                        }
                                     }
                                 }
+                            } else {
+                                logger(0,"Strange error, first row should always be yesterstockday")
                             }
-                        } else {
-                            logger(1,"Strange error, first row should always be yesterstockday")
                         }
-                    }
+                        resolve();
+                    });
                 });
-            }
+            })).then(() => {
+                resolve();
+            });
         });
     });
 }
@@ -580,17 +599,17 @@ function splitScan() {
  * Fix split when detected
  * NOT DONE
  */
-function fixSplit(ticker, id, sr) {
+function fixSplit(ticker, sr) {
     return new Promise((resolve, reject) => {
         db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
             logger(2,"r:", row);
-            var stmt = db_overview.prepare("UPDATE dailyStock SET (lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=?) WHERE (id=?, date=?)");
+            var stmt = db_overview.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE ticker=? AND date=?");
             for (var i = 0; i < row.length; i++) {
                 if (row && row[i].date != date) {
                     if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
                         logger(2,"Debug fixSplit: "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr+", "+row[i].id+", "+row[i].date)
                     } else {
-                        stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].id, row[i].date);
+                        stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].ticker, row[i].date);
                     }
                 }
             }

@@ -25,13 +25,12 @@ var brokerInfo = {};
 var arrClosedStockDays=[];
 
 //****** DEBUG FUNCTION CALLS */
-//scrapeAvanza(577898,'footway-group-pref');
 //parseCheerioData('test');
-//fixSplit('FING B', 5468, 3);
-//parseSerialized(0,[{'id':5468,'name':'fingerprint-cards-b'},{'id':577898,'name':'footway-group-pref'}]);
+//fixSplit('FING B', 3);
+//parseSerialized([0,[{'ticker':'FING B','id':5468,'name':'fingerprint-cards-b'},{'ticker':'TRAC B','id':5472,'name':'traction--b'},{'ticker':'DMYD B','id':414975,'name':'diamyd-medical'}]])
 //splitScan()
+//.catch(error => console.log(error));
 //****** END */
-
 
 initDbAndCheckMarketStatus()
 .then(parseNewListings)
@@ -40,9 +39,9 @@ initDbAndCheckMarketStatus()
 .then(finalizeBroker)
 .then(splitScan)
 .then(()=>{
+    logger(1,'Done');
     process.exit(0);
 }).catch(err => {logger(0,"Main loop:",err)});
-
 
 logger(1,'Debuglevel: '+debugLevel);
 logger(1,'Press \'q\' to exit.');
@@ -114,9 +113,9 @@ function handleListingResults(newListings, market) {
         }).then(() => {
             return Promise.all(newListings.map(function (listing) {
                 return new Promise((resolve, reject) => {
-                    searchStocks([0, [listing.name], {}])
+                    searchStocksSerialize([0, [listing.name], {}])
                     .then(searchRes => {
-                        for (var ticker in searchRes[2]) {
+                        for (var ticker in searchRes) {
                             logger(0, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
                             if (market == 'aktietorget') {
                                 fs.appendFileSync(stockList[3], '\n' + ticker)
@@ -222,9 +221,9 @@ function buildStockList() {
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
                         db_overview.serialize(function() {
-                            logger(2,"Updating stockId database with stock: "+ticker);
                             var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
                             for (var ticker in newStocks) {
+                                logger(2,"Updating stockId database with stock: "+ticker);
                                 stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name);
                             }
                             stmt.finalize();
@@ -242,7 +241,7 @@ function buildStockList() {
 
 /**
  * Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
- * @param {*} arr is an array with [current index, stocklist, returnArray]
+ * @param {*} arr is an array with [current index, stocklist, returnObject]
  */
 function searchStocksSerialize(arr) {
     function decide(arr) {
@@ -254,7 +253,7 @@ function searchStocksSerialize(arr) {
         }
     }
     function handleError(errormsg) {
-        if (errormsg.code == 'ECONNRESET' || errormsg.code == 'ETIMEDOUT') {
+        if (errormsg && errormsg.code && (errormsg.code == 'ECONNRESET' || errormsg.code == 'ETIMEDOUT')) {
             logger(0,"SearchStocks: Connection reset or timed out. Retrying...");
             globalRetryAttempts++;
             return searchStocksSerialize(arr);
@@ -281,6 +280,7 @@ function searchStocks(arr) {
                 arr[2][parsedRes[2]] = { 'id': parsedRes[0], 'name': parsedRes[1] };
             } else {
                 logger(0,"Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
+                resolve([0,[],{}]);
             }
             resolve(arr);
         }).catch((error) => {
@@ -358,11 +358,14 @@ function parseSerialized(idxAndRows) {
     }
 
     function handleError(errormsg) {
-        if (errormsg.error.code == 'ECONNRESET' || errormsg.error.code == 'ETIMEDOUT') {
+        if (errormsg && errormsg.error && errormsg.error.code && (errormsg.error.code == 'ECONNRESET' || errormsg.error.code == 'ETIMEDOUT')) {
             logger(0,"parseSerialized: Connection reset or timed out. Retrying...");
             globalRetryAttempts++;
             return parseSerialized(idxAndRows);
-        } else {
+        } else if(errormsg && errormsg.error && errormsg.error == 'NAMECHANGE') {
+            idxAndRows[1][idxAndRows[0]] = errormsg.newRow;
+            return parseSerialized(idxAndRows);
+        }else {
             throw errormsg;
         }
     }
@@ -382,14 +385,32 @@ function parseAsync(idxAndRows) {
         rp(strAvaPage).then(htmlString => {
             return parseCheerioData(htmlString)
         }).then(data => {
-            return prepareBroker(data)
+            if (data.ticker){
+                return prepareBroker(data)
+            } else {
+                return new Promise((resolve, reject) => {
+                    logger(0,"Found no data for stock: "+stock.ticker+" with name: "+stock.name+". Try and search for name change: ");
+                    avanza.authenticate({
+                        username: process.env.AVAUSER,
+                        password: process.env.PASSWORD
+                    }).then(() => {
+                        searchStocksSerialize([0, [stock.ticker], {}]).then(searchRes => {
+                            for (var newName in searchRes) {
+                                if (stock.name != searchRes[newName].name) {
+                                    logger(0, "Name update detected! Old: " + stock.name + ", new: " + searchRes[newName].name+". Updating DB");
+                                    db_overview.run("UPDATE stockIds SET name=? WHERE ticker=?",[searchRes[newName].name, stock.ticker]);
+                                    var errmsg = {error: 'NAMECHANGE',newRow: {name: searchRes[newName].name, ticker: stock.ticker, id: stock.id }}
+                                    reject(errmsg);
+                                }
+                            }
+                            logger(0, "No new name found. Something else is wrong, skipping stock.");
+                            resolve(data);
+                        });
+                    })
+                });
+            }
         }).then(data => {
             logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
-
-            if (data === undefined){
-                logger(0,"Found no data for stock: "+stock.name+" with id: "+stock.id);
-                reject();
-            }
 
             var insert_values = [date];
             insert_values.push(stock.id);
@@ -572,14 +593,14 @@ function splitScan() {
                     db_overview.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, date, yesterStockDay], (err, rows) => {
                         if (rows.length == 2) {
                             if (rows[0].date == yesterStockDay) {
-                                if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.001) { //to account for rounding errors
-                                    logger(0,"Something fishy is up, stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice+", sum: "+(rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice));
+                                if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.00001) { //to account for rounding errors
+                                    logger(0,"Stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice);
                                     if (rows[0].lastPrice == 0) {
                                         reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
                                     } else {
-                                        var splitRatio = (rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice;
+                                        var splitRatio = parseFloat((rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice).toPrecision(5);
                                         if (splitRatio > 1.3 || splitRatio < 0.7){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
-                                            logger(1,"Ticker: "+rows[0].ticker+" , split ratio: "+splitRatio);
+                                            logger(0,"Fixing split with ratio: "+splitRatio);
                                             resolve(fixSplit(rows[0].ticker, splitRatio));
                                         }
                                     }
@@ -605,12 +626,11 @@ function splitScan() {
 function fixSplit(ticker, sr) {
     return new Promise((resolve, reject) => {
         db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
-            logger(2,"r:", row);
-            var stmt = db_overview.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE ticker=? AND date=?");
+            var stmt = db_overview.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
             for (var i = 0; i < row.length; i++) {
                 if (row && row[i].date != date) {
                     if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
-                        logger(2,"Debug fixSplit: "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr+", "+row[i].id+", "+row[i].date)
+                        logger(2,"fixSplit("+row[i].date+"): "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr)
                     } else {
                         stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].ticker, row[i].date);
                     }
@@ -633,7 +653,7 @@ function logger(level,string,optional){
         if(optional === undefined){
             fs.appendFileSync(logFile,logStr);
         }else{
-            fs.appendFileSync(logFile,logStr+optional.toString);
+            fs.appendFileSync(logFile,logStr+JSON.stringify(optional));
         }
     }
 }

@@ -386,6 +386,11 @@ function parseAsync(idxAndRows) {
         }).then(data => {
             logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
 
+            if (data === undefined){
+                logger(0,"Found no data for stock: "+stock.name+" with id: "+stock.id);
+                reject();
+            }
+
             var insert_values = [date];
             insert_values.push(stock.id);
             insert_values.push(data.marketPlace);
@@ -623,7 +628,7 @@ function logger(level,string,optional){
         }else{
             console.log((new Date()).toJSON()+" - "+string,optional)
         }
-    } else if (debugLevel == 0) {
+    } else if (debugLevel == 0 && level == 0) {
         var logStr = '\n'+(new Date()).toJSON()+" - "+string;
         if(optional === undefined){
             fs.appendFileSync(logFile,logStr);

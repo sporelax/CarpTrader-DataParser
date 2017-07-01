@@ -9,6 +9,6 @@ then
     git push >> info.log 2>> info.log
     exit 0
 else
-    echo "script failed" >> info.log
+    echo "\nscript failed: $?" >> info.log
     exit 1    
 fi

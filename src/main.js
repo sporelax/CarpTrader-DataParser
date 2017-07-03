@@ -29,6 +29,11 @@ var arrClosedStockDays=[];
 //fixSplit('FING B', 3);
 //parseSerialized([0,[{'ticker':'FING B','id':5468,'name':'fingerprint-cards-b'},{'ticker':'TRAC B','id':5472,'name':'traction--b'},{'ticker':'DMYD B','id':414975,'name':'diamyd-medical'}]])
 //splitScan()
+//testBrokerstats()
+//finalizeBroker()
+//.then(()=>{
+//    console.log('FINALIZED!!!!')
+//})
 //.catch(error => console.log(error));
 //****** END */
 
@@ -55,6 +60,7 @@ if(process.stdout.isTTY){
         }
     })   
 }
+
 /**
  * Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
  */
@@ -226,6 +232,7 @@ function buildStockList() {
                             for (var ticker in newStocks) {
                                 logger(2,"Updating stockId database with stock: "+ticker);
                                 stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name);
+                                //should probably update this with promises to make sure its completed
                             }
                             stmt.finalize();
                             resolve();
@@ -430,7 +437,7 @@ function parseAsync(idxAndRows) {
             insert_values.push(data.pe);
             insert_values.push(data.ps);
             insert_values.push(data.yield);
-            insert_values.push(data.brokerStat);
+            insert_values.push(JSON.stringify(data.brokerStat))
 
             if (debugLevel <= 1) {
                 db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
@@ -537,6 +544,7 @@ function prepareBroker(data) {
                 newSell = currSell + addSell;
 
                 brokerInfo[broker] = { 'buyValue': newBuy, 'sellValue': newSell };
+                
             }
         }
         resolve(data);
@@ -548,18 +556,16 @@ function prepareBroker(data) {
  */
 function finalizeBroker() {
     return new Promise((resolve, reject) => {
-        db_overview.serialize(() => {
-            var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
-            logger(2,JSON.stringify(brokerInfo));
-            for (var broker in brokerInfo) {
-                if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
-                    logger(2,"Date: "+date+", "+broker+", "+brokerInfo[broker].sellValue+", "+brokerInfo[broker].buyValue);
-                } else {
-                    stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
-                }
-            }
-            resolve(stmt.finalize());
-        })
+        var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
+        Promise.all(Object.keys(brokerInfo).map(function (broker) {
+            return new Promise((resolve, reject) => {
+                logger(2, "Finalize: " + date + ", " + broker + ", " + brokerInfo[broker].sellValue + ", " + brokerInfo[broker].buyValue);
+                stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue, resolve());
+            })
+        })).then(() => {
+            stmt.finalize()
+            resolve();
+        });
     })
 }
 
@@ -633,7 +639,9 @@ function fixSplit(ticker, sr) {
                     if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
                         logger(2,"fixSplit("+row[i].date+"): "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr)
                     } else {
+                        logger(0,"fixSplit> New data: ("+row[i].date+"): "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr)
                         stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].ticker, row[i].date);
+                        //should rewrite this with promises as well.
                     }
                 }
             }

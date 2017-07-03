@@ -44,16 +44,17 @@ initDbAndCheckMarketStatus()
 }).catch(err => {logger(0,"Main loop:",err)});
 
 logger(1,'Debuglevel: '+debugLevel);
-logger(1,'Press \'q\' to exit.');
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.on('keypress', (str, key) => {
-    logger(1,str);
-    if (str == 'q') {
-        process.exit(0);
-    }
-})
-
+if(process.stdout.isTTY){
+    logger(1,'Press \'q\' to exit.');
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+    process.stdin.on('keypress', (str, key) => {
+        logger(1,str);
+        if (str == 'q') {
+            process.exit(0);
+        }
+    })   
+}
 /**
  * Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
  */

@@ -393,3 +393,18 @@
 2017-07-03T18:42:10.726Z - No new name found. Something else is wrong, skipping stock.
 2017-07-03T18:42:27.543Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 512.28 s.
 script failed: 2
+
+script failed: 1
+
+script failed: 1
+
+script failed: 1
+
+2017-07-03T19:30:03.472Z - Found no data for stock: TRAN A with name: transferator--a. Try and search for name change: 
+2017-07-03T19:30:03.618Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T19:30:04.132Z - Found no data for stock: TRAN B with name: transferator--b. Try and search for name change: 
+2017-07-03T19:30:04.198Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T19:30:07.178Z - Found no data for stock: WIEM with name: wiema. Try and search for name change: 
+2017-07-03T19:30:07.246Z - Stock WIEM potentially delisted? No matching stock found on Ava search.
+2017-07-03T19:30:07.246Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T19:30:23.877Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 487.251 s.

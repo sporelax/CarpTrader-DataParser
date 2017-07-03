@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export NODE_PATH=/usr/lib/nodejs:/usr/lib/node_modules:/usr/share/javascript
+cd ~pi/Git/CarpTrader-DataParser/
 npm run exec
 
 if [ $? -eq 0 ]

@@ -2,7 +2,7 @@
 
 npm run exec
 
-if [ $? -eq 0]
+if [ $? -eq 0 ]
 then 
     git add -A >> info.log 2>>info.log
     git commit -m "daily RPI parse" >> info.log 2>> info.log

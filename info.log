@@ -383,3 +383,13 @@
 2017-07-01T15:28:40.710Z - Stock QUART might be splitted, Yclose :14.5, change: 0.5, close: 14.5
 2017-07-01T15:28:40.711Z - Stock QUART PREF might be splitted, Yclose :9.9, change: 0.05, close: 9.9
 2017-07-01T15:28:40.711Z - Stock TERRNT B might be splitted, Yclose :27.6, change: 0.8, close: 27.6script failed
+
+2017-07-03T18:42:07.000Z - Found no data for stock: TRAN A with name: transferator--a. Try and search for name change: 
+2017-07-03T18:42:07.101Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T18:42:07.411Z - Found no data for stock: TRAN B with name: transferator--b. Try and search for name change: 
+2017-07-03T18:42:07.495Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T18:42:10.642Z - Found no data for stock: WIEM with name: wiema. Try and search for name change: 
+2017-07-03T18:42:10.725Z - Stock WIEM potentially delisted? No matching stock found on Ava search.
+2017-07-03T18:42:10.726Z - No new name found. Something else is wrong, skipping stock.
+2017-07-03T18:42:27.543Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 512.28 s.
+script failed: 2

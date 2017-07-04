@@ -31,9 +31,7 @@ var arrClosedStockDays=[];
 //splitScan()
 //testBrokerstats()
 //finalizeBroker()
-//.then(()=>{
-//    console.log('FINALIZED!!!!')
-//})
+//.then(()=>{ console.log('FINALIZED!!!!') })
 //.catch(error => console.log(error));
 //****** END */
 
@@ -227,14 +225,14 @@ function buildStockList() {
                     password: process.env.PASSWORD
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
-                        db_overview.serialize(function() {
-                            var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
-                            for (var ticker in newStocks) {
-                                logger(2,"Updating stockId database with stock: "+ticker);
-                                stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name);
-                                //should probably update this with promises to make sure its completed
-                            }
-                            stmt.finalize();
+                        var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+                        Promise.all(Object.keys(newStocks).map(function (ticker) {
+                            return new Promise((resolve, reject) => {
+                                logger(2, "Updating stockId database with stock: " + ticker);
+                                stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name, resolve());
+                            })
+                        })).then(() => {
+                            stmt.finalize()
                             resolve();
                         });
                     })
@@ -632,20 +630,22 @@ function splitScan() {
  */
 function fixSplit(ticker, sr) {
     return new Promise((resolve, reject) => {
-        db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, row) => {
+        db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, historicData) => {
             var stmt = db_overview.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
-            for (var i = 0; i < row.length; i++) {
-                if (row && row[i].date != date) {
+            Promise.all(historicData.map(function (row) {
+                return new Promise((resolve, reject) => {
                     if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
-                        logger(2,"fixSplit("+row[i].date+"): "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr)
+                        logger(2,"fixSplit> debug: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
                     } else {
-                        logger(0,"fixSplit> New data: ("+row[i].date+"): "+row[i].lastPrice*sr+", "+row[i].highestPrice*sr+", "+row[i].lowestPrice*sr+", "+row[i].priceChange*sr)
-                        stmt.run(row[i].lastPrice*sr, row[i].highestPrice*sr, row[i].lowestPrice*sr, row[i].priceChange*sr, row[i].ticker, row[i].date);
+                        logger(0,"fixSplit> New data: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
+                        stmt.run(row.lastPrice*sr, row.highestPrice*sr, row.lowestPrice*sr, row.priceChange*sr, row.ticker, row.date, resolve());
                         //should rewrite this with promises as well.
                     }
-                }
-            }
-            resolve();
+                })
+            })).then(() => {
+                stmt.finalize()
+                resolve();
+            });
         });
     });
 }

@@ -407,4 +407,14 @@ script failed: 1
 2017-07-03T19:30:07.178Z - Found no data for stock: WIEM with name: wiema. Try and search for name change: 
 2017-07-03T19:30:07.246Z - Stock WIEM potentially delisted? No matching stock found on Ava search.
 2017-07-03T19:30:07.246Z - No new name found. Something else is wrong, skipping stock.
-2017-07-03T19:30:23.877Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 487.251 s.
+2017-07-03T19:30:23.877Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 487.251 s.[master 25e97ee] daily RPI parse
+ 3 files changed, 17 insertions(+)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+   cdbad46..25e97ee  master -> master
+
+2017-07-04T18:00:18.877Z - Added new listing CIMCO on market nasdaq_firstnorth to file.
+2017-07-04T18:00:19.512Z - Database doesn't match parsed list, adding new stocks to DB:["CIMCO"]
+2017-07-04T18:05:10.061Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-04T18:05:10.181Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-04T18:05:10.183Z - No new name found. Something else is wrong, skipping stock.
+2017-07-04T18:07:41.927Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 445.507 s.

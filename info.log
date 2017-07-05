@@ -417,4 +417,13 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-04T18:05:10.061Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
 2017-07-04T18:05:10.181Z - Stock PIL potentially delisted? No matching stock found on Ava search.
 2017-07-04T18:05:10.183Z - No new name found. Something else is wrong, skipping stock.
-2017-07-04T18:07:41.927Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 445.507 s.
+2017-07-04T18:07:41.927Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 445.507 s.[master 9e23d32] daily RPI parse
+ 4 files changed, 29 insertions(+), 2 deletions(-)
+ create mode 100644 rpi.sh.save
+To git@github.com:sporelax/CarpTrader-DataParser.git
+   9b80aef..9e23d32  master -> master
+
+2017-07-05T18:05:20.830Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-05T18:05:20.939Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-05T18:05:20.940Z - No new name found. Something else is wrong, skipping stock.
+2017-07-05T18:08:13.378Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 476.242 s.

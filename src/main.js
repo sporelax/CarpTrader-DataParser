@@ -86,7 +86,9 @@ function initDbAndCheckMarketStatus() {
     })
 }
 
-
+/**
+ * Search for new listings on different websites. At the moment NGM is not yet supported.
+ */
 function parseNewListings() {
     return new Promise((resolve, reject) => {
         logger(1,"Parsing websites for new listings matching todays date.");
@@ -110,6 +112,11 @@ function parseNewListings() {
     });
 }
 
+/**
+ * If we find a new listing, search avanza for it's id, name and ticker and add it to the proper stocklist
+ * @param {*} newListings An array of new listings for today
+ * @param {*} market The market for the new listings
+ */
 function handleListingResults(newListings, market) {
     return new Promise((resolve, reject) => {
         avanza.authenticate({
@@ -127,7 +134,7 @@ function handleListingResults(newListings, market) {
                             } else if (market == 'nasdaq_stockholm') {
                                 fs.appendFileSync(stockList[0], '\n' + ticker)
                             } else if (market == 'nasdaq_firstnorth') {
-                                fs.appendFileSync(stockList[1], '\n' + ticker) //will \n mess up on RPI?
+                                fs.appendFileSync(stockList[1], '\n' + ticker)
                             }
                         }
                         resolve();
@@ -138,6 +145,10 @@ function handleListingResults(newListings, market) {
     })
 }
 
+/**
+ * Parse websites for name and listdate
+ * @param {*} website at the moment only nasdaq and aktietorget is supported
+ */
 function parseListingWebsite(website) {
     return new Promise((resolve, reject) => {
         rp(website).then(htmlString => {
@@ -625,8 +636,9 @@ function splitScan() {
 }
 
 /**
- * Fix split when detected
- * NOT DONE
+ * Fix split when detected. Will only execute on debugLevel 0
+ * @param {*} ticker The stock we need to split
+ * @param {*} sr The detected split ratio
  */
 function fixSplit(ticker, sr) {
     return new Promise((resolve, reject) => {

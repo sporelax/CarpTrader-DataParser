@@ -426,4 +426,21 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-05T18:05:20.830Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
 2017-07-05T18:05:20.939Z - Stock PIL potentially delisted? No matching stock found on Ava search.
 2017-07-05T18:05:20.940Z - No new name found. Something else is wrong, skipping stock.
-2017-07-05T18:08:13.378Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 476.242 s.
+2017-07-05T18:08:13.378Z - Reached end of stock list! Parsed 836 stocks with 0 retries in 476.242 s.[master 68ecf82] daily RPI parse
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'git@github.com:sporelax/CarpTrader-DataParser.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+2017-07-06T18:00:18.581Z - Added new listing PROMO on market nasdaq_firstnorth to file.
+2017-07-06T18:00:19.180Z - Added new listing PANION on market aktietorget to file.
+2017-07-06T18:00:19.221Z - Database doesn't match parsed list, adding new stocks to DB:["PROMO","PANION"]
+2017-07-06T18:04:51.787Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-06T18:04:51.884Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-06T18:04:51.885Z - No new name found. Something else is wrong, skipping stock.
+2017-07-06T18:07:23.324Z - Reached end of stock list! Parsed 837 stocks with 0 retries in 426.989 s.

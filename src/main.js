@@ -8,8 +8,8 @@ const sqlite3 = require('sqlite3').verbose();;
 const cheerio = require('cheerio')
 const rp = require('request-promise');
 
-const db_overview = new sqlite3.Database('./databases/omxs_overview.db');
-const stockList = ['./stocklists/nasdaq_stockholm.txt',
+const db = new sqlite3.Database('./databases/omxs_overview.db');
+const stockListFiles = ['./stocklists/nasdaq_stockholm.txt',
     './stocklists/nasdaq_firstnorth.txt',
     './stocklists/ngm.txt',
     './stocklists/aktietorget.txt'];
@@ -18,11 +18,11 @@ const logFile = "./info.log";
 const debugLevel = process.env.DEBUGLEVEL || 2;
 const fullDate = new Date();
 const startTime = Date.now();
-var date = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
+var todaysDate = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalRetryAttempts = 0;
 var diffBetweenDbAndList = 0;
 var brokerInfo = {};
-var arrClosedStockDays=[];
+var arrMarketClosedDays=[];
 
 //****** DEBUG FUNCTION CALLS */
 //parseCheerioData('test');
@@ -64,21 +64,21 @@ if(process.stdout.isTTY){
  */
 function initDbAndCheckMarketStatus() {
     return new Promise((resolve,reject) => {
-        db_overview.serialize(function() {
-            db_overview.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
-            db_overview.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
-            db_overview.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
-            db_overview.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
-            db_overview.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
+        db.serialize(function() {
+            db.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+            db.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+            db.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
+            db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
+            db.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
                 for (var i = 0; i<rows.length; i++){
-                    arrClosedStockDays.push(rows[i].date);
+                    arrMarketClosedDays.push(rows[i].date);
                 }
 
-                if(arrClosedStockDays.indexOf(date) > -1 && debugLevel <= 1){
+                if(arrMarketClosedDays.indexOf(todaysDate) > -1 && debugLevel <= 1){
                     logger(0,"Stock market is closed today. Exiting.");
                     resolve(process.exit(0));
                 }else{
-                    logger(1,"Stock market closed days:",arrClosedStockDays);
+                    logger(1,"Stock market closed days:",arrMarketClosedDays);
                     resolve();
                 }
             });
@@ -130,11 +130,11 @@ function handleListingResults(newListings, market) {
                         for (var ticker in searchRes) {
                             logger(0, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
                             if (market == 'aktietorget') {
-                                fs.appendFileSync(stockList[3], '\n' + ticker)
+                                fs.appendFileSync(stockListFiles[3], '\n' + ticker)
                             } else if (market == 'nasdaq_stockholm') {
-                                fs.appendFileSync(stockList[0], '\n' + ticker)
+                                fs.appendFileSync(stockListFiles[0], '\n' + ticker)
                             } else if (market == 'nasdaq_firstnorth') {
-                                fs.appendFileSync(stockList[1], '\n' + ticker)
+                                fs.appendFileSync(stockListFiles[1], '\n' + ticker)
                             }
                         }
                         resolve();
@@ -165,7 +165,7 @@ function parseListingWebsite(website) {
                             var locAndDate = $p.children('b').text().split(',');
                             var tmpDate = new Date(Date.parse('2017' + locAndDate[1] + ' GMT')); //GMT or we get wrong date
                             var listDate = tmpDate.toJSON().slice(0, -14);
-                            if (locAndDate[0] == 'Stockholm' && listDate == date) {
+                            if (locAndDate[0] == 'Stockholm' && listDate == todaysDate) {
                                 stock['date'] = listDate;
                                 stock['name'] = $p.children('a').text()
                                 newListings.push(stock)
@@ -179,9 +179,10 @@ function parseListingWebsite(website) {
                     var stock = {};
                     stock['name'] = $tr.children('td').eq(0).text();
                     if (stock['name'] ) {
-                        var listDate = new Date(Date.parse($tr.children('td').eq(1).text()  + ' 12:00')); //12:00 here or we get wrong date due to timezone
+                        var timeOffsetToFixTimeZone = ' 12:00';
+                        var listDate = new Date(Date.parse($tr.children('td').eq(1).text()  + timeOffsetToFixTimeZone));
                         stock['date'] = listDate.toJSON().slice(0, -14);
-                        if(stock['date'] == date){
+                        if(stock['date'] == todaysDate){
                             newListings.push(stock)
                         }
                     }
@@ -203,29 +204,28 @@ function parseListingWebsite(website) {
 function buildStockList() {
     return new Promise((resolve, reject) => {
         var tickerList = [];
-        var numOfRequests = 0;
-        stockList.forEach((list) => {
-            logger(1,"Parsing stocklist: " + list);
-            var contents = fs.readFileSync(list, 'utf8');
+        stockListFiles.forEach(file => {
+            logger(1,"Parsing stockfile: " + file);
+            var contents = fs.readFileSync(file, 'utf8');
             contents.split('\n').forEach((ticker) => {
-                if(tickerList.indexOf(ticker)){ 
-                    tickerList.push(ticker.replace('\r','')); //need split with only \n for RaspPi, and replace \r for windows
+                ticker = ticker.replace('\r','') //need split with only \n for RaspPi, and replace \r for windows
+                if(tickerList.indexOf(ticker) == -1){ 
+                    tickerList.push(ticker); 
                 }else{
-                    logger(0,"Warn: Stock "+ticker+" seems to be listed on multiple lists.");
+                    logger(0,"Warn: Stock "+ticker+" seems to be listed on multiple markets.");
                 }
             });
         })
-        logger(1,"Number of stocks in lists: " + tickerList.length); //should be ~830 for full list
-        //Parse avanza if tickerList does not match avaIdFile
+        logger(1,"Number of stocks in files: " + tickerList.length); 
 
-        db_overview.all("SELECT ticker FROM stockIds", (err, rows) => {
+        db.all("SELECT ticker FROM stockIds", (err, rows) => {
             for (var i = 0; i<rows.length; i++){
                 var idx = tickerList.indexOf(rows[i].ticker);
                 if(idx > -1) {
                     tickerList.splice(idx, 1);
                 } else {
                     logger(0,"Ticker " + rows[i].ticker + " not found in stock files, removing from database");
-                    db_overview.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
+                    db.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
                 }
             }
 
@@ -236,10 +236,10 @@ function buildStockList() {
                     password: process.env.PASSWORD
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
-                        var stmt = db_overview.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+                        var stmt = db.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
                         Promise.all(Object.keys(newStocks).map(function (ticker) {
                             return new Promise((resolve, reject) => {
-                                logger(2, "Updating stockId database with stock: " + ticker);
+                                logger(2, "Updating stockId database: " + ticker+", id: "+newStocks[ticker].id+", name"+newStocks[ticker].name);
                                 stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name, resolve());
                             })
                         })).then(() => {
@@ -258,7 +258,7 @@ function buildStockList() {
 
 /**
  * Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
- * @param {*} arr is an array with [current index, stocklist, returnObject]
+ * @param {*} arr is an array with [int index, arr stocksToBeParsed, obj returnObject]
  */
 function searchStocksSerialize(arr) {
     function decide(arr) {
@@ -266,7 +266,7 @@ function searchStocksSerialize(arr) {
         if (arr[0] < arr[1].length) {
             return searchStocksSerialize(arr);
         } else {
-            return arr[2]; //this resolves the serialized chain
+            return arr[2]; //Returning an object instead of a promise stops the promise chain
         }
     }
     function handleError(errormsg) {
@@ -279,25 +279,24 @@ function searchStocksSerialize(arr) {
         }
     }
 
-    return searchStocks(arr).then(decide, handleError);
+    return searchStocksAsync(arr).then(decide, handleError);
 }
 
 /**
  * Asynchronous part of fetching avanza stock ids.
  * @param {*} arr 
  */
-function searchStocks(arr) {
+function searchStocksAsync(arr) {
     return new Promise((resolve, reject) => {
         var stockName = arr[1][arr[0]];
-        avanza.search(stockName).then(searchAnswer => {
-            var parsedRes = parseSearchString(stockName, searchAnswer);
-            if (parsedRes !== undefined) {
-                parsedRes[1] = parsedRes[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
-                logger(1,"Found answer(" + arr[0] + "): " + parsedRes[0] + " and " + parsedRes[1] + " for stock " + parsedRes[2]);
-                arr[2][parsedRes[2]] = { 'id': parsedRes[0], 'name': parsedRes[1] };
+        avanza.search(stockName).then(result => {
+            var arrAnswer = parseAvanzaSearchResult(stockName, result);
+            if (arrAnswer !== undefined) {
+                arrAnswer[1] = arrAnswer[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
+                logger(1,"Found answer(" + arr[0] + "): " + arrAnswer[0] + " and " + arrAnswer[1] + " for stock " + arrAnswer[2]);
+                arr[2][arrAnswer[2]] = { 'id': arrAnswer[0], 'name': arrAnswer[1] };
             } else {
                 logger(0,"Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
-                resolve([0,[],{}]);
             }
             resolve(arr);
         }).catch((error) => {
@@ -309,11 +308,11 @@ function searchStocks(arr) {
 
 /**
  * 
- * Parse search response from avanza  
- *  {"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,
+ * Parse search results from avanza  
+ * Ex answer: {"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,
  * "currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB Ltb","id":"26268","tickerSymbol":"ABB"}]}]}
  */
-function parseSearchString(name, answer) {
+function parseAvanzaSearchResult(name, answer) {
     var id, name, ticker;
     try {
         if(answer === undefined){
@@ -348,7 +347,7 @@ function parseSearchString(name, answer) {
  */
 function stockParse() {
     return new Promise((resolve, reject) => {
-        db_overview.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
+        db.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
             parseSerialized([0, rows])
                 .then((nrParsed) => {
                     logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "+(Date.now() - startTime)/1000+" s.");
@@ -370,7 +369,7 @@ function parseSerialized(idxAndRows) {
         if (idxAndRows[0] < idxAndRows[1].length) {
             return parseSerialized(idxAndRows);
         } else {
-            return idxAndRows[0]; //this resolves the serialized chain
+            return idxAndRows[0]; //this resolves the promise chain
         }
     }
 
@@ -380,7 +379,7 @@ function parseSerialized(idxAndRows) {
             globalRetryAttempts++;
             return parseSerialized(idxAndRows);
         } else if(errormsg && errormsg.error && errormsg.error == 'NAMECHANGE') {
-            idxAndRows[1][idxAndRows[0]] = errormsg.newRow;
+            idxAndRows[1][idxAndRows[0]] = errormsg.replaceRow;
             return parseSerialized(idxAndRows);
         }else {
             throw errormsg;
@@ -403,7 +402,7 @@ function parseAsync(idxAndRows) {
             return parseCheerioData(htmlString)
         }).then(data => {
             if (data.ticker){
-                return prepareBroker(data)
+                return prepareBrokerData(data)
             } else {
                 return new Promise((resolve, reject) => {
                     logger(0,"Found no data for stock: "+stock.ticker+" with name: "+stock.name+". Try and search for name change: ");
@@ -415,8 +414,8 @@ function parseAsync(idxAndRows) {
                             for (var newName in searchRes) {
                                 if (stock.name != searchRes[newName].name) {
                                     logger(0, "Name update detected! Old: " + stock.name + ", new: " + searchRes[newName].name+". Updating DB");
-                                    db_overview.run("UPDATE stockIds SET name=? WHERE ticker=?",[searchRes[newName].name, stock.ticker]);
-                                    var errmsg = {error: 'NAMECHANGE',newRow: {name: searchRes[newName].name, ticker: stock.ticker, id: stock.id }}
+                                    db.run("UPDATE stockIds SET name=? WHERE ticker=?",[searchRes[newName].name, stock.ticker]);
+                                    var errmsg = {error: 'NAMECHANGE',replaceRow: {name: searchRes[newName].name, ticker: stock.ticker, id: stock.id }}
                                     reject(errmsg);
                                 }
                             }
@@ -429,7 +428,7 @@ function parseAsync(idxAndRows) {
         }).then(data => {
             logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
 
-            var insert_values = [date];
+            var insert_values = [todaysDate];
             insert_values.push(stock.id);
             insert_values.push(data.marketPlace);
             insert_values.push(data.currency);
@@ -449,7 +448,7 @@ function parseAsync(idxAndRows) {
             insert_values.push(JSON.stringify(data.brokerStat))
 
             if (debugLevel <= 1) {
-                db_overview.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                db.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
             }
             resolve(idxAndRows);
         }).catch((msg) => {
@@ -487,8 +486,7 @@ function parseCheerioData(content) {
             } else if (buyVolume == 0) {
                 netPrice = sellPrice;
             } else {
-                //multiply by 1 to convert from string
-                netPrice = (buyPrice * buyVolume + sellPrice * sellVolume) / (1 * sellVolume + 1 * buyVolume);
+                netPrice = (buyPrice * buyVolume + sellPrice * sellVolume) / (1 * sellVolume + 1 * buyVolume); //multiply by 1 to convert from string
             }
             brokerStat[brokerName] = { 'buyVolume': buyVolume, 'buyPrice': buyPrice, 'sellVolume': sellVolume, 'sellPrice': sellPrice, 'netVolume': netVolume, 'netPrice': netPrice };
         })
@@ -529,29 +527,29 @@ function parseCheerioData(content) {
 
 /**
  * Prepare list of daily broker activites/trades/volumes
- * @param {*} jsonBrokerStats 
+ * @param {*} stockdata 
  */
-function prepareBroker(data) {
+function prepareBrokerData(stockdata) {
     return new Promise((resolve, reject) => {
-        var jsonBrokerStats = data.brokerStat;
-        for (var broker in jsonBrokerStats) {
+        for (var broker in stockdata.brokerStat) {
             if (broker) {
                 var currSell = 0, currBuy = 0, newSell = 0, newBuy = 0, addSell = 0, addBuy = 0;
+                var currBroker = stockdata.brokerStat[broker];
 
                 if (brokerInfo[broker]) {
                     currBuy = brokerInfo[broker].buyValue;
                     currSell = brokerInfo[broker].sellValue;
                 }
 
-                if (jsonBrokerStats[broker].buyPrice != '-') { //to prevent NaN
-                    addBuy = jsonBrokerStats[broker].buyVolume * jsonBrokerStats[broker].buyPrice;
+                if (currBroker.buyPrice != '-') { 
+                    addBuy = currBroker.buyVolume * currBroker.buyPrice;
                 }
-                if (jsonBrokerStats[broker].sellPrice != '-') {
-                    addSell = jsonBrokerStats[broker].sellVolume * jsonBrokerStats[broker].sellPrice;
+                if (currBroker.sellPrice != '-') {
+                    addSell = currBroker.sellVolume * currBroker.sellPrice;
                 }
+
                 newBuy = currBuy + addBuy;
                 newSell = currSell + addSell;
-
                 brokerInfo[broker] = { 'buyValue': newBuy, 'sellValue': newSell };
                 
             }
@@ -565,11 +563,11 @@ function prepareBroker(data) {
  */
 function finalizeBroker() {
     return new Promise((resolve, reject) => {
-        var stmt = db_overview.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
+        var stmt = db.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
         Promise.all(Object.keys(brokerInfo).map(function (broker) {
             return new Promise((resolve, reject) => {
-                logger(2, "Finalize: " + date + ", " + broker + ", " + brokerInfo[broker].sellValue + ", " + brokerInfo[broker].buyValue);
-                stmt.run(date, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue, resolve());
+                logger(2, "Finalize: " + todaysDate + ", " + broker + ", " + brokerInfo[broker].sellValue + ", " + brokerInfo[broker].buyValue);
+                stmt.run(todaysDate, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue, resolve());
             })
         })).then(() => {
             stmt.finalize()
@@ -597,16 +595,16 @@ function splitScan() {
         while( !foundDay ){
             //Move back one day at a time, and return true once day != saturday/sunday/closed
             tmpDate.setTime(tmpDate.getTime() - 86400000);
-            if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrClosedStockDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
+            if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrMarketClosedDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
                 foundDay = true;
             }
         }
         var yesterStockDay = tmpDate.toJSON().slice(0, -14);
 
-        db_overview.all("SELECT ticker FROM stockIds", (err, tickRow) => {
+        db.all("SELECT ticker FROM stockIds", (err, tickRow) => {
             Promise.all(tickRow.map(function (obj) {
                 return new Promise((resolve, reject) => {
-                    db_overview.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, date, yesterStockDay], (err, rows) => {
+                    db.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, todaysDate, yesterStockDay], (err, rows) => {
                         if (rows.length == 2) {
                             if (rows[0].date == yesterStockDay) {
                                 if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.00001) { //to account for rounding errors
@@ -642,8 +640,8 @@ function splitScan() {
  */
 function fixSplit(ticker, sr) {
     return new Promise((resolve, reject) => {
-        db_overview.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, historicData) => {
-            var stmt = db_overview.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
+        db.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, historicData) => {
+            var stmt = db.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
             Promise.all(historicData.map(function (row) {
                 return new Promise((resolve, reject) => {
                     if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.

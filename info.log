@@ -443,4 +443,15 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2017-07-06T18:04:51.787Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
 2017-07-06T18:04:51.884Z - Stock PIL potentially delisted? No matching stock found on Ava search.
 2017-07-06T18:04:51.885Z - No new name found. Something else is wrong, skipping stock.
-2017-07-06T18:07:23.324Z - Reached end of stock list! Parsed 837 stocks with 0 retries in 426.989 s.
+2017-07-06T18:07:23.324Z - Reached end of stock list! Parsed 837 stocks with 0 retries in 426.989 s.[master 218af7e] daily RPI parse
+ 4 files changed, 22 insertions(+), 3 deletions(-)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+   5360cd0..218af7e  master -> master
+
+2017-07-07T18:00:19.758Z - Added new listing URBIT on market nasdaq_firstnorth to file.
+2017-07-07T18:00:20.395Z - Database doesn't match parsed list, adding new stocks to DB:["URBIT"]
+2017-07-07T18:04:44.370Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-07T18:04:44.493Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-07T18:04:44.495Z - No new name found. Something else is wrong, skipping stock.
+2017-07-07T18:07:15.160Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 418.356 s.
+2017-07-07T18:07:24.175Z - Stock ELUX A might be splitted, Yclose :287.6, change: 1.8, close: 289.3

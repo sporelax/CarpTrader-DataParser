@@ -454,4 +454,15 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-07T18:04:44.493Z - Stock PIL potentially delisted? No matching stock found on Ava search.
 2017-07-07T18:04:44.495Z - No new name found. Something else is wrong, skipping stock.
 2017-07-07T18:07:15.160Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 418.356 s.
-2017-07-07T18:07:24.175Z - Stock ELUX A might be splitted, Yclose :287.6, change: 1.8, close: 289.3
+2017-07-07T18:07:24.175Z - Stock ELUX A might be splitted, Yclose :287.6, change: 1.8, close: 289.3[master a046b3a] daily RPI parse
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+   218af7e..a046b3a  master -> master
+
+2017-07-10T18:05:09.949Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-10T18:05:10.053Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-10T18:05:10.054Z - No new name found. Something else is wrong, skipping stock.
+2017-07-10T18:06:26.627Z - Found no data for stock: DIGS with name: dignita. Try and search for name change: 
+2017-07-10T18:06:26.710Z - Stock DIGS potentially delisted? No matching stock found on Ava search.
+2017-07-10T18:06:26.711Z - No new name found. Something else is wrong, skipping stock.
+2017-07-10T18:07:40.089Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 443.797 s.

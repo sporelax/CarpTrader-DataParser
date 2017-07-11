@@ -465,4 +465,22 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-10T18:06:26.627Z - Found no data for stock: DIGS with name: dignita. Try and search for name change: 
 2017-07-10T18:06:26.710Z - Stock DIGS potentially delisted? No matching stock found on Ava search.
 2017-07-10T18:06:26.711Z - No new name found. Something else is wrong, skipping stock.
-2017-07-10T18:07:40.089Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 443.797 s.
+2017-07-10T18:07:40.089Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 443.797 s.[master 5874ed1] daily RPI parse
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:sporelax/CarpTrader-DataParser.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+2017-07-11T18:00:17.979Z - Added new listing ASPIRE on market nasdaq_firstnorth to file.
+2017-07-11T18:00:18.635Z - Database doesn't match parsed list, adding new stocks to DB:["ASPIRE"]
+2017-07-11T18:05:15.245Z - Found no data for stock: PIL with name: pilum. Try and search for name change: 
+2017-07-11T18:05:15.350Z - Stock PIL potentially delisted? No matching stock found on Ava search.
+2017-07-11T18:05:15.352Z - No new name found. Something else is wrong, skipping stock.
+2017-07-11T18:06:39.313Z - Found no data for stock: DIGS with name: dignita. Try and search for name change: 
+2017-07-11T18:06:39.400Z - Stock DIGS potentially delisted? No matching stock found on Ava search.
+2017-07-11T18:06:39.400Z - No new name found. Something else is wrong, skipping stock.
+2017-07-11T18:08:00.727Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 464.572 s.

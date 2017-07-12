@@ -483,4 +483,12 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2017-07-11T18:06:39.313Z - Found no data for stock: DIGS with name: dignita. Try and search for name change: 
 2017-07-11T18:06:39.400Z - Stock DIGS potentially delisted? No matching stock found on Ava search.
 2017-07-11T18:06:39.400Z - No new name found. Something else is wrong, skipping stock.
-2017-07-11T18:08:00.727Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 464.572 s.
+2017-07-11T18:08:00.727Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 464.572 s.[master fffa78c] daily RPI parse
+ 3 files changed, 21 insertions(+), 2 deletions(-)
+To git@github.com:sporelax/CarpTrader-DataParser.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:sporelax/CarpTrader-DataParser.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.

@@ -470,3 +470,8 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-11T18:06:39.400Z - Stock DIGS potentially delisted? No matching stock found on Ava search.
 2017-07-11T18:06:39.400Z - No new name found. Something else is wrong, skipping stock.
 2017-07-11T18:08:00.727Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 464.572 s.[master fffa78c] daily RPI parse
+
+2017-07-12T18:00:22.543Z - Ticker PIL not found in stock files, removing from database
+2017-07-12T18:00:22.548Z - Database doesn't match parsed list, adding new stocks to DB:["SAXG"]
+2017-07-12T18:00:23.653Z - !Error: Promise rejected for stock AAK, error: ReferenceError: data is not defined
+2017-07-12T18:00:23.654Z - !parse error:{}

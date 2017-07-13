@@ -554,7 +554,7 @@ function prepareBrokerData(stockdata) {
                 
             }
         }
-        resolve(data);
+        resolve(stockdata);
     })
 }
 

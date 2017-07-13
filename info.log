@@ -72,4 +72,10 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-12T18:00:22.543Z - Ticker PIL not found in stock files, removing from database
 2017-07-12T18:00:22.548Z - Database doesn't match parsed list, adding new stocks to DB:["SAXG"]
 2017-07-12T18:00:23.653Z - !Error: Promise rejected for stock AAK, error: ReferenceError: data is not defined
-2017-07-12T18:00:23.654Z - !parse error:{}
+2017-07-12T18:00:23.654Z - !parse error:{}Already up-to-date.
+
+2017-07-13T18:00:24.155Z - Added new listing OMNI on market aktietorget to file.
+2017-07-13T18:00:24.164Z - Added new listing NEXTCL on market aktietorget to file.
+2017-07-13T18:00:24.206Z - Database doesn't match parsed list, adding new stocks to DB:["OMNI","NEXTCL"]
+2017-07-13T18:07:19.762Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 419.308 s.
+2017-07-13T18:07:24.982Z - Stock NCC A might be splitted, Yclose :235.6, change: 1.8, close: 237.3

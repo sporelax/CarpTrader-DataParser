@@ -78,4 +78,15 @@ To git@github.com:sporelax/CarpTrader-DataParser.git
 2017-07-13T18:00:24.164Z - Added new listing NEXTCL on market aktietorget to file.
 2017-07-13T18:00:24.206Z - Database doesn't match parsed list, adding new stocks to DB:["OMNI","NEXTCL"]
 2017-07-13T18:07:19.762Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 419.308 s.
-2017-07-13T18:07:24.982Z - Stock NCC A might be splitted, Yclose :235.6, change: 1.8, close: 237.3
+2017-07-13T18:07:24.982Z - Stock NCC A might be splitted, Yclose :235.6, change: 1.8, close: 237.3[master 69f9d43] daily RPI parse
+ 3 files changed, 10 insertions(+), 2 deletions(-)
+Already up-to-date.
+
+2017-07-14T18:00:26.490Z - Added new listing REALFI on market nasdaq_firstnorth to file.
+2017-07-14T18:00:26.495Z - Stock North net connect potentially delisted? No matching stock found on Ava search.
+2017-07-14T18:00:27.063Z - Database doesn't match parsed list, adding new stocks to DB:["REALFI"]
+2017-07-14T18:04:57.938Z - Found no data for stock: PIEZO with name: piezomotor-uppsala-b. Try and search for name change: 
+2017-07-14T18:04:58.018Z - Name update detected! Old: piezomotor-uppsala-b, new: piezomotor-uppsala. Updating DB
+2017-07-14T18:04:58.022Z - No new name found. Something else is wrong, skipping stock.
+2017-07-14T18:04:58.026Z - !Error: Promise rejected for stock PIEZO, error: [object Object]
+2017-07-14T18:07:34.003Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 429.529 s.

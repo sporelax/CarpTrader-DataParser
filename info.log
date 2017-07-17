@@ -89,4 +89,8 @@ Already up-to-date.
 2017-07-14T18:04:58.018Z - Name update detected! Old: piezomotor-uppsala-b, new: piezomotor-uppsala. Updating DB
 2017-07-14T18:04:58.022Z - No new name found. Something else is wrong, skipping stock.
 2017-07-14T18:04:58.026Z - !Error: Promise rejected for stock PIEZO, error: [object Object]
-2017-07-14T18:07:34.003Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 429.529 s.
+2017-07-14T18:07:34.003Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 429.529 s.[master 7bcefed] daily RPI parse
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+Already up-to-date.
+
+2017-07-17T18:08:18.681Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 476.775 s.

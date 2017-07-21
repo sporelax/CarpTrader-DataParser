@@ -105,4 +105,9 @@ Already up-to-date.
  2 files changed, 5 insertions(+), 1 deletion(-)
 Already up-to-date.
 
-2017-07-20T18:08:15.282Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 475.014 s.
+2017-07-20T18:08:15.282Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 475.014 s.[master 487c5a2] daily RPI parse
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-07-21T18:07:22.998Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 422.162 s.
+2017-07-21T18:07:32.306Z - Stock PHLOG might be splitted, Yclose :8.9, change: -0.7, close: 7.75

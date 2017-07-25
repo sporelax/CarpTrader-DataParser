@@ -119,4 +119,11 @@ Already up-to-date.
 2017-07-24T18:05:19.017Z - Found no data for stock: VIG with name: vigmed-holding. Try and search for name change: 
 2017-07-24T18:05:19.129Z - Stock VIG potentially delisted? No matching stock found on Ava search.
 2017-07-24T18:05:19.131Z - No new name found. Something else is wrong, skipping stock.
-2017-07-24T18:07:27.671Z - Reached end of stock list! Parsed 843 stocks with 0 retries in 424.522 s.
+2017-07-24T18:07:27.671Z - Reached end of stock list! Parsed 843 stocks with 0 retries in 424.522 s.[master 9c32448] daily RPI parse
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+Already up-to-date.
+
+2017-07-25T18:05:33.924Z - Found no data for stock: VIG with name: vigmed-holding. Try and search for name change: 
+2017-07-25T18:05:34.027Z - Stock VIG potentially delisted? No matching stock found on Ava search.
+2017-07-25T18:05:34.029Z - No new name found. Something else is wrong, skipping stock.
+2017-07-25T18:07:29.409Z - Reached end of stock list! Parsed 843 stocks with 0 retries in 425.875 s.

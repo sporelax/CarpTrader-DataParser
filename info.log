@@ -140,4 +140,15 @@ Already up-to-date.
 2017-07-27T18:05:19.880Z - Found no data for stock: VIG with name: vigmed-holding. Try and search for name change: 
 2017-07-27T18:05:19.992Z - Stock VIG potentially delisted? No matching stock found on Ava search.
 2017-07-27T18:05:19.994Z - No new name found. Something else is wrong, skipping stock.
-2017-07-27T18:07:27.931Z - Reached end of stock list! Parsed 843 stocks with 0 retries in 426.879 s.
+2017-07-27T18:07:27.931Z - Reached end of stock list! Parsed 843 stocks with 0 retries in 426.879 s.[master 257e75f] daily RPI parse
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+From github.com:sporelax/CarpTrader-DataParser
+   257e75f..422b0cc  master     -> origin/master
+Updating 257e75f..422b0cc
+Fast-forward
+ stocklists/nasdaq_firstnorth.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+2017-07-28T18:00:25.155Z - Ticker VIG not found in stock files, removing from database
+2017-07-28T18:06:37.315Z - !Error: Promise rejected for stock ALZ, error: RequestError: Error: getaddrinfo ENOTFOUND www.avanza.se www.avanza.se:443
+2017-07-28T18:06:37.447Z - !parse error:{"name":"RequestError","message":"Error: getaddrinfo ENOTFOUND www.avanza.se www.avanza.se:443","cause":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"error":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/611717/alzinova","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}

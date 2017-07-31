@@ -151,4 +151,8 @@ Fast-forward
 
 2017-07-28T18:00:25.155Z - Ticker VIG not found in stock files, removing from database
 2017-07-28T18:06:37.315Z - !Error: Promise rejected for stock ALZ, error: RequestError: Error: getaddrinfo ENOTFOUND www.avanza.se www.avanza.se:443
-2017-07-28T18:06:37.447Z - !parse error:{"name":"RequestError","message":"Error: getaddrinfo ENOTFOUND www.avanza.se www.avanza.se:443","cause":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"error":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/611717/alzinova","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-07-28T18:06:37.447Z - !parse error:{"name":"RequestError","message":"Error: getaddrinfo ENOTFOUND www.avanza.se www.avanza.se:443","cause":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"error":{"code":"ENOTFOUND","errno":"ENOTFOUND","syscall":"getaddrinfo","hostname":"www.avanza.se","host":"www.avanza.se","port":443},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/611717/alzinova","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}[master 45b41b1] daily RPI parse
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-07-31T18:07:41.192Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 440.545 s.

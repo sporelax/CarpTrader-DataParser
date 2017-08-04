@@ -167,4 +167,13 @@ Already up-to-date.
  2 files changed, 5 insertions(+), 1 deletion(-)
 Already up-to-date.
 
-2017-08-03T18:07:33.721Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 432.834 s.
+2017-08-03T18:07:33.721Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 432.834 s.[master 604f06b] daily RPI parse
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-04T18:03:50.206Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
+2017-08-04T18:03:50.304Z - Stock BWL potentially delisted? No matching stock found on Ava search.
+2017-08-04T18:03:50.306Z - No new name found. Something else is wrong, skipping stock.
+2017-08-04T18:07:21.719Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 418.9 s.
+2017-08-04T18:07:30.623Z - Stock AXIS might be splitted, Yclose :343.5, change: 1.6, close: 345
+2017-08-04T18:07:30.656Z - Stock EXPRS2 might be splitted, Yclose :5, change: -0.04, close: 4.91

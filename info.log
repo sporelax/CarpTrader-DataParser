@@ -176,4 +176,17 @@ Already up-to-date.
 2017-08-04T18:03:50.306Z - No new name found. Something else is wrong, skipping stock.
 2017-08-04T18:07:21.719Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 418.9 s.
 2017-08-04T18:07:30.623Z - Stock AXIS might be splitted, Yclose :343.5, change: 1.6, close: 345
-2017-08-04T18:07:30.656Z - Stock EXPRS2 might be splitted, Yclose :5, change: -0.04, close: 4.91
+2017-08-04T18:07:30.656Z - Stock EXPRS2 might be splitted, Yclose :5, change: -0.04, close: 4.91[master 6c89ce5] daily RPI parse
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-07T18:03:04.219Z - Found no data for stock: DGC with name: dgc-one. Try and search for name change: 
+2017-08-07T18:03:04.307Z - Name update detected! Old: dgc-one, new: detour-gold-corp. Updating DB
+2017-08-07T18:03:04.314Z - No new name found. Something else is wrong, skipping stock.
+2017-08-07T18:03:04.321Z - !Error: Promise rejected for stock DGC, error: [object Object]
+2017-08-07T18:03:04.695Z - Found no data for stock: DGC with name: detour-gold-corp. Try and search for name change: 
+2017-08-07T18:03:04.773Z - No new name found. Something else is wrong, skipping stock.
+2017-08-07T18:04:08.973Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
+2017-08-07T18:04:09.061Z - Stock BWL potentially delisted? No matching stock found on Ava search.
+2017-08-07T18:04:09.063Z - No new name found. Something else is wrong, skipping stock.
+2017-08-07T18:08:10.960Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 467.798 s.

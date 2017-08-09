@@ -198,4 +198,13 @@ Already up-to-date.
 2017-08-08T18:03:45.752Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
 2017-08-08T18:03:45.847Z - Stock BWL potentially delisted? No matching stock found on Ava search.
 2017-08-08T18:03:45.848Z - No new name found. Something else is wrong, skipping stock.
-2017-08-08T18:07:18.107Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 414.581 s.
+2017-08-08T18:07:18.107Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 414.581 s.[master aee8651] daily RPI parse
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-09T18:02:51.890Z - Found no data for stock: DGC with name: detour-gold-corp. Try and search for name change: 
+2017-08-09T18:02:51.968Z - No new name found. Something else is wrong, skipping stock.
+2017-08-09T18:03:51.875Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
+2017-08-09T18:03:52.007Z - Stock BWL potentially delisted? No matching stock found on Ava search.
+2017-08-09T18:03:52.009Z - No new name found. Something else is wrong, skipping stock.
+2017-08-09T18:07:36.034Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 435.47 s.

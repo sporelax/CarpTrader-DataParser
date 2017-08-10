@@ -207,4 +207,25 @@ Already up-to-date.
 2017-08-09T18:03:51.875Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
 2017-08-09T18:03:52.007Z - Stock BWL potentially delisted? No matching stock found on Ava search.
 2017-08-09T18:03:52.009Z - No new name found. Something else is wrong, skipping stock.
-2017-08-09T18:07:36.034Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 435.47 s.
+2017-08-09T18:07:36.034Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 435.47 s.[master 0bd56fc] daily RPI parse
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-10T18:03:02.028Z - Found no data for stock: DGC with name: detour-gold-corp. Try and search for name change: 
+2017-08-10T18:03:02.119Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:04:00.393Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
+2017-08-10T18:04:00.681Z - Stock BWL potentially delisted? No matching stock found on Ava search.
+2017-08-10T18:04:00.682Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:05:00.263Z - Found no data for stock: MIND with name: mindmancer. Try and search for name change: 
+2017-08-10T18:05:00.346Z - Name update detected! Old: mindmancer, new: mitcham-industries-inc. Updating DB
+2017-08-10T18:05:00.352Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:05:00.358Z - !Error: Promise rejected for stock MIND, error: [object Object]
+2017-08-10T18:05:00.625Z - Found no data for stock: MIND with name: mitcham-industries-inc. Try and search for name change: 
+2017-08-10T18:05:00.718Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:07:02.356Z - Found no data for stock: PLAY with name: playhippo. Try and search for name change: 
+2017-08-10T18:07:02.453Z - Name update detected! Old: playhippo, new: dave---buster's-entertainment-inc. Updating DB
+2017-08-10T18:07:02.454Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:07:02.457Z - !Error: Promise rejected for stock PLAY, error: [object Object]
+2017-08-10T18:07:02.737Z - Found no data for stock: PLAY with name: dave---buster's-entertainment-inc. Try and search for name change: 
+2017-08-10T18:07:02.798Z - No new name found. Something else is wrong, skipping stock.
+2017-08-10T18:07:41.254Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 438.738 s.

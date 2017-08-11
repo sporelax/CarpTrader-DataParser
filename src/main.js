@@ -42,7 +42,7 @@ initDbAndCheckMarketStatus()
 .then(finalizeBroker)
 .then(splitScan)
 .then(()=>{
-    logger(1,'Done');
+    logger(0,' ');
     process.exit(0);
 }).catch(err => {logger(0,"Main loop:",err)});
 
@@ -300,7 +300,7 @@ function searchStocksAsync(arr) {
             }
             resolve(arr);
         }).catch((error) => {
-            logger(0,"!Error - Promise rejected at searchStocks for stock " + stockName + " at " + arr[0] + ", error: " + error);
+            logger(0,"!Error - Promise rejected at searchStocks for stock " + stockName + " at " + arr[0] + ", error: ", error);
             reject(error);
         });
     });
@@ -451,8 +451,8 @@ function parseAsync(idxAndRows) {
                 db.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
             }
             resolve(idxAndRows);
-        }).catch((msg) => {
-            logger(0,"!Error: Promise rejected for stock " + stock.ticker + ", error: " + msg)
+        }).catch(msg => {
+            logger(0,"!Error: Promise rejected for stock " + stock.ticker + ", error: ",msg)
             reject(msg);
         });
     });

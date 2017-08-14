@@ -241,4 +241,23 @@ Already up-to-date.
 2017-08-11T18:04:46.968Z - No new name found. Something else is wrong, skipping stock.
 2017-08-11T18:07:03.623Z - Found no data for stock: PLAY with name: dave---buster's-entertainment-inc. Try and search for name change: 
 2017-08-11T18:07:03.726Z - No new name found. Something else is wrong, skipping stock.
-2017-08-11T18:07:42.131Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 441.725 s.
+2017-08-11T18:07:42.131Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 441.725 s.[master 2725dff] daily RPI parse
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+From github.com:sporelax/CarpTrader-DataParser
+   2725dff..8759b60  master     -> origin/master
+error: Your local changes to the following files would be overwritten by merge:
+	info.log
+Please, commit your changes or stash them before you can merge.
+Aborting
+Updating 2725dff..8759b60
+
+2017-08-14T18:02:53.524Z - Found no data for stock: DGC with name: detour-gold-corp. Try and search for name change: 
+2017-08-14T18:02:53.616Z - No new name found. Something else is wrong, skipping stock.
+2017-08-14T18:03:51.532Z - Found no data for stock: BWL with name: bringwell. Try and search for name change: 
+2017-08-14T18:03:51.655Z - Stock BWL potentially delisted? No matching stock found on Ava search.
+2017-08-14T18:03:51.655Z - No new name found. Something else is wrong, skipping stock.
+2017-08-14T18:04:48.220Z - Found no data for stock: MIND with name: mitcham-industries-inc. Try and search for name change: 
+2017-08-14T18:04:48.300Z - No new name found. Something else is wrong, skipping stock.
+2017-08-14T18:06:56.905Z - Found no data for stock: PLAY with name: dave---buster's-entertainment-inc. Try and search for name change: 
+2017-08-14T18:06:57.039Z - No new name found. Something else is wrong, skipping stock.
+2017-08-14T18:07:36.233Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 433.723 s.

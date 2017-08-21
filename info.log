@@ -94,3 +94,12 @@ Aborting
 2017-08-18T18:07:45.160Z - No new name found. Something else is wrong, skipping stock.
 2017-08-18T18:08:29.313Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 488.813 s.[master 78932b0] daily RPI parse
  2 files changed, 17 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-21T18:00:22.810Z - Ticker DGC not found in stock files, removing from database
+2017-08-21T18:00:22.814Z - Ticker BWL not found in stock files, removing from database
+2017-08-21T18:00:22.816Z - Ticker MIND not found in stock files, removing from database
+2017-08-21T18:00:22.817Z - Ticker PLAY not found in stock files, removing from database
+2017-08-21T18:00:22.818Z - Database doesn't match parsed list, adding new stocks to DB:["FGG"]
+2017-08-21T18:09:52.568Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 572.133 s.
+2017-08-21T18:10:02.348Z -  

@@ -326,4 +326,5 @@ Aborting
 2017-08-18T18:05:19.065Z - No new name found. Something else is wrong, skipping stock.
 2017-08-18T18:07:45.030Z - Found no data for stock: PLAY with name: dave---buster's-entertainment-inc. Try and search for name change: 
 2017-08-18T18:07:45.160Z - No new name found. Something else is wrong, skipping stock.
-2017-08-18T18:08:29.313Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 488.813 s.
+2017-08-18T18:08:29.313Z - Reached end of stock list! Parsed 842 stocks with 0 retries in 488.813 s.[master 78932b0] daily RPI parse
+ 2 files changed, 17 insertions(+), 1 deletion(-)

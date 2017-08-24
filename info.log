@@ -112,4 +112,10 @@ Already up-to-date.
 Already up-to-date.
 
 2017-08-23T18:07:37.112Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 434.983 s.
-2017-08-23T18:07:47.117Z -  
+2017-08-23T18:07:47.117Z -  [master 8a23237] daily RPI parse
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-24T18:08:10.829Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 469.061 s.
+2017-08-24T18:08:20.269Z - Stock HUFV C might be splitted, Yclose :410, change: 100, close: 430
+2017-08-24T18:08:20.358Z -  

@@ -137,4 +137,15 @@ Already up-to-date.
 2017-08-28T18:07:08.459Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-08-28T18:07:08.460Z - No new name found. Something else is wrong, skipping stock.
 2017-08-28T18:08:19.272Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 478.294 s.
-2017-08-28T18:08:29.557Z -  
+2017-08-28T18:08:29.557Z -  [master 6d3c251] daily RPI parse
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-29T18:05:59.395Z - Found no data for stock: MOVI MTF with name: mobilatervinning-i-sverige. Try and search for name change: 
+2017-08-29T18:05:59.494Z - Stock MOVI MTF potentially delisted? No matching stock found on Ava search.
+2017-08-29T18:05:59.496Z - No new name found. Something else is wrong, skipping stock.
+2017-08-29T18:06:41.138Z - Found no data for stock: GOLDX with name: goldx-international. Try and search for name change: 
+2017-08-29T18:06:41.202Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
+2017-08-29T18:06:41.202Z - No new name found. Something else is wrong, skipping stock.
+2017-08-29T18:07:45.566Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 444.537 s.
+2017-08-29T18:07:55.426Z -  

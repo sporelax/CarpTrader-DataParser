@@ -148,4 +148,37 @@ Already up-to-date.
 2017-08-29T18:06:41.202Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-08-29T18:06:41.202Z - No new name found. Something else is wrong, skipping stock.
 2017-08-29T18:07:45.566Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 444.537 s.
-2017-08-29T18:07:55.426Z -  
+2017-08-29T18:07:55.426Z -  [master 2f4173b] daily RPI parse
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-08-30T18:02:57.833Z - !Error: Promise rejected for stock NOBI, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5586/nobia","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:02:57.844Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:04:40.127Z - !Error: Promise rejected for stock SHB B, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5265/handelsbanken-b","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:04:40.128Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:06:08.060Z - !Error: Promise rejected for stock WIHL, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/18813/wihlborgs-fastigheter","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:06:08.067Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:07:05.658Z - !Error: Promise rejected for stock BEIA B, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5303/beijer-alma-b","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:07:05.659Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:07:56.051Z - !Error: Promise rejected for stock DUST, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/538819/dustin-group","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:07:56.052Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:08:11.994Z - !Error: Promise rejected for stock ENQ, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/221108/enquest-plc","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:08:11.995Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:08:22.745Z - !Error: Promise rejected for stock FAG, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5314/fagerhult","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:08:22.746Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:08:56.766Z - !Error: Promise rejected for stock HEBA B, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5363/heba-b","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:08:56.767Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:09:13.031Z - !Error: Promise rejected for stock HMED, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/98087/hansa-medical","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:09:13.032Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:19:34.730Z - !Error: Promise rejected for stock SAS, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5535/sas","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:19:34.740Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:20:44.858Z - !Error: Promise rejected for stock VITR, error: {"name":"RequestError","message":"Error: read ECONNRESET","cause":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"error":{"code":"ECONNRESET","errno":"ECONNRESET","syscall":"read"},"options":{"uri":"https://www.avanza.se/aktier/om-aktien.html/5508/vitrolife","simple":true,"resolveWithFullResponse":false,"transform2xxOnly":false}}
+2017-08-30T18:20:44.859Z - parseSerialized: Connection reset or timed out. Retrying...
+2017-08-30T18:43:52.551Z - Found no data for stock: MOVI MTF with name: mobilatervinning-i-sverige. Try and search for name change: 
+2017-08-30T18:43:52.628Z - Stock MOVI MTF potentially delisted? No matching stock found on Ava search.
+2017-08-30T18:43:52.629Z - No new name found. Something else is wrong, skipping stock.
+2017-08-30T18:49:15.289Z - Found no data for stock: GOLDX with name: goldx-international. Try and search for name change: 
+2017-08-30T18:49:15.391Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
+2017-08-30T18:49:15.392Z - No new name found. Something else is wrong, skipping stock.
+2017-08-30T18:56:45.544Z - Reached end of stock list! Parsed 839 stocks with 11 retries in 3381.539 s.
+2017-08-30T18:56:55.694Z -  

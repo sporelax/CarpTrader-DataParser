@@ -244,4 +244,21 @@ Already up-to-date.
 2017-08-31T19:49:35.380Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-08-31T19:49:35.382Z - No new name found. Something else is wrong, skipping stock.
 2017-08-31T20:04:31.266Z - Reached end of stock list! Parsed 839 stocks with 26 retries in 7449.311 s.
-2017-08-31T20:04:41.527Z -  
+2017-08-31T20:04:41.527Z -  [master 1ec7bab] daily RPI parse
+ 2 files changed, 64 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-09-01T18:13:52.972Z - Found no data for stock: MOVI MTF with name: mobilatervinning-i-sverige. Try and search for name change: 
+2017-09-01T18:13:53.067Z - Stock MOVI MTF potentially delisted? No matching stock found on Ava search.
+2017-09-01T18:13:53.069Z - No new name found. Something else is wrong, skipping stock.
+2017-09-01T18:14:38.655Z - Found no data for stock: AXON with name: axon-kids. Try and search for name change: 
+2017-09-01T18:14:38.730Z - Name update detected! Old: axon-kids, new: axovant-sciences-ltd. Updating DB
+2017-09-01T18:14:38.734Z - No new name found. Something else is wrong, skipping stock.
+2017-09-01T18:14:38.739Z - !Error: Promise rejected for stock AXON, error: {"error":"NAMECHANGE","replaceRow":{"name":"axovant-sciences-ltd","ticker":"AXON","id":"489514"}}
+2017-09-01T18:14:39.240Z - Found no data for stock: AXON with name: axovant-sciences-ltd. Try and search for name change: 
+2017-09-01T18:14:39.304Z - No new name found. Something else is wrong, skipping stock.
+2017-09-01T18:15:18.916Z - Found no data for stock: GOLDX with name: goldx-international. Try and search for name change: 
+2017-09-01T18:15:18.993Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
+2017-09-01T18:15:18.994Z - No new name found. Something else is wrong, skipping stock.
+2017-09-01T18:17:42.649Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 1039.809 s.
+2017-09-01T18:17:52.973Z -  

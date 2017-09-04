@@ -261,4 +261,19 @@ Already up-to-date.
 2017-09-01T18:15:18.993Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-09-01T18:15:18.994Z - No new name found. Something else is wrong, skipping stock.
 2017-09-01T18:17:42.649Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 1039.809 s.
-2017-09-01T18:17:52.973Z -  
+2017-09-01T18:17:52.973Z -  [master f2d8c24] daily RPI parse
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-09-04T18:00:24.373Z - Added new listing CTM on market nasdaq_stockholm to file.
+2017-09-04T18:00:29.478Z - Warn: Stock CTM seems to be listed on multiple markets.
+2017-09-04T18:09:56.021Z - Found no data for stock: MOVI MTF with name: mobilatervinning-i-sverige. Try and search for name change: 
+2017-09-04T18:09:56.111Z - Stock MOVI MTF potentially delisted? No matching stock found on Ava search.
+2017-09-04T18:09:56.112Z - No new name found. Something else is wrong, skipping stock.
+2017-09-04T18:10:24.764Z - Found no data for stock: AXON with name: axovant-sciences-ltd. Try and search for name change: 
+2017-09-04T18:10:24.833Z - No new name found. Something else is wrong, skipping stock.
+2017-09-04T18:11:00.153Z - Found no data for stock: GOLDX with name: goldx-international. Try and search for name change: 
+2017-09-04T18:11:00.219Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
+2017-09-04T18:11:00.220Z - No new name found. Something else is wrong, skipping stock.
+2017-09-04T18:13:01.578Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 759.447 s.
+2017-09-04T18:13:11.797Z -  

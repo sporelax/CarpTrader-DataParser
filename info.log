@@ -290,4 +290,22 @@ Already up-to-date.
 2017-09-05T18:09:35.290Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-09-05T18:09:35.290Z - No new name found. Something else is wrong, skipping stock.
 2017-09-05T18:11:42.448Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 681.336 s.
-2017-09-05T18:11:52.371Z -  
+2017-09-05T18:11:52.371Z -  [master 1cfcf65] daily RPI parse
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-09-06T18:00:27.287Z - Warn: Stock CTM seems to be listed on multiple markets.
+2017-09-06T18:07:13.174Z - Found no data for stock: MOVI MTF with name: mobilatervinning-i-sverige. Try and search for name change: 
+2017-09-06T18:07:13.276Z - Stock MOVI MTF potentially delisted? No matching stock found on Ava search.
+2017-09-06T18:07:13.277Z - No new name found. Something else is wrong, skipping stock.
+2017-09-06T18:07:21.111Z - Found no data for stock: SAMT MTF B with name: samtrygg-group. Try and search for name change: 
+2017-09-06T18:07:21.190Z - Name update detected! Old: samtrygg-group, new: samtrygg-group-b. Updating DB
+2017-09-06T18:07:21.196Z - No new name found. Something else is wrong, skipping stock.
+2017-09-06T18:07:21.202Z - !Error: Promise rejected for stock SAMT MTF B, error: {"error":"NAMECHANGE","replaceRow":{"name":"samtrygg-group-b","ticker":"SAMT MTF B","id":"739058"}}
+2017-09-06T18:07:37.346Z - Found no data for stock: AXON with name: axovant-sciences-ltd. Try and search for name change: 
+2017-09-06T18:07:37.424Z - No new name found. Something else is wrong, skipping stock.
+2017-09-06T18:08:06.139Z - Found no data for stock: GOLDX with name: goldx-international. Try and search for name change: 
+2017-09-06T18:08:06.205Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
+2017-09-06T18:08:06.206Z - No new name found. Something else is wrong, skipping stock.
+2017-09-06T18:09:41.885Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 558.986 s.
+2017-09-06T18:09:51.804Z -  

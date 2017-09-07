@@ -308,4 +308,22 @@ Already up-to-date.
 2017-09-06T18:08:06.205Z - Stock GOLDX potentially delisted? No matching stock found on Ava search.
 2017-09-06T18:08:06.206Z - No new name found. Something else is wrong, skipping stock.
 2017-09-06T18:09:41.885Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 558.986 s.
-2017-09-06T18:09:51.804Z -  
+2017-09-06T18:09:51.804Z -  [master 677e5a1] daily RPI parse
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+From github.com:sporelax/CarpTrader-DataParser
+   677e5a1..c83ac43  master     -> origin/master
+Updating 677e5a1..c83ac43
+Fast-forward
+ rpi.sh                           | 2 +-
+ stocklists/aktietorget.txt       | 3 +--
+ stocklists/nasdaq_firstnorth.txt | 1 -
+ stocklists/ngm.txt               | 2 +-
+ 4 files changed, 3 insertions(+), 5 deletions(-)
+
+2017-09-07T18:00:28.684Z - Ticker MOVI MTF not found in stock files, removing from database
+2017-09-07T18:00:28.687Z - Ticker AXON not found in stock files, removing from database
+2017-09-07T18:00:28.688Z - Ticker GOLDX not found in stock files, removing from database
+2017-09-07T18:00:28.691Z - Database doesn't match parsed list, adding new stocks to DB:["PANT MTF","PREMET"]
+2017-09-07T18:12:14.399Z - Reached end of stock list! Parsed 837 stocks with 0 retries in 712.589 s.
+2017-09-07T18:12:23.937Z - Stock AXIS might be splitted, Yclose :333.6, change: -0.3, close: 333.2
+2017-09-07T18:12:24.056Z -  

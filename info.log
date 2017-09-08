@@ -326,4 +326,13 @@ Fast-forward
 2017-09-07T18:00:28.691Z - Database doesn't match parsed list, adding new stocks to DB:["PANT MTF","PREMET"]
 2017-09-07T18:12:14.399Z - Reached end of stock list! Parsed 837 stocks with 0 retries in 712.589 s.
 2017-09-07T18:12:23.937Z - Stock AXIS might be splitted, Yclose :333.6, change: -0.3, close: 333.2
-2017-09-07T18:12:24.056Z -  
+2017-09-07T18:12:24.056Z -  [master 5fb3c2d] daily RPI parse
+ 2 files changed, 19 insertions(+), 1 deletion(-)
+Already up-to-date.
+
+2017-09-08T18:04:51.680Z - Found no data for stock: NOMI with name: nordic-mines. Try and search for name change: 
+2017-09-08T18:04:51.770Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
+2017-09-08T18:04:51.772Z - No new name found. Something else is wrong, skipping stock.
+2017-09-08T18:11:31.494Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 669.578 s.
+2017-09-08T18:11:41.079Z - Stock CEAB might be splitted, Yclose :2.23, change: 0.39, close: 2.5
+2017-09-08T18:11:41.119Z -  

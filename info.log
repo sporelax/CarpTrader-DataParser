@@ -371,4 +371,11 @@ Already up-to-date.
 2017-09-18T18:03:28.611Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
 2017-09-18T18:03:28.613Z - No new name found. Something else is wrong, skipping stock.
 2017-09-18T18:08:01.475Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 459.21 s.
-2017-09-18T18:08:11.529Z -  
+2017-09-18T18:08:11.529Z -  Already up-to-date.
+
+2017-09-19T18:03:11.687Z - Found no data for stock: NOMI with name: nordic-mines. Try and search for name change: 
+2017-09-19T18:03:11.786Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
+2017-09-19T18:03:11.787Z - No new name found. Something else is wrong, skipping stock.
+2017-09-19T18:07:25.553Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 425.169 s.
+2017-09-19T18:07:35.592Z - Stock RATO A might be splitted, Yclose :41.77, change: 0.1, close: 41.8
+2017-09-19T18:07:35.678Z -  

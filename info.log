@@ -384,4 +384,12 @@ Already up-to-date.
 2017-09-20T18:03:14.599Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
 2017-09-20T18:03:14.600Z - No new name found. Something else is wrong, skipping stock.
 2017-09-20T18:07:32.311Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 429.604 s.
-2017-09-20T18:07:42.477Z -  
+2017-09-20T18:07:42.477Z -  Already up-to-date.
+
+2017-09-21T18:00:24.505Z - Added new listing SENZA on market nasdaq_firstnorth to file.
+2017-09-21T18:00:25.175Z - Database doesn't match parsed list, adding new stocks to DB:["SENZA"]
+2017-09-21T18:03:20.910Z - Found no data for stock: NOMI with name: nordic-mines. Try and search for name change: 
+2017-09-21T18:03:21.027Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
+2017-09-21T18:03:21.029Z - No new name found. Something else is wrong, skipping stock.
+2017-09-21T18:07:52.897Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 450.477 s.
+2017-09-21T18:08:03.459Z -  

@@ -399,4 +399,10 @@ Already up-to-date.
 2017-09-22T18:03:17.889Z - No new name found. Something else is wrong, skipping stock.
 2017-09-22T18:07:39.930Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 437.978 s.
 2017-09-22T18:07:50.292Z - Stock SAGA A might be splitted, Yclose :112.8, change: 3.3, close: 116
-2017-09-22T18:07:50.379Z -  
+2017-09-22T18:07:50.379Z -  Already up-to-date.
+
+2017-09-25T18:03:22.326Z - Found no data for stock: NOMI with name: nordic-mines. Try and search for name change: 
+2017-09-25T18:03:22.465Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
+2017-09-25T18:03:22.467Z - No new name found. Something else is wrong, skipping stock.
+2017-09-25T18:07:56.036Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 454.561 s.
+2017-09-25T18:08:06.528Z -  

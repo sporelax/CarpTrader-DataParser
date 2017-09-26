@@ -405,4 +405,16 @@ Already up-to-date.
 2017-09-25T18:03:22.465Z - Stock NOMI potentially delisted? No matching stock found on Ava search.
 2017-09-25T18:03:22.467Z - No new name found. Something else is wrong, skipping stock.
 2017-09-25T18:07:56.036Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 454.561 s.
-2017-09-25T18:08:06.528Z -  
+2017-09-25T18:08:06.528Z -  From github.com:sporelax/CarpTrader-DataParser
+   de4c1d4..bf6e331  master     -> origin/master
+Updating de4c1d4..bf6e331
+Fast-forward
+ stocklists/nasdaq_stockholm.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+2017-09-26T18:00:23.987Z - Ticker NOMI not found in stock files, removing from database
+2017-09-26T18:07:05.504Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-09-26T18:07:05.587Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-09-26T18:07:05.588Z - No new name found. Something else is wrong, skipping stock.
+2017-09-26T18:07:25.309Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 423.975 s.
+2017-09-26T18:07:35.903Z -  

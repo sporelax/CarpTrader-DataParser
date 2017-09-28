@@ -423,4 +423,13 @@ Fast-forward
 2017-09-27T18:07:33.020Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
 2017-09-27T18:07:33.021Z - No new name found. Something else is wrong, skipping stock.
 2017-09-27T18:07:52.522Z - Reached end of stock list! Parsed 838 stocks with 0 retries in 448.666 s.
-2017-09-27T18:08:02.941Z -  
+2017-09-27T18:08:02.941Z -  Already up-to-date.
+
+2017-09-28T18:00:23.741Z - Added new listing XSPRAY on market nasdaq_firstnorth to file.
+2017-09-28T18:00:24.609Z - Stock Inhalation Sciences potentially delisted? No matching stock found on Ava search.
+2017-09-28T18:00:24.651Z - Database doesn't match parsed list, adding new stocks to DB:["XSPRAY"]
+2017-09-28T18:08:03.385Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-09-28T18:08:03.501Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-09-28T18:08:03.502Z - No new name found. Something else is wrong, skipping stock.
+2017-09-28T18:08:24.488Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 482.829 s.
+2017-09-28T18:08:34.925Z -  

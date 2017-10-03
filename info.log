@@ -444,4 +444,10 @@ Fast-forward
 2017-10-02T18:07:43.908Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
 2017-10-02T18:07:43.910Z - No new name found. Something else is wrong, skipping stock.
 2017-10-02T18:08:05.324Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 463.073 s.
-2017-10-02T18:08:16.288Z -  
+2017-10-02T18:08:16.288Z -  Already up-to-date.
+
+2017-10-03T18:07:26.808Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-10-03T18:07:26.894Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-10-03T18:07:26.895Z - No new name found. Something else is wrong, skipping stock.
+2017-10-03T18:07:46.927Z - Reached end of stock list! Parsed 839 stocks with 0 retries in 446.046 s.
+2017-10-03T18:07:57.934Z -  

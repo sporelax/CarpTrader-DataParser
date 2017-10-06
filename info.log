@@ -540,4 +540,15 @@ Fast-forward
 2017-10-05T18:07:54.848Z - fixSplit> New data: 2017-10-03, 20.400000000000002, 20.400000000000002, 19.8, 0.4
 2017-10-05T18:07:54.849Z - fixSplit> New data: 2017-10-04, 20.5, 20.8, 19.900000000000002, 0.1
 2017-10-05T18:07:54.849Z - fixSplit> New data: 2017-10-05, 4.16, 4.36, 4, 0.06
-2017-10-05T18:07:54.852Z -  
+2017-10-05T18:07:54.852Z -  Already up-to-date.
+
+2017-10-06T18:00:24.020Z - Added new listing BALCO on market nasdaq_stockholm to file.
+2017-10-06T18:00:25.867Z - Database doesn't match parsed list, adding new stocks to DB:["BALCO"]
+2017-10-06T18:00:36.914Z - Found no data for stock: BALD PREF with name: fast--balder-pref. Try and search for name change: 
+2017-10-06T18:00:36.992Z - Stock BALD PREF potentially delisted? No matching stock found on Ava search.
+2017-10-06T18:00:36.993Z - No new name found. Something else is wrong, skipping stock.
+2017-10-06T18:07:49.345Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-10-06T18:07:49.432Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-10-06T18:07:49.434Z - No new name found. Something else is wrong, skipping stock.
+2017-10-06T18:08:10.778Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 468.252 s.
+2017-10-06T18:08:21.525Z -  

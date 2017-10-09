@@ -551,4 +551,16 @@ Fast-forward
 2017-10-06T18:07:49.432Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
 2017-10-06T18:07:49.434Z - No new name found. Something else is wrong, skipping stock.
 2017-10-06T18:08:10.778Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 468.252 s.
-2017-10-06T18:08:21.525Z -  
+2017-10-06T18:08:21.525Z -  Already up-to-date.
+
+2017-10-09T18:00:36.495Z - Found no data for stock: BALD PREF with name: fast--balder-pref. Try and search for name change: 
+2017-10-09T18:00:36.579Z - Stock BALD PREF potentially delisted? No matching stock found on Ava search.
+2017-10-09T18:00:36.580Z - No new name found. Something else is wrong, skipping stock.
+2017-10-09T18:07:17.992Z - Found no data for stock: BIGG B with name: biotech-igg. Try and search for name change: 
+2017-10-09T18:07:18.199Z - Stock BIGG B potentially delisted? No matching stock found on Ava search.
+2017-10-09T18:07:18.201Z - No new name found. Something else is wrong, skipping stock.
+2017-10-09T18:08:29.691Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-10-09T18:08:29.804Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-10-09T18:08:29.806Z - No new name found. Something else is wrong, skipping stock.
+2017-10-09T18:08:51.847Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 510.142 s.
+2017-10-09T18:09:02.355Z -  

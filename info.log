@@ -563,4 +563,18 @@ Fast-forward
 2017-10-09T18:08:29.804Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
 2017-10-09T18:08:29.806Z - No new name found. Something else is wrong, skipping stock.
 2017-10-09T18:08:51.847Z - Reached end of stock list! Parsed 840 stocks with 0 retries in 510.142 s.
-2017-10-09T18:09:02.355Z -  
+2017-10-09T18:09:02.355Z -  Already up-to-date.
+
+2017-10-10T18:00:22.905Z - Added new listing HANDI on market nasdaq_stockholm to file.
+2017-10-10T18:00:24.467Z - Database doesn't match parsed list, adding new stocks to DB:["HANDI"]
+2017-10-10T18:00:35.801Z - Found no data for stock: BALD PREF with name: fast--balder-pref. Try and search for name change: 
+2017-10-10T18:00:35.890Z - Stock BALD PREF potentially delisted? No matching stock found on Ava search.
+2017-10-10T18:00:35.891Z - No new name found. Something else is wrong, skipping stock.
+2017-10-10T18:07:02.208Z - Found no data for stock: BIGG B with name: biotech-igg. Try and search for name change: 
+2017-10-10T18:07:02.329Z - Stock BIGG B potentially delisted? No matching stock found on Ava search.
+2017-10-10T18:07:02.330Z - No new name found. Something else is wrong, skipping stock.
+2017-10-10T18:08:15.067Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-10-10T18:08:15.225Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-10-10T18:08:15.227Z - No new name found. Something else is wrong, skipping stock.
+2017-10-10T18:08:38.694Z - Reached end of stock list! Parsed 841 stocks with 0 retries in 496.999 s.
+2017-10-10T18:08:48.961Z -  

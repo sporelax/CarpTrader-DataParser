@@ -577,4 +577,20 @@ Fast-forward
 2017-10-10T18:08:15.225Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
 2017-10-10T18:08:15.227Z - No new name found. Something else is wrong, skipping stock.
 2017-10-10T18:08:38.694Z - Reached end of stock list! Parsed 841 stocks with 0 retries in 496.999 s.
-2017-10-10T18:08:48.961Z -  
+2017-10-10T18:08:48.961Z -  Already up-to-date.
+
+2017-10-11T18:00:37.144Z - Found no data for stock: BALD PREF with name: fast--balder-pref. Try and search for name change: 
+2017-10-11T18:00:37.281Z - Stock BALD PREF potentially delisted? No matching stock found on Ava search.
+2017-10-11T18:00:37.282Z - No new name found. Something else is wrong, skipping stock.
+2017-10-11T18:00:55.101Z - Found no data for stock: IJ with name: intrum-justitia. Try and search for name change: 
+2017-10-11T18:00:55.255Z - Name: IJ, Answer: {"totalNumberOfHits":138,"hits":[{"instrumentType":"FUTURE_FORWARD","numberOfHits":3,"topHits":[{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7W","name":"IJ7W","id":"777948"},{"currency":"SEK","lastPrice":282.9,"changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7V","name":"IJ7V","id":"770156"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7X","name":"IJ7X","id":"784257"}]},{"instrumentType":"OPTION","numberOfHits":114,"topHits":[{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7V260","name":"IJ7V260","id":"771274"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7V230","name":"IJ7V230","id":"776541"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7W245","name":"IJ7W245","id":"778744"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7L295","name":"IJ7L295","id":"785105"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7V250","name":"IJ7V250","id":"773403"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7L310","name":"IJ7L310","id":"787360"},{"currency":"SEK","changePercent":0,"tradable":true,"flagCode":"SE","tickerSymbol":"IJ7L255","name":"IJ7L255","id":"785097"}]},{"instrumentType":"STOCK","numberOfHits":5},{"instrumentType":"EXCHANGE_TRADED_FUND","numberOfHits":7},{"instrumentType":"CERTIFICATE","numberOfHits":1},{"instrumentType":"WARRANT","numberOfHits":8}]}, error received: {}
+2017-10-11T18:00:55.255Z - Stock IJ potentially delisted? No matching stock found on Ava search.
+2017-10-11T18:00:55.256Z - No new name found. Something else is wrong, skipping stock.
+2017-10-11T18:07:40.497Z - Found no data for stock: BIGG B with name: biotech-igg. Try and search for name change: 
+2017-10-11T18:07:40.634Z - Stock BIGG B potentially delisted? No matching stock found on Ava search.
+2017-10-11T18:07:40.635Z - No new name found. Something else is wrong, skipping stock.
+2017-10-11T18:09:14.497Z - Found no data for stock: ZENZIP with name: zenergy. Try and search for name change: 
+2017-10-11T18:09:14.649Z - Stock ZENZIP potentially delisted? No matching stock found on Ava search.
+2017-10-11T18:09:14.650Z - No new name found. Something else is wrong, skipping stock.
+2017-10-11T18:09:44.745Z - Reached end of stock list! Parsed 841 stocks with 0 retries in 562.184 s.
+2017-10-11T18:09:55.141Z -  

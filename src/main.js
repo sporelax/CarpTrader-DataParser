@@ -8,11 +8,8 @@ const sqlite3 = require('sqlite3').verbose();;
 const cheerio = require('cheerio')
 const rp = require('request-promise');
 
-const db = new sqlite3.Database('./databases/omxs_overview.db');
-const stockListFiles = ['./stocklists/nasdaq_stockholm.txt',
-    './stocklists/nasdaq_firstnorth.txt',
-    './stocklists/ngm.txt',
-    './stocklists/aktietorget.txt'];
+const db = new sqlite3.Database('./databases/omxs.sqlite');
+const stocklist = "./stocklist";
 const logFile = "./info.log";
 
 const debugLevel = process.env.DEBUGLEVEL || 2;
@@ -65,7 +62,7 @@ if(process.stdout.isTTY){
 function initDbAndCheckMarketStatus() {
     return new Promise((resolve,reject) => {
         db.serialize(function() {
-            db.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, marketPlace TEXT, currency TEXT, ticker TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, volatility NUMERIC, beta NUMERIC, pe NUMERIC, ps NUMERIC, yield NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+            db.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
             db.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
             db.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
             db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
@@ -129,13 +126,7 @@ function handleListingResults(newListings, market) {
                     .then(searchRes => {
                         for (var ticker in searchRes) {
                             logger(0, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
-                            if (market == 'aktietorget') {
-                                fs.appendFileSync(stockListFiles[3], '\n' + ticker)
-                            } else if (market == 'nasdaq_stockholm') {
-                                fs.appendFileSync(stockListFiles[0], '\n' + ticker)
-                            } else if (market == 'nasdaq_firstnorth') {
-                                fs.appendFileSync(stockListFiles[1], '\n' + ticker)
-                            }
+                            fs.appendFileSync(stocklist, '\n' + ticker)
                         }
                         resolve();
                     })
@@ -151,9 +142,9 @@ function handleListingResults(newListings, market) {
  */
 function parseListingWebsite(website) {
     return new Promise((resolve, reject) => {
+        var newListings = [];
         rp(website).then(htmlString => {
             const $ = cheerio.load(htmlString);
-            var newListings = [];
 
             if(website.match(/nasdaq/i) ){
                 $('.nordic-right-content-area').children('article').each(function () {
@@ -190,7 +181,10 @@ function parseListingWebsite(website) {
             }
 
             resolve(newListings);
-        })
+        }).catch((error) => {
+            logger(1,"!Warning - Parsing of website " + website + " returns error: ", error);
+            resolve(newListings);
+        });
     });
 }
 
@@ -203,19 +197,30 @@ function parseListingWebsite(website) {
 */
 function buildStockList() {
     return new Promise((resolve, reject) => {
-        var tickerList = [];
-        stockListFiles.forEach(file => {
-            logger(1,"Parsing stockfile: " + file);
-            var contents = fs.readFileSync(file, 'utf8');
-            contents.split('\n').forEach((ticker) => {
-                ticker = ticker.replace('\r','') //need split with only \n for RaspPi, and replace \r for windows
-                if(tickerList.indexOf(ticker) == -1){ 
-                    tickerList.push(ticker); 
+        var tickerList = [], replacements = [];
+        logger(1,"Parsing stockfile: ");
+        var stockListContent = fs.readFileSync(stocklist, 'utf8');
+        stockListContent.split('\n').forEach((line) => {
+            if(line.indexOf('#') == -1){
+                line = line.replace('\r','') //need split with only \n for RaspPi, and replace \r for windows
+                if(line.indexOf('=>') > -1){ 
+                    var nameChange = line.replace(/\s+/g, '').split("=>");
+                    if(nameChange.length == 2){
+                        stockListContent.replace(line,nameChange[1])
+                        fs.writeFileSync(stocklist,stockListContent)
+                        replacements.push(nameChange[0])
+                        tickerList.push(nameChange[1])
+                    }else{
+                        logger(0,"Warn! Namechange failed: '"+nameChange+"' not returning two names when split.");
+                    }
+                }else if(tickerList.indexOf(line) == -1){ 
+                    tickerList.push(line); 
                 }else{
-                    logger(0,"Warn: Stock "+ticker+" seems to be listed on multiple markets.");
+                    logger(0,"Warn: Stock "+line+" seems to have switched market lists.");
                 }
-            });
-        })
+            }
+        });
+
         logger(1,"Number of stocks in files: " + tickerList.length); 
 
         db.all("SELECT ticker FROM stockIds", (err, rows) => {
@@ -223,8 +228,8 @@ function buildStockList() {
                 var idx = tickerList.indexOf(rows[i].ticker);
                 if(idx > -1) {
                     tickerList.splice(idx, 1);
-                } else {
-                    logger(0,"Ticker " + rows[i].ticker + " not found in stock files, removing from database");
+                } else if(replacements.indexOf(rows[i].ticker) == -1) {
+                    logger(0,"Ticker " + rows[i].ticker + " no longer in stocklist, removing from database");
                     db.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
                 }
             }
@@ -236,7 +241,7 @@ function buildStockList() {
                     password: process.env.PASSWORD
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
-                        var stmt = db.prepare("INSERT OR IGNORE INTO stockIds VALUES (?,?,?)");
+                        var stmt = db.prepare("INSERT OR REPLACE INTO stockIds VALUES (?,?,?)");
                         Promise.all(Object.keys(newStocks).map(function (ticker) {
                             return new Promise((resolve, reject) => {
                                 logger(2, "Updating stockId database: " + ticker+", id: "+newStocks[ticker].id+", name"+newStocks[ticker].name);
@@ -401,21 +406,21 @@ function parseAsync(idxAndRows) {
         rp(strAvaPage).then(htmlString => {
             return parseCheerioData(htmlString)
         }).then(data => {
-            if (data.ticker){
+            if (data.numberOfOwners){
                 return prepareBrokerData(data)
             } else {
                 return new Promise((resolve, reject) => {
-                    logger(0,"Found no data for stock: "+stock.ticker+" with name: "+stock.name+". Try and search for name change: ");
+                    logger(0,"Found no data for stock: "+stock.id+" with name: "+stock.name+". Try and search for name change: ");
                     avanza.authenticate({
                         username: process.env.AVAUSER,
                         password: process.env.PASSWORD
                     }).then(() => {
-                        searchStocksSerialize([0, [stock.ticker], {}]).then(searchRes => {
+                        searchStocksSerialize([0, [stock.id], {}]).then(searchRes => {
                             for (var newName in searchRes) {
                                 if (stock.name != searchRes[newName].name) {
                                     logger(0, "Name update detected! Old: " + stock.name + ", new: " + searchRes[newName].name+". Updating DB");
-                                    db.run("UPDATE stockIds SET name=? WHERE ticker=?",[searchRes[newName].name, stock.ticker]);
-                                    var errmsg = {error: 'NAMECHANGE',replaceRow: {name: searchRes[newName].name, ticker: stock.ticker, id: stock.id }}
+                                    db.run("UPDATE stockIds SET name=? WHERE id=?",[searchRes[newName].name, stock.id]);
+                                    var errmsg = {error: 'NAMECHANGE',replaceRow: {name: searchRes[newName].name, id: stock.id}}
                                     reject(errmsg);
                                 }
                             }
@@ -426,13 +431,10 @@ function parseAsync(idxAndRows) {
                 });
             }
         }).then(data => {
-            logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): " + data.ticker + ", id: " + stock.id);
+            logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): , id: " + stock.id);
 
-            var insert_values = [todaysDate];
+            var insert_values = [startTime];
             insert_values.push(stock.id);
-            insert_values.push(data.marketPlace);
-            insert_values.push(data.currency);
-            insert_values.push(data.ticker);
             insert_values.push(data.lastPrice);
             insert_values.push(data.highestPrice);
             insert_values.push(data.lowestPrice);
@@ -440,15 +442,12 @@ function parseAsync(idxAndRows) {
             insert_values.push(data.change);
             insert_values.push(data.totalVolumeTraded);
             insert_values.push(data.marketCapital);
-            insert_values.push(data.volatility);
-            insert_values.push(data.beta);
-            insert_values.push(data.pe);
-            insert_values.push(data.ps);
-            insert_values.push(data.yield);
             insert_values.push(JSON.stringify(data.brokerStat))
 
             if (debugLevel <= 1) {
-                db.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", insert_values);
+                db.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?)", insert_values);
+            }else{
+                logger(2,"!Insert: ",insert_values)
             }
             resolve(idxAndRows);
         }).catch(msg => {
@@ -479,16 +478,8 @@ function parseCheerioData(content) {
             var buyVolume = $(this).children().eq(2).text().replace(/\s+/g, '');
             var sellVolume = $(this).children().eq(3).text().replace(/\s+/g, '');
             var sellPrice = $(this).children().eq(4).text().replace(/\s+/g, '').replace(',', '.');
-            var netVolume = $(this).children('.last').text().replace(/\s+/g, '');
-            var netPrice = 0;
-            if (sellVolume == 0) {
-                netPrice = buyPrice;
-            } else if (buyVolume == 0) {
-                netPrice = sellPrice;
-            } else {
-                netPrice = (buyPrice * buyVolume + sellPrice * sellVolume) / (1 * sellVolume + 1 * buyVolume); //multiply by 1 to convert from string
-            }
-            brokerStat[brokerName] = { 'buyVolume': buyVolume, 'buyPrice': buyPrice, 'sellVolume': sellVolume, 'sellPrice': sellPrice, 'netVolume': netVolume, 'netPrice': netPrice };
+           
+            brokerStat[brokerName] = [buyVolume, buyPrice, sellVolume, sellPrice];
         })
     });
     dbRow['brokerStat'] = brokerStat;
@@ -503,21 +494,9 @@ function parseCheerioData(content) {
         dbRow['totalVolumeTraded'] = $ul.children('li').eq(8).children('span').eq(1).text().replace(/\s+/g, '');
     });
 
-    $('.stock_data').find('.content').find('.row').children().eq(0).find('dl').each(function () {
-        var $dl = $(this);
-        dbRow['ticker'] = $dl.children('dd').eq(0).children('span').text();
-        dbRow['marketPlace'] = $dl.children('dd').eq(2).children('span').text().replace(/\s+/g, '');
-        dbRow['currency'] = $dl.children('dd').eq(4).children('span').text();
-        dbRow['beta'] = $dl.children('dd').eq(5).children('span').text().replace(',', '.');
-        dbRow['volatility'] = $dl.children('dd').eq(6).children('span').text().replace(',', '.');
-    });
-
     $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function () {
         var $dl = $(this);
         dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '').replace(',', '.');
-        dbRow['yield'] = $dl.children('dd').eq(2).children('span').text().replace(',', '.');
-        dbRow['pe'] = $dl.children('dd').eq(3).children('span').text().replace(',', '.');
-        dbRow['ps'] = $dl.children('dd').eq(4).children('span').text().replace(',', '.');
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
 

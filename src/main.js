@@ -1,6 +1,7 @@
 import Avanza from 'avanza'
 import dotenv from 'dotenv';
 dotenv.config()
+
 const avanza = new Avanza()
 const readline = require('readline');
 const fs = require('fs');
@@ -118,7 +119,8 @@ function handleListingResults(newListings, market) {
     return new Promise((resolve, reject) => {
         avanza.authenticate({
             username: process.env.AVAUSER,
-            password: process.env.PASSWORD
+            password: process.env.PASSWORD,
+            totpSecret: process.env.TOTPSECRET
         }).then(() => {
             return Promise.all(newListings.map(function (listing) {
                 return new Promise((resolve, reject) => {
@@ -238,7 +240,8 @@ function buildStockList() {
                 logger(0,"Database doesn\'t match parsed list, adding new stocks to DB:",tickerList);
                 avanza.authenticate({
                     username: process.env.AVAUSER,
-                    password: process.env.PASSWORD
+                    password: process.env.PASSWORD,
+                    totpSecret: process.env.TOTPSECRET
                 }).then(() => {
                     searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
                         var stmt = db.prepare("INSERT OR REPLACE INTO stockIds VALUES (?,?,?)");
@@ -413,7 +416,8 @@ function parseAsync(idxAndRows) {
                     logger(0,"Found no data for stock: "+stock.id+" with name: "+stock.name+". Try and search for name change: ");
                     avanza.authenticate({
                         username: process.env.AVAUSER,
-                        password: process.env.PASSWORD
+                        password: process.env.PASSWORD,
+                        totpSecret: process.env.TOTPSECRET
                     }).then(() => {
                         searchStocksSerialize([0, [stock.id], {}]).then(searchRes => {
                             for (var newName in searchRes) {

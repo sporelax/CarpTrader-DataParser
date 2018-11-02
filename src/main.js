@@ -1,6 +1,5 @@
-import Avanza from 'avanza'
-import dotenv from 'dotenv';
-dotenv.config()
+import Avanza from 'avanza';
+require('dotenv').config();
 
 const avanza = new Avanza()
 const readline = require('readline');
@@ -18,31 +17,8 @@ const fullDate = new Date();
 const startTime = Date.now();
 var todaysDate = fullDate.toJSON().slice(0,-14); //YEAR-MONTH-DAY
 var globalRetryAttempts = 0;
-var diffBetweenDbAndList = 0;
 var brokerInfo = {};
 var arrMarketClosedDays=[];
-
-//****** DEBUG FUNCTION CALLS */
-//parseCheerioData('test');
-//fixSplit('FING B', 3);
-//parseSerialized([0,[{'ticker':'FING B','id':5468,'name':'fingerprint-cards-b'},{'ticker':'TRAC B','id':5472,'name':'traction--b'},{'ticker':'DMYD B','id':414975,'name':'diamyd-medical'}]])
-//splitScan()
-//testBrokerstats()
-//finalizeBroker()
-//.then(()=>{ console.log('FINALIZED!!!!') })
-//.catch(error => console.log(error));
-//****** END */
-
-initDbAndCheckMarketStatus()
-.then(parseNewListings)
-.then(buildStockList)
-.then(stockParse)
-.then(finalizeBroker)
-.then(splitScan)
-.then(()=>{
-    logger(0,' ');
-    process.exit(0);
-}).catch(err => {logger(0,"Main loop:",err)});
 
 logger(1,'Debuglevel: '+debugLevel);
 if(process.stdout.isTTY){
@@ -57,217 +33,196 @@ if(process.stdout.isTTY){
     })   
 }
 
-/**
- * Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
- */
-function initDbAndCheckMarketStatus() {
-    return new Promise((resolve,reject) => {
-        db.serialize(function() {
-            db.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
-            db.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
-            db.run("CREATE TABLE IF NOT EXISTS marketStatus (date TEXT, market TEXT, status TEXT, UNIQUE(date,market,status))");
-            db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
-            db.all("SELECT date FROM marketStatus where market='sweden' and status='closed' COLLATE NOCASE ORDER BY date ASC", (err, rows) => {
-                for (var i = 0; i<rows.length; i++){
-                    arrMarketClosedDays.push(rows[i].date);
-                }
-
-                if(arrMarketClosedDays.indexOf(todaysDate) > -1 && debugLevel <= 1){
-                    logger(0,"Stock market is closed today. Exiting.");
-                    resolve(process.exit(0));
-                }else{
-                    logger(1,"Stock market closed days:",arrMarketClosedDays);
-                    resolve();
-                }
-            });
-        });
-    })
+try{
+    startParsing();
+}catch (error) {
+    logger.log(1,"Catch error: ",error)
 }
 
 /**
- * Search for new listings on different websites. At the moment NGM is not yet supported.
- */
-function parseNewListings() {
-    return new Promise((resolve, reject) => {
-        logger(1,"Parsing websites for new listings matching todays date.");
-        var objAvaListings = {};
-        parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/main-market/2017')
-            .then(newListings => {
-                return handleListingResults(newListings, 'nasdaq_stockholm')
-            }).then(() => {
-                return parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2017');
-            }).then(newListings => {
-                return handleListingResults(newListings, 'nasdaq_firstnorth')
-            }).then(() => {
-                return parseListingWebsite('https://www.aktietorget.se/QuoteStatistics.aspx?Year=2017&Type=1');
-            }).then(newListings => {
-                return handleListingResults(newListings, 'aktietorget')
-            }).then(() => {
-                resolve();
-            }).catch(err =>{
-                reject(err);
-            });
+* Main starting point
+*/
+async function startParsing(){
+    //****** DEBUG FUNCTION CALLS */
+    //parseCheerioData('test');
+    //fixSplit('FING B', 3);
+    //parseSerialized([0,[{'ticker':'FING B','id':5468,'name':'fingerprint-cards-b'},{'ticker':'TRAC B','id':5472,'name':'traction--b'},{'ticker':'DMYD B','id':414975,'name':'diamyd-medical'}]])
+    //splitScan()
+    //testBrokerstats()
+    //finalizeBroker()
+    //.then(()=>{ console.log('FINALIZED!!!!') })
+    //.catch(error => console.log(error));
+    //****** END */
+    
+    await avanza.authenticate({
+        username: process.env.AVAUSER,
+        password: process.env.PASSWORD,
+        totpSecret: process.env.TOTPSECRET
+    })
+    
+    await initDb()
+    await parseNewListings()
+    await buildStockList()
+    
+    await db.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
+        let nrParsed = await parseSerialized([0, rows])
+        logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "+(Date.now() - startTime)/1000+" s.");
     });
+    
+    await finalizeBroker()
+    await splitScan()
+    logger(0,' ');
+    process.exit(0);
 }
 
 /**
- * If we find a new listing, search avanza for it's id, name and ticker and add it to the proper stocklist
- * @param {*} newListings An array of new listings for today
- * @param {*} market The market for the new listings
- */
-function handleListingResults(newListings, market) {
-    return new Promise((resolve, reject) => {
-        avanza.authenticate({
-            username: process.env.AVAUSER,
-            password: process.env.PASSWORD,
-            totpSecret: process.env.TOTPSECRET
-        }).then(() => {
-            return Promise.all(newListings.map(function (listing) {
-                return new Promise((resolve, reject) => {
-                    searchStocksSerialize([0, [listing.name], {}])
-                    .then(searchRes => {
-                        for (var ticker in searchRes) {
-                            logger(0, 'Added new listing ' + ticker + ' on market ' + market + ' to file.')
-                            fs.appendFileSync(stocklist, '\n' + ticker)
-                        }
-                        resolve();
-                    })
-                });
-            }));
-        }).then(resultArr => resolve(resultArr) );
-    })
+* Exit the script if the stock market is closed today. Otherwise saved all closed days in closedStockDays
+*/
+async function initDb() {
+    await db.run("CREATE TABLE IF NOT EXISTS dailyStock (date TEXT, id TEXT, lastPrice NUMERIC, highestPrice NUMERIC, lowestPrice NUMERIC, numberOfOwners NUMERIC, priceChange NUMERIC, totalVolumeTraded NUMERIC, marketCap NUMERIC, brokerStats TEXT, UNIQUE(date,id))");
+    await db.run("CREATE TABLE IF NOT EXISTS dailyBroker (date TEXT, broker TEXT, sellValue NUMERIC, buyValue NUMERIC, UNIQUE(date,broker))");
+    await db.run("CREATE TABLE IF NOT EXISTS stockIds (ticker TEXT, id TEXT UNIQUE, name TEXT)");
 }
 
 /**
- * Parse websites for name and listdate
- * @param {*} website at the moment only nasdaq and aktietorget is supported
- */
-function parseListingWebsite(website) {
-    return new Promise((resolve, reject) => {
-        var newListings = [];
-        rp(website).then(htmlString => {
-            const $ = cheerio.load(htmlString);
+* Search for new listings on different websites. At the moment NGM is not yet supported.
+*/
+async function parseNewListings() {
+    logger(1,"Parsing websites for new listings matching todays date.");
+    var stocksToAdd = [];
+    stocksToAdd.concat(await parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/main-market/2018'));
+    stocksToAdd.concat(await parseListingWebsite('http://www.nasdaqomxnordic.com/nyheter/noteringar/firstnorth/2018'));
+    stocksToAdd.concat(await parseListingWebsite('https://spotlightstockmarket.com/sv/market-overview/'));
+    if (stocksToAdd){
+        await handleListingResults(stocksToAdd)
+    }
+}
 
-            if(website.match(/nasdaq/i) ){
-                $('.nordic-right-content-area').children('article').each(function () {
-                    var headerText = $(this).children('header').children('h3').text();
-                    if (headerText.match(/listings 2017/i)) {
-                        $(this).children('div').children('p').each(function () {
-                            var $p = $(this)
-                            var stock = {};
-                            var locAndDate = $p.children('b').text().split(',');
-                            var tmpDate = new Date(Date.parse('2017' + locAndDate[1] + ' GMT')); //GMT or we get wrong date
-                            var listDate = tmpDate.toJSON().slice(0, -14);
-                            if (locAndDate[0] == 'Stockholm' && listDate == todaysDate) {
-                                stock['date'] = listDate;
-                                stock['name'] = $p.children('a').text()
-                                newListings.push(stock)
-                            }
-                        });
-                    }
-                })
-            } else if(website.match(/aktietorget/i)) {
-                $('#ctl00_ctl00_MasterContentBody_InvestorMasterContentBody_tblStatistic').children('tbody').children('tr').each(function () {
-                    var $tr = $(this)
+/**
+* If we find a new listing, search avanza for it's id, name and ticker and add it to the proper stocklist
+* @param {*} newListings An array of new listings for today
+*/
+async function handleListingResults(newListings) {
+    await Promise.all(newListings.map(function (listing) {
+        let searchRes = await searchStocksSerialize([0, [listing.name], {}])
+        for (var ticker in searchRes) {
+            logger(0, 'Added new listing ' + ticker + ' to file.')
+            fs.appendFileSync(stocklist, '\n' + ticker)
+        }
+    }))
+}
+
+/**
+* Parse websites for name and listdate
+* @param {*} website at the moment only nasdaq and aktietorget is supported
+*/
+async function parseListingWebsite(website) {
+    var newListings = [];
+    let htmlString = await rp(website)
+    const $ = cheerio.load(htmlString);
+    
+    if(website.match(/nasdaq/i) ){
+        $('.nordic-right-content-area').children('article').each(function () {
+            var headerText = $(this).children('header').children('h3').text();
+            if (headerText.match(/listings 2018/i)) {
+                $(this).children('div').children('p').each(function () {
+                    var $p = $(this)
                     var stock = {};
-                    stock['name'] = $tr.children('td').eq(0).text();
-                    if (stock['name'] ) {
-                        var timeOffsetToFixTimeZone = ' 12:00';
-                        var listDate = new Date(Date.parse($tr.children('td').eq(1).text()  + timeOffsetToFixTimeZone));
-                        stock['date'] = listDate.toJSON().slice(0, -14);
-                        if(stock['date'] == todaysDate){
-                            newListings.push(stock)
-                        }
+                    var locAndDate = $p.children('b').text().split(',');
+                    var tmpDate = new Date(Date.parse('2018' + locAndDate[1] + ' GMT')); //GMT or we get wrong date
+                    var listDate = tmpDate.toJSON().slice(0, -14);
+                    if (locAndDate[0] == 'Stockholm' && listDate == todaysDate) {
+                        stock['date'] = listDate;
+                        stock['name'] = $p.children('a').text()
+                        newListings.push(stock)
                     }
-                })
+                });
             }
-
-            resolve(newListings);
-        }).catch((error) => {
-            logger(1,"!Warning - Parsing of website " + website + " returns error: ", error);
-            resolve(newListings);
-        });
-    });
+        })
+    } else if(website.match(/spotlightstockmarket/i)) {
+        //FIX THIS, this is for the old website
+        $('#ctl00_ctl00_MasterContentBody_InvestorMasterContentBody_tblStatistic').children('tbody').children('tr').each(function () {
+            var $tr = $(this)
+            var stock = {};
+            stock['name'] = $tr.children('td').eq(0).text();
+            if (stock['name'] ) {
+                var timeOffsetToFixTimeZone = ' 12:00';
+                var listDate = new Date(Date.parse($tr.children('td').eq(1).text()  + timeOffsetToFixTimeZone));
+                stock['date'] = listDate.toJSON().slice(0, -14);
+                if(stock['date'] == todaysDate){
+                    newListings.push(stock)
+                }
+            }
+        })
+    }
+    
+    return newListings;
 }
 
 
 /*
 *   build list of avanza stock Id numbers from lists of Tickers. 
 *   Compare list of Id Numbers to existing list stored in database
-*   Overwrite it if change is detected.
+*   Overwrite the name if change is detected.
 *   Modify @stockList in order to change included marketplaces.
 */
-function buildStockList() {
-    return new Promise((resolve, reject) => {
-        var tickerList = [], replacements = [];
-        logger(1,"Parsing stockfile: ");
-        var stockListContent = fs.readFileSync(stocklist, 'utf8');
-        stockListContent.split('\n').forEach((line) => {
-            if(line.indexOf('#') == -1){
-                line = line.replace('\r','') //need split with only \n for RaspPi, and replace \r for windows
-                if(line.indexOf('=>') > -1){ 
-                    var nameChange = line.replace(/\s+/g, '').split("=>");
-                    if(nameChange.length == 2){
-                        stockListContent.replace(line,nameChange[1])
-                        fs.writeFileSync(stocklist,stockListContent)
-                        replacements.push(nameChange[0])
-                        tickerList.push(nameChange[1])
-                    }else{
-                        logger(0,"Warn! Namechange failed: '"+nameChange+"' not returning two names when split.");
-                    }
-                }else if(tickerList.indexOf(line) == -1){ 
-                    tickerList.push(line); 
+async function buildStockList() {
+    var tickerList = [], replacements = [];
+    logger(1,"Parsing stockfile: ");
+    var stockListContent = fs.readFileSync(stocklist, 'utf8');
+    stockListContent.split('\n').forEach((line) => {
+        if(line.indexOf('#') == -1){
+            line = line.replace('\r','') //need split with only \n for RaspPi, and replace \r for windows
+            if(line.indexOf('=>') > -1){ 
+                var nameChange = line.replace(/\s+/g, '').split("=>");
+                if(nameChange.length == 2){
+                    stockListContent.replace(line,nameChange[1])
+                    fs.writeFileSync(stocklist,stockListContent)
+                    replacements.push(nameChange[0])
+                    tickerList.push(nameChange[1])
                 }else{
-                    logger(0,"Warn: Stock "+line+" seems to have switched market lists.");
+                    logger(0,"Warn! Namechange failed: '"+nameChange+"' not returning two names when split.");
                 }
+            }else if(tickerList.indexOf(line) == -1){ 
+                tickerList.push(line); 
+            }else{
+                logger(0,"Warn: Stock "+line+" seems to have switched market lists.");
             }
-        });
-
-        logger(1,"Number of stocks in files: " + tickerList.length); 
-
-        db.all("SELECT ticker FROM stockIds", (err, rows) => {
-            for (var i = 0; i<rows.length; i++){
-                var idx = tickerList.indexOf(rows[i].ticker);
-                if(idx > -1) {
-                    tickerList.splice(idx, 1);
-                } else if(replacements.indexOf(rows[i].ticker) == -1) {
-                    logger(0,"Ticker " + rows[i].ticker + " no longer in stocklist, removing from database");
-                    db.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
-                }
+        }
+    });
+    
+    logger(1,"Number of stocks in files: " + tickerList.length); 
+    
+    db.all("SELECT ticker FROM stockIds", (err, rows) => {
+        for (var i = 0; i<rows.length; i++){
+            var idx = tickerList.indexOf(rows[i].ticker);
+            if(idx > -1) {
+                tickerList.splice(idx, 1);
+            } else if(replacements.indexOf(rows[i].ticker) == -1) {
+                logger(0,"Ticker " + rows[i].ticker + " no longer in stocklist, removing from database");
+                await db.run("DELETE FROM stockIds WHERE (ticker=?)",rows[i].ticker);
             }
-
-            if (tickerList.length != 0) {
-                logger(0,"Database doesn\'t match parsed list, adding new stocks to DB:",tickerList);
-                avanza.authenticate({
-                    username: process.env.AVAUSER,
-                    password: process.env.PASSWORD,
-                    totpSecret: process.env.TOTPSECRET
-                }).then(() => {
-                    searchStocksSerialize([0, tickerList, {}]).then(newStocks => {
-                        var stmt = db.prepare("INSERT OR REPLACE INTO stockIds VALUES (?,?,?)");
-                        Promise.all(Object.keys(newStocks).map(function (ticker) {
-                            return new Promise((resolve, reject) => {
-                                logger(2, "Updating stockId database: " + ticker+", id: "+newStocks[ticker].id+", name"+newStocks[ticker].name);
-                                stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name, resolve());
-                            })
-                        })).then(() => {
-                            stmt.finalize()
-                            resolve();
-                        });
-                    })
-                });
-            } else {
-                logger(1,"TickerList matched database, DB update not required.");
-                resolve();
-            }
-        });
+        }
+        
+        if (tickerList.length != 0) {
+            logger(0,"Database doesn\'t match parsed list, adding new stocks to DB:",tickerList);
+            let newStocks = await searchStocksSerialize([0, tickerList, {}])
+            var stmt = db.prepare("INSERT OR REPLACE INTO stockIds VALUES (?,?,?)");
+            await Promise.all(Object.keys(newStocks).map(function (ticker) {
+                logger(2, "Updating stockId database: " + ticker+", id: "+newStocks[ticker].id+", name"+newStocks[ticker].name);
+                await stmt.run(ticker, newStocks[ticker].id, newStocks[ticker].name);
+            }))
+            stmt.finalize()
+        } else {
+            logger(1,"TickerList matched database, DB update not required.");
+        }
     });
 }
 
 /**
- * Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
- * @param {*} arr is an array with [int index, arr stocksToBeParsed, obj returnObject]
- */
+* Synchronous fetcher of avanza stock ids. Parse results with function parseSearchString
+* @param {*} arr is an array with [int index, arr stocksToBeParsed, obj returnObject]
+*/
 function searchStocksSerialize(arr) {
     function decide(arr) {
         arr[0]++;
@@ -286,40 +241,34 @@ function searchStocksSerialize(arr) {
             throw errormsg;
         }
     }
-
+    
     return searchStocksAsync(arr).then(decide, handleError);
 }
 
 /**
- * Asynchronous part of fetching avanza stock ids.
- * @param {*} arr 
- */
-function searchStocksAsync(arr) {
-    return new Promise((resolve, reject) => {
-        var stockName = arr[1][arr[0]];
-        avanza.search(stockName).then(result => {
-            var arrAnswer = parseAvanzaSearchResult(stockName, result);
-            if (arrAnswer !== undefined) {
-                arrAnswer[1] = arrAnswer[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
-                logger(1,"Found answer(" + arr[0] + "): " + arrAnswer[0] + " and " + arrAnswer[1] + " for stock " + arrAnswer[2]);
-                arr[2][arrAnswer[2]] = { 'id': arrAnswer[0], 'name': arrAnswer[1] };
-            } else {
-                logger(0,"Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
-            }
-            resolve(arr);
-        }).catch((error) => {
-            logger(0,"!Error - Promise rejected at searchStocks for stock " + stockName + " at " + arr[0] + ", error: ", error);
-            reject(error);
-        });
-    });
+* Asynchronous part of fetching avanza stock ids.
+* @param {*} arr 
+*/
+async function searchStocksAsync(arr) {
+    var stockName = arr[1][arr[0]];
+    let result = await avanza.search(stockName)
+    var arrAnswer = parseAvanzaSearchResult(stockName, result);
+    if (arrAnswer !== undefined) {
+        arrAnswer[1] = arrAnswer[1].replace(/\s|\.|\&/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase(); //remove åäö, and replace spaces, dots and & with -
+        logger(1,"Found answer(" + arr[0] + "): " + arrAnswer[0] + " and " + arrAnswer[1] + " for stock " + arrAnswer[2]);
+        arr[2][arrAnswer[2]] = { 'id': arrAnswer[0], 'name': arrAnswer[1] };
+    } else {
+        logger(0,"Stock " + stockName + " potentially delisted? No matching stock found on Ava search.");
+    }
+    return arr;
 }
 
 /**
- * 
- * Parse search results from avanza  
- * Ex answer: {"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,
- * "currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB Ltb","id":"26268","tickerSymbol":"ABB"}]}]}
- */
+* 
+* Parse search results from avanza  
+* Ex answer: {"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,
+* "currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB Ltb","id":"26268","tickerSymbol":"ABB"}]}]}
+*/
 function parseAvanzaSearchResult(name, answer) {
     var id, name, ticker;
     try {
@@ -351,26 +300,9 @@ function parseAvanzaSearchResult(name, answer) {
 }
 
 /**
- * Initialize the stock parsing
- */
-function stockParse() {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT ticker, id, name FROM stockIds", (err, rows) => {
-            parseSerialized([0, rows])
-                .then((nrParsed) => {
-                    logger(0,"Reached end of stock list! Parsed " + nrParsed + " stocks with " + globalRetryAttempts + " retries in "+(Date.now() - startTime)/1000+" s.");
-                    resolve();
-                }).catch((error) => {
-                    logger(0,"!parse error:", error)
-                });
-        });
-    });
-}
-
-/**
- * Serialized part of the webscrape/stock parse. We do it serialized or we receive hundreds of timeouts
- * @param {*} idxAndRows 
- */
+* Serialized part of the webscrape/stock parse. We do it serialized or we receive hundreds of timeouts
+* @param {*} idxAndRows 
+*/
 function parseSerialized(idxAndRows) {
     function decide(idxAndRows) {
         idxAndRows[0]++;
@@ -380,7 +312,7 @@ function parseSerialized(idxAndRows) {
             return idxAndRows[0]; //this resolves the promise chain
         }
     }
-
+    
     function handleError(errormsg) {
         if (errormsg && errormsg.error && errormsg.error.code && (errormsg.error.code == 'ECONNRESET' || errormsg.error.code == 'ETIMEDOUT')) {
             logger(0,"parseSerialized: Connection reset or timed out. Retrying...");
@@ -393,14 +325,14 @@ function parseSerialized(idxAndRows) {
             throw errormsg;
         }
     }
-
+    
     return parseAsync(idxAndRows).then(decide, handleError);
 }
 
 /**
- * Async part of the web scraping / stock parsing
- * @param {*} idxAndRows 
- */
+* Async part of the web scraping / stock parsing
+* @param {*} idxAndRows 
+*/
 function parseAsync(idxAndRows) {
     return new Promise((resolve, reject) => {
         var idx = idxAndRows[0];
@@ -414,29 +346,22 @@ function parseAsync(idxAndRows) {
             } else {
                 return new Promise((resolve, reject) => {
                     logger(0,"Found no data for stock: "+stock.id+" with name: "+stock.name+". Try and search for name change: ");
-                    avanza.authenticate({
-                        username: process.env.AVAUSER,
-                        password: process.env.PASSWORD,
-                        totpSecret: process.env.TOTPSECRET
-                    }).then(() => {
-                        searchStocksSerialize([0, [stock.id], {}]).then(searchRes => {
-                            for (var newName in searchRes) {
-                                if (stock.name != searchRes[newName].name) {
-                                    logger(0, "Name update detected! Old: " + stock.name + ", new: " + searchRes[newName].name+". Updating DB");
-                                    db.run("UPDATE stockIds SET name=? WHERE id=?",[searchRes[newName].name, stock.id]);
-                                    var errmsg = {error: 'NAMECHANGE',replaceRow: {name: searchRes[newName].name, id: stock.id}}
-                                    reject(errmsg);
-                                }
-                            }
-                            logger(0, "No new name found. Something else is wrong, skipping stock.");
-                            resolve(data);
-                        });
-                    })
+                    let searchRes = await searchStocksSerialize([0, [stock.id], {}])
+                    for (var newName in searchRes) {
+                        if (stock.name != searchRes[newName].name) {
+                            logger(0, "Name update detected! Old: " + stock.name + ", new: " + searchRes[newName].name+". Updating DB");
+                            await db.run("UPDATE stockIds SET name=? WHERE id=?",[searchRes[newName].name, stock.id]);
+                            var errmsg = {error: 'NAMECHANGE',replaceRow: {name: searchRes[newName].name, id: stock.id}}
+                            reject(errmsg);
+                        }
+                    }
+                    logger(0, "No new name found. Something else is wrong, skipping stock.");
+                    resolve(data);
                 });
             }
         }).then(data => {
             logger(1,"Found data for stock (" + (idx + 1) + "/" + idxAndRows[1].length + "): , id: " + stock.id);
-
+            
             var insert_values = [startTime];
             insert_values.push(stock.id);
             insert_values.push(data.lastPrice);
@@ -447,7 +372,7 @@ function parseAsync(idxAndRows) {
             insert_values.push(data.totalVolumeTraded);
             insert_values.push(data.marketCapital);
             insert_values.push(JSON.stringify(data.brokerStat))
-
+            
             if (debugLevel <= 1) {
                 db.run("INSERT OR REPLACE INTO dailyStock VALUES (?,?,?,?,?,?,?,?,?,?)", insert_values);
             }else{
@@ -462,15 +387,15 @@ function parseAsync(idxAndRows) {
 }
 
 /**
- * Parse avanza html content to find the data we need
- * @param {*} content 
- */
+* Parse avanza html content to find the data we need
+* @param {*} content 
+*/
 function parseCheerioData(content) {
     const $ = cheerio.load(content);
     if (debugLevel >= 2) {
         fs.writeFileSync('./testFile', content, 'utf-8');
     }
-
+    
     var dbRow = {};
     var brokerStat = {};
     //Get broker statisticss
@@ -482,12 +407,12 @@ function parseCheerioData(content) {
             var buyVolume = $(this).children().eq(2).text().replace(/\s+/g, '');
             var sellVolume = $(this).children().eq(3).text().replace(/\s+/g, '');
             var sellPrice = $(this).children().eq(4).text().replace(/\s+/g, '').replace(',', '.');
-           
+            
             brokerStat[brokerName] = [buyVolume, buyPrice, sellVolume, sellPrice];
         })
     });
     dbRow['brokerStat'] = brokerStat;
-
+    
     $('.component.quote').find('.content').each(function () {
         var $ul = $(this).find('ul');
         var change = $ul.children('li').eq(2).children('div').children('span').eq(1).text();
@@ -497,40 +422,40 @@ function parseCheerioData(content) {
         dbRow['lowestPrice'] = $ul.children('li').eq(7).children('span').eq(1).text().replace(/\s+/g, '').replace(',', '.');
         dbRow['totalVolumeTraded'] = $ul.children('li').eq(8).children('span').eq(1).text().replace(/\s+/g, '');
     });
-
+    
     $('.stock_data').find('.content').find('.row').children().eq(1).find('dl').each(function () {
         var $dl = $(this);
         dbRow['marketCapital'] = $dl.children('dd').eq(1).children('span').text().replace(/\s+/g, '').replace(',', '.');
         dbRow['numberOfOwners'] = $dl.children('dd').eq(11).children('span').text().replace(/\s+/g, '');
     });
-
+    
     logger(2,JSON.stringify(dbRow));
     return dbRow;
 }
 
 /**
- * Prepare list of daily broker activites/trades/volumes
- * @param {*} stockdata 
- */
+* Prepare list of daily broker activites/trades/volumes
+* @param {*} stockdata 
+*/
 function prepareBrokerData(stockdata) {
     return new Promise((resolve, reject) => {
         for (var broker in stockdata.brokerStat) {
             if (broker) {
                 var currSell = 0, currBuy = 0, newSell = 0, newBuy = 0, addSell = 0, addBuy = 0;
                 var currBroker = stockdata.brokerStat[broker];
-
+                
                 if (brokerInfo[broker]) {
                     currBuy = brokerInfo[broker].buyValue;
                     currSell = brokerInfo[broker].sellValue;
                 }
-
+                
                 if (currBroker.buyPrice != '-') { 
                     addBuy = currBroker.buyVolume * currBroker.buyPrice;
                 }
                 if (currBroker.sellPrice != '-') {
                     addSell = currBroker.sellVolume * currBroker.sellPrice;
                 }
-
+                
                 newBuy = currBuy + addBuy;
                 newSell = currSell + addSell;
                 brokerInfo[broker] = { 'buyValue': newBuy, 'sellValue': newSell };
@@ -542,104 +467,81 @@ function prepareBrokerData(stockdata) {
 }
 
 /**
- * Store all todays broker transactions in the database
- */
-function finalizeBroker() {
-    return new Promise((resolve, reject) => {
-        var stmt = db.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
-        Promise.all(Object.keys(brokerInfo).map(function (broker) {
-            return new Promise((resolve, reject) => {
-                logger(2, "Finalize: " + todaysDate + ", " + broker + ", " + brokerInfo[broker].sellValue + ", " + brokerInfo[broker].buyValue);
-                stmt.run(todaysDate, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue, resolve());
-            })
-        })).then(() => {
-            stmt.finalize()
-            resolve();
-        });
-    })
+* Store all todays broker transactions in the database
+*/
+async function finalizeBroker() {
+    var stmt = db.prepare("INSERT OR REPLACE INTO dailyBroker VALUES (?,?,?,?)");
+    await Promise.all(Object.keys(brokerInfo).map(function (broker) {
+        logger(2, "Finalize: " + todaysDate + ", " + broker + ", " + brokerInfo[broker].sellValue + ", " + brokerInfo[broker].buyValue);
+        await stmt.run(todaysDate, broker, brokerInfo[broker].sellValue, brokerInfo[broker].buyValue);
+    }))
+    stmt.finalize()
 }
 
 /**
- * Go through todays data and find out if any stocks have been splitted since yesterday.
- * We find this by comparing yesterdays closing price with todays closing price and the reported change in SEK.
- */
-function splitScan() {
-    return new Promise((resolve, reject) => {
-        logger(1,"Scanning for potential splits")
-
-        var tmpDate = new Date();
-        var foundDay = false;
-
-        if(tmpDate.getUTCHours() > 0 && tmpDate.getUTCHours() < 7){
-            logger(0,"Skipping splitScan, swedish stock market not yet open.")
-            resolve();
+* Go through todays data and find out if any stocks have been splitted since yesterday.
+* We find this by comparing yesterdays closing price with todays closing price and the reported change in SEK.
+*/
+async function splitScan() {
+    logger(1,"Scanning for potential splits")
+    
+    var tmpDate = new Date();
+    var foundDay = false;
+    
+    if(tmpDate.getUTCHours() > 0 && tmpDate.getUTCHours() < 7){
+        logger(0,"Skipping splitScan, swedish stock market not yet open.")
+    }
+    
+    while( !foundDay ){
+        //Move back one day at a time, and return true once day != saturday/sunday/closed
+        tmpDate.setTime(tmpDate.getTime() - 86400000);
+        if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrMarketClosedDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
+            foundDay = true;
         }
-
-        while( !foundDay ){
-            //Move back one day at a time, and return true once day != saturday/sunday/closed
-            tmpDate.setTime(tmpDate.getTime() - 86400000);
-            if(tmpDate.getDay() != 0 && tmpDate.getDay() != 6 && arrMarketClosedDays.indexOf(tmpDate.toJSON().slice(0, -14)) == -1 ) {
-                foundDay = true;
-            }
-        }
-        var yesterStockDay = tmpDate.toJSON().slice(0, -14);
-
-        db.all("SELECT ticker FROM stockIds", (err, tickRow) => {
-            Promise.all(tickRow.map(function (obj) {
-                return new Promise((resolve, reject) => {
-                    db.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, todaysDate, yesterStockDay], (err, rows) => {
-                        if (rows.length == 2) {
-                            if (rows[0].date == yesterStockDay) {
-                                if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.00001) { //to account for rounding errors
-                                    logger(0,"Stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice);
-                                    if (rows[0].lastPrice == 0) {
-                                        reject("error caught, lastprice should never be zero for stock ", rows[0].ticker)
-                                    } else {
-                                        var splitRatio = parseFloat((rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice).toPrecision(5);
-                                        if (splitRatio > 1.3 || splitRatio < 0.7){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
-                                            logger(0,"Fixing split with ratio: "+splitRatio);
-                                            resolve(fixSplit(rows[0].ticker, splitRatio));
-                                        }
-                                    }
+    }
+    var yesterStockDay = tmpDate.toJSON().slice(0, -14);
+    
+    db.all("SELECT ticker FROM stockIds", (err, tickRow) => {
+        await Promise.all(tickRow.map(function (obj) {
+            db.all("SELECT ticker,date,lastPrice,priceChange FROM dailyStock WHERE ticker = ? AND (date = ? OR date = ?)", [obj.ticker, todaysDate, yesterStockDay], (err, rows) => {
+                if (rows.length == 2) {
+                    if (rows[0].date == yesterStockDay) {
+                        if (rows[0].lastPrice + rows[1].priceChange - rows[1].lastPrice > 0.00001) { //to account for rounding errors
+                            logger(0,"Stock " + rows[0].ticker + " might be splitted, Yclose :"+rows[0].lastPrice+", change: "+rows[1].priceChange+", close: "+rows[1].lastPrice);
+                            if (rows[0].lastPrice != 0) {
+                                var splitRatio = parseFloat((rows[1].lastPrice - rows[1].priceChange) / rows[0].lastPrice).toPrecision(5);
+                                if (splitRatio > 1.3 || splitRatio < 0.7){ //Sometimes avanza gives us the wrong close price. Could be a few % off at most we hope
+                                    logger(0,"Fixing split with ratio: "+splitRatio);
+                                    await fixSplit(rows[0].ticker, splitRatio);
                                 }
-                            } else {
-                                logger(0,"Strange error, first row should always be yesterstockday")
                             }
                         }
-                        resolve();
-                    });
-                });
-            })).then(() => {
-                resolve();
+                    } else {
+                        logger(0,"Strange error, first row should always be yesterstockday")
+                    }
+                }
             });
-        });
+        }))
     });
 }
 
 /**
- * Fix split when detected. Will only execute on debugLevel 0
- * @param {*} ticker The stock we need to split
- * @param {*} sr The detected split ratio
- */
-function fixSplit(ticker, sr) {
-    return new Promise((resolve, reject) => {
-        db.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, historicData) => {
-            var stmt = db.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
-            Promise.all(historicData.map(function (row) {
-                return new Promise((resolve, reject) => {
-                    if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
-                        logger(2,"fixSplit> debug: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
-                    } else {
-                        logger(0,"fixSplit> New data: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
-                        stmt.run(row.lastPrice*sr, row.highestPrice*sr, row.lowestPrice*sr, row.priceChange*sr, row.ticker, row.date, resolve());
-                        //should rewrite this with promises as well.
-                    }
-                })
-            })).then(() => {
-                stmt.finalize()
-                resolve();
-            });
-        });
+* Fix split when detected. Will only execute on debugLevel 0
+* @param {*} ticker The stock we need to split
+* @param {*} sr The detected split ratio
+*/
+async function fixSplit(ticker, sr) {
+    db.all("SELECT id,date,lastPrice,highestPrice,lowestPrice,priceChange FROM dailyStock WHERE ticker = ?", ticker, (err, historicData) => {
+        var stmt = db.prepare("UPDATE dailyStock SET lastPrice=?, highestPrice=?, lowestPrice=?, priceChange=? WHERE (ticker=? AND date=?)");
+        await Promise.all(historicData.map(function (row) {
+            if (debugLevel>=1) { //only run db transaction on debug lvl 0 but dont log until debug lvl 2.
+                logger(2,"fixSplit> debug: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
+            } else {
+                logger(0,"fixSplit> New data: "+row.date+", "+row.lastPrice*sr+", "+row.highestPrice*sr+", "+row.lowestPrice*sr+", "+row.priceChange*sr)
+                await stmt.run(row.lastPrice*sr, row.highestPrice*sr, row.lowestPrice*sr, row.priceChange*sr, row.ticker, row.date);
+            }
+        }))
+        stmt.finalize()
     });
 }
 
@@ -662,7 +564,7 @@ function logger(level,string,optional){
 
 
 /* 
-    Reference data
+Reference data
 
 Avanza getTrade:
 { 
@@ -713,32 +615,32 @@ Avanza getStock:
     { marketCapital: 165712344568,
         chairman: 'Marie Ehrling',
         description: 'Telia Company är ett telekombolag som erbjuder nätanslutning och telekommunikationstjänster. Telia Company finns i de nordiska och baltiska länderna, Spanien,
-    Azerbajdzjan, Georgien, Kazastan, Moldavien, Nepal, Ryssland, Tadzjistan, Turkiet och Uzbekistan. Tjänsterna marknadsförs under varumärken som Telia, Sonera, Halebop och NetCom
-    . Den svenska marknaden svarar för 36% av omsättningen, och övriga Europa för 39%.',
+        Azerbajdzjan, Georgien, Kazastan, Moldavien, Nepal, Ryssland, Tadzjistan, Turkiet och Uzbekistan. Tjänsterna marknadsförs under varumärken som Telia, Sonera, Halebop och NetCom
+        . Den svenska marknaden svarar för 36% av omsättningen, och övriga Europa för 39%.',
         name: 'Telia Company',
         ceo: 'Johan Dennelind' },
-    volatility: 14.9,
-    pe: 23.39,
-    yield: 5.61 
-}
-Avanza search result (ABB):
-{"totalNumberOfHits":634,"hits":[
-{"instrumentType":"STOCK","numberOfHits":4,"topHits":[{"lastPrice":219.8,"changePercent":-0.63,"currency":"SEK","flagCode":"SE","tra
-dable":true,"name":"ABB Ltd","id":"5447","tickerSymbol":"ABB"},{"lastPrice":25.19,"changePercent":0.56,"currency":"USD","flagCode":"US","tradable":true,"name":"ABB L
-td","id":"3889","tickerSymbol":"ABB"},{"lastPrice":71.35,"changePercent":0.18,"currency":"USD","flagCode":"US","tradable":true,"name":"AbbVie Inc","id":"390389","tic
-kerSymbol":"ABBV"},{"lastPrice":48.59,"changePercent":-0.39,"currency":"USD","flagCode":"US","tradable":true,"name":"Abbott Laboratories","id":"4206","tickerSymbol":
-"ABT"}]},
-{"instrumentType":"FUTURE_FORWARD","numberOfHits":7,"topHits":[{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB8X","id":"7137
-45","tickerSymbol":"ABB8X"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7X","id":"617023","tickerSymbol":"ABB7X"},{"changePercent"
-:0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB8R","id":"761022","tickerSymbol":"ABB8R"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradabl
-e":true,"name":"ABB7U","id":"690460","tickerSymbol":"ABB7U"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7T","id":"754049","ticker
-Symbol":"ABB7T"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7S","id":"745295","tickerSymbol":"ABB7S"}]},
-{"instrumentType":"CERTIFICATE","numberOfHits":22},
-{"instrumentType":"WARRANT","numberOfHits":255},
-{"instrumentType":"OPTION","numberOfHits":346}
-]}
-
-{"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,"currency":"SEK","flagCode":"SE","tradabl
-e":true,"name":"AAK","id":"26268","tickerSymbol":"AAK"}]}]}
-
-*/
+        volatility: 14.9,
+        pe: 23.39,
+        yield: 5.61 
+    }
+    Avanza search result (ABB):
+    {"totalNumberOfHits":634,"hits":[
+        {"instrumentType":"STOCK","numberOfHits":4,"topHits":[{"lastPrice":219.8,"changePercent":-0.63,"currency":"SEK","flagCode":"SE","tra
+        dable":true,"name":"ABB Ltd","id":"5447","tickerSymbol":"ABB"},{"lastPrice":25.19,"changePercent":0.56,"currency":"USD","flagCode":"US","tradable":true,"name":"ABB L
+        td","id":"3889","tickerSymbol":"ABB"},{"lastPrice":71.35,"changePercent":0.18,"currency":"USD","flagCode":"US","tradable":true,"name":"AbbVie Inc","id":"390389","tic
+        kerSymbol":"ABBV"},{"lastPrice":48.59,"changePercent":-0.39,"currency":"USD","flagCode":"US","tradable":true,"name":"Abbott Laboratories","id":"4206","tickerSymbol":
+        "ABT"}]},
+        {"instrumentType":"FUTURE_FORWARD","numberOfHits":7,"topHits":[{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB8X","id":"7137
+        45","tickerSymbol":"ABB8X"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7X","id":"617023","tickerSymbol":"ABB7X"},{"changePercent"
+        :0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB8R","id":"761022","tickerSymbol":"ABB8R"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradabl
+        e":true,"name":"ABB7U","id":"690460","tickerSymbol":"ABB7U"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7T","id":"754049","ticker
+        Symbol":"ABB7T"},{"changePercent":0,"currency":"SEK","flagCode":"SE","tradable":true,"name":"ABB7S","id":"745295","tickerSymbol":"ABB7S"}]},
+        {"instrumentType":"CERTIFICATE","numberOfHits":22},
+        {"instrumentType":"WARRANT","numberOfHits":255},
+        {"instrumentType":"OPTION","numberOfHits":346}
+    ]}
+    
+    {"totalNumberOfHits":1,"hits":[{"instrumentType":"STOCK","numberOfHits":1,"topHits":[{"lastPrice":644,"changePercent":-1.08,"currency":"SEK","flagCode":"SE","tradabl
+    e":true,"name":"AAK","id":"26268","tickerSymbol":"AAK"}]}]}
+    
+    */

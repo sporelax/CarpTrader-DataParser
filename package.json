@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./lib/main.js",
-    "build": "babel src -d lib",
+    "build": "npx babel src --out-dir lib",
     "exec": "npm run build && npm start"
   },
   "repository": {
@@ -14,13 +14,17 @@
     "url": "git+https://github.com/sporelax/CarpTrader-DataParser.git"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "avanza": "^2.0.0",
-    "babel-cli": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-preset-es2015": "^6.24.1",
+    "cheerio": "^1.0.0-rc.2",
     "dotenv": "^6.1.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "sqlite3": "^4.0.3"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0"
   }
 }
